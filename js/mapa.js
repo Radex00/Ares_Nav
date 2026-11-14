@@ -5,7 +5,7 @@
   mapa.js: el centro de control (mapa, marcadores y astronautas).
 */
 
-// Se llena en los bloques 5, 6 y 7.
+// Se llena en los bloques 4, 5, 6 y 7.
 
 // =========================================================
 // BLOQUE 6 · PONER Y EDITAR MARCADORES
@@ -57,8 +57,15 @@ function dibujarBarraHerramientas() {
 
 // 6.3 Al hacer clic en el mapa: pasar la posición del clic de píxeles a porcentaje
 function alHacerClicEnElMapa(evento) {
-  // Si no hay ningún modo elegido, el clic no hace nada
-  if (estado.modoMarcador === null) return;
+  // Sin ningún modo elegido, un clic ENCIMA de un marcador abre su ficha (bloque 4).
+  // closest() busca, desde donde cayó el clic hacia fuera, el primer elemento con esa clase.
+  if (estado.modoMarcador === null) {
+    const marcadorTocado = evento.target.closest('.marcador');
+    if (marcadorTocado) {
+      seleccionarMarcador(marcadorTocado.dataset.id);
+    }
+    return;
+  }
 
   // getBoundingClientRect() dice dónde está el mapa en la pantalla y cuánto mide.
   // Usamos siempre el #mapa (y no evento.target) porque el clic puede caer
@@ -90,11 +97,15 @@ function agregarMarcador(tipo, x, y) {
   if (tipo === 'alerta') {
     nombre = document.getElementById('tipo-alerta').value;
   } else {
-    const cuantos = estado.marcadores.filter(m => m.tipo === 'interes').length;
+    const cuantos = marcadoresDelMapa().filter(m => m.tipo === 'interes').length;
     nombre = 'Punto de interés ' + (cuantos + 1);
   }
 
-  const marcador = { id: id, tipo: tipo, nombre: nombre, x: x, y: y, atendida: false };
+  // El marcador nuevo es del mapa actual y no tiene ficha (no viene de NASA)
+  const marcador = {
+    id: id, mapaId: estado.mapaActivo, tipo: tipo, nombre: nombre,
+    x: x, y: y, atendida: false, ficha: null
+  };
   estado.marcadores.push(marcador);
   return marcador;
 }
@@ -109,11 +120,12 @@ function prioridadDe(marcador) {
   return 2;
 }
 
-// 6.5 Devuelve los marcadores ordenados por prioridad.
-// slice() hace una copia: así ordenamos la copia y no cambiamos estado.marcadores.
+// 6.5 Devuelve los marcadores DEL MAPA ACTUAL ordenados por prioridad.
+// marcadoresDelMapa() ya devuelve una lista nueva (filter hace una copia):
+// así ordenamos la copia y no cambiamos el orden de estado.marcadores.
 // sort() compara de dos en dos: si la resta es negativa, "a" va antes que "b".
 function marcadoresOrdenados() {
-  return estado.marcadores.slice().sort(function (a, b) {
+  return marcadoresDelMapa().sort(function (a, b) {
     return prioridadDe(a) - prioridadDe(b);
   });
 }
@@ -122,7 +134,7 @@ function marcadoresOrdenados() {
 function dibujarListaMarcadores() {
   const lista = document.getElementById('lista-marcadores');
 
-  if (estado.marcadores.length === 0) {
+  if (marcadoresDelMapa().length === 0) {
     lista.innerHTML = '<p class="vacio">No hay marcadores. Usa + Interés o + Alerta.</p>';
     return;
   }
@@ -145,6 +157,9 @@ function dibujarListaMarcadores() {
       detalle = 'Alerta atendida ✓';
     }
 
+    // La fila del marcador cuya ficha se está viendo se resalta (bloque 4)
+    if (marcador.id === estado.marcadorSeleccionado) clase += ' seleccionado';
+
     // onclick="..." llama a la función con el id de ESTE marcador
     html += `
       <div class="${clase}">
@@ -153,6 +168,7 @@ function dibujarListaMarcadores() {
           <div class="fila-nombre">${textoSeguro(marcador.nombre)}</div>
           <div class="fila-detalle">${detalle}</div>
         </div>
+        <button class="boton-mini" title="Ver ficha" onclick="seleccionarMarcador('${marcador.id}')">ⓘ</button>
         <button class="boton-mini" title="Renombrar" onclick="renombrarMarcador('${marcador.id}')">✎</button>
         <button class="boton-mini" title="Borrar" onclick="borrarMarcador('${marcador.id}')">✕</button>
       </div>`;
@@ -181,6 +197,11 @@ function renombrarMarcador(id) {
 function borrarMarcador(id) {
   estado.marcadores = estado.marcadores.filter(m => m.id !== id);
 
+  // Si se estaba viendo su ficha, la cerramos (bloque 4)
+  if (estado.marcadorSeleccionado === id) {
+    estado.marcadorSeleccionado = null;
+  }
+
   // Si algún astronauta iba hacia ese marcador, se queda sin destino (bloque 7)
   for (const astronauta of estado.astronautas) {
     if (astronauta.destinoId === id) {
@@ -203,11 +224,12 @@ function borrarMarcador(id) {
 function pintarElementosDelMapa(capa, idResaltado) {
   let html = '';
 
-  // ----- Marcadores: rombo (interés) o triángulo (alerta) -----
-  for (const marcador of estado.marcadores) {
+  // ----- Marcadores del mapa actual: rombo (interés) o triángulo (alerta) -----
+  for (const marcador of marcadoresDelMapa()) {
     let clases = 'en-mapa marcador ' + marcador.tipo;   // "... interes" o "... alerta"
     if (marcador.atendida) clases += ' atendida';
     if (marcador.id === idResaltado) clases += ' resaltado';
+    if (marcador.x > 75) clases += ' etiqueta-izquierda';   // cerca del borde derecho
 
     // data-id guarda el id dentro del HTML, para poder encontrar este elemento después
     html += `
@@ -231,8 +253,9 @@ function pintarElementosDelMapa(capa, idResaltado) {
   }
 
   // ----- Dispositivos: solo los que ya están conectados (bloque 10) -----
+  // El de tipo 'mapa' (la zona nueva) no es una máquina: no se dibuja.
   for (const dispositivo of estado.dispositivos) {
-    if (!dispositivo.conectado) continue;   // continue = saltar al siguiente
+    if (!dispositivo.conectado || dispositivo.tipo === 'mapa') continue;   // continue = saltar al siguiente
 
     let clases = 'en-mapa dispositivo';
     if (dispositivo.id === idResaltado) clases += ' resaltado';
@@ -248,17 +271,11 @@ function pintarElementosDelMapa(capa, idResaltado) {
   capa.innerHTML = html;
 }
 
-// Muestra en el panel la información del mapa real (estado.infoMapa).
+// Muestra en el panel la información del mapa actual (su "info" en estado.mapas).
 // Solo enseña los datos que estén rellenos.
 function dibujarInfoMapa() {
-  const info = estado.infoMapa;
+  const info = mapaActual().info;
   const caja = document.getElementById('info-mapa');
-
-  // Si todavía no hay mapa real, avisamos
-  if (info.nombre === '') {
-    caja.innerHTML = '<p class="vacio">Pendiente: se rellena en el bloque 4 con el mapa real de NASA.</p>';
-    return;
-  }
 
   // Cada fila: [nombre del dato, valor]
   const filas = [
@@ -266,10 +283,24 @@ function dibujarInfoMapa() {
     ['Misión', info.mision],
     ['Instrumento', info.instrumento],
     ['Fecha', info.fecha],
+    ['Coordenadas', info.coordenadas],
+    ['Tamaño', info.tamano],
     ['Crédito', info.credito]
   ];
 
-  let html = '<dl>';
+  // Botones para saltar entre las zonas ya descargadas (si hay más de una)
+  let html = '';
+  const descargados = estado.mapas.filter(m => m.descargado);
+  if (descargados.length > 1) {
+    html += '<div class="botones-zona">';
+    for (const mapa of descargados) {
+      const activo = mapa.id === estado.mapaActivo ? 'activo' : '';
+      html += `<button class="boton-zona ${activo}" onclick="cambiarMapa('${mapa.id}')">${textoSeguro(mapa.info.nombre)}</button>`;
+    }
+    html += '</div>';
+  }
+
+  html += '<dl>';
   for (const fila of filas) {
     if (fila[1] !== '') {
       html += `<dt>${fila[0]}</dt><dd>${textoSeguro(fila[1])}</dd>`;
@@ -288,15 +319,85 @@ function dibujarInfoMapa() {
   caja.innerHTML = html;
 }
 
+// =========================================================
+// BLOQUE 4 · MAPA REAL, TAMAÑO Y FICHAS
+// =========================================================
+
+// Pone la imagen del mapa actual de fondo y le da su forma (ancho : alto).
+// La usan el mapa grande y el minimapa.
+function ponerFondoDelMapa(elemento) {
+  const mapa = mapaActual();
+  elemento.style.backgroundImage = `url('${mapa.imagen}')`;
+  elemento.style.aspectRatio = mapa.anchoPx + ' / ' + mapa.altoPx;
+}
+
+// Hace el mapa lo más grande posible SIN salirse del hueco:
+// ni más ancho que el hueco, ni tan ancho que su alto se salga por abajo.
+function ajustarTamanoMapa() {
+  const mapa = mapaActual();
+  const hueco = document.querySelector('.contenedor-mapa');
+  const anchoLibre = hueco.clientWidth - 32;    // 32 = el relleno (padding) de los dos lados
+  const altoLibre = hueco.clientHeight - 32;
+  const proporcion = mapa.anchoPx / mapa.altoPx;
+
+  // Si lo hiciéramos tan alto como el hueco, ¿cuánto mediría de ancho? altoLibre × proporción.
+  // Nos quedamos con el más pequeño de los dos anchos para que quepa entero.
+  const ancho = Math.min(anchoLibre, altoLibre * proporcion);
+  document.getElementById('mapa').style.width = ancho + 'px';
+}
+
+// Abre la ficha de un marcador en el panel (o la cierra si ya estaba abierta)
+function seleccionarMarcador(id) {
+  if (estado.marcadorSeleccionado === id) {
+    estado.marcadorSeleccionado = null;
+  } else {
+    estado.marcadorSeleccionado = id;
+  }
+  dibujar();
+}
+
+// Dibuja la sección "Ficha del marcador" del panel
+function dibujarFichaMarcador() {
+  const caja = document.getElementById('ficha-marcador');
+  const marcador = buscarMarcador(estado.marcadorSeleccionado);
+
+  if (!marcador) {
+    caja.innerHTML = '<p class="vacio">Pulsa ⓘ en un marcador, o haz clic sobre él en el mapa, para ver su ficha.</p>';
+    return;
+  }
+
+  let html = `<h3 class="ficha-titulo ${marcador.tipo}">${textoSeguro(marcador.nombre)}</h3>`;
+
+  if (marcador.ficha) {
+    html += `<p class="ficha-texto">${textoSeguro(marcador.ficha.texto)}</p>`;
+    html += '<div class="ficha-fuentes">Fuentes:<ul>';
+    for (const fuente of marcador.ficha.fuentes) {
+      html += `<li><a href="${textoSeguro(fuente.enlace)}" target="_blank" rel="noopener">${textoSeguro(fuente.texto)}</a></li>`;
+    }
+    html += '</ul></div>';
+  } else {
+    // Los marcadores que pone el equipo no traen datos de NASA
+    html += '<p class="ficha-texto">Marcador puesto por el centro de control. No tiene datos de NASA.</p>';
+  }
+
+  caja.innerHTML = html;
+}
+
 // 5.6 Dibuja todo el centro de control
 function dibujarMapa() {
-  pintarElementosDelMapa(document.getElementById('capa-mapa'), null);
+  const elementoMapa = document.getElementById('mapa');
+  ponerFondoDelMapa(elementoMapa);   // bloque 4: imagen real de NASA
+  ajustarTamanoMapa();               // bloque 4: que quepa entero en la pantalla
+
+  // El marcador con la ficha abierta sale resaltado en el mapa
+  pintarElementosDelMapa(document.getElementById('capa-mapa'), estado.marcadorSeleccionado);
   dibujarBarraHerramientas();   // bloque 6
   dibujarListaMarcadores();     // bloque 6
   dibujarListaAstronautas();    // bloque 7
   dibujarRutas();               // bloque 7
   dibujarListaConectados();     // bloque 11 (dispositivos.js)
-  dibujarInfoMapa();
+  dibujarFichaMarcador();       // bloque 4
+  dibujarInfoMapa();            // bloque 4
 }
 
 // =========================================================
@@ -307,8 +408,8 @@ function dibujarMapa() {
 // primero las alertas sin atender y después los puntos de interés.
 // (Las alertas ya atendidas no salen: ya no hace falta ir.)
 function destinosPosibles() {
-  const alertas = estado.marcadores.filter(m => m.tipo === 'alerta' && !m.atendida);
-  const intereses = estado.marcadores.filter(m => m.tipo === 'interes');
+  const alertas = marcadoresDelMapa().filter(m => m.tipo === 'alerta' && !m.atendida);
+  const intereses = marcadoresDelMapa().filter(m => m.tipo === 'interes');
   return alertas.concat(intereses);   // concat() une las dos listas
 }
 

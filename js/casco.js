@@ -16,7 +16,7 @@ const LETRAS_BRUJULA = ['N', 'NE', 'E', 'SE', 'S', 'SO', 'O', 'NO'];
 const ALTURA_HORIZONTE = 58;     // dónde está más o menos el horizonte del paisaje
 const ALTURA_PUNTO_CERCA = 24;   // un punto muy cerca flota alto...
 const ALTURA_PUNTO_LEJOS = 48;   // ...y uno muy lejos, cerca del horizonte
-const DISTANCIA_LEJOS = 4000;    // a partir de estos metros, un punto ya cuenta como "muy lejos"
+const DISTANCIA_LEJOS = 400;     // a partir de estos metros, un punto ya cuenta como "muy lejos" (mapas de 300-700 m)
 const RUMBO_DEL_SOL = 90;        // ⭐ el sol decorativo está al este
 const MARGEN_PANTALLA = 4;       // un punto a menos de un 4 % del borde saldría cortado: va como aviso
 
@@ -189,7 +189,7 @@ function dibujarPuntosEnPantalla(observador) {
 
   // Primero calculamos todo de cada marcador
   const puntos = [];
-  for (const marcador of estado.marcadores) {
+  for (const marcador of marcadoresDelMapa()) {   // solo los de la zona actual
     const distancia = distanciaEnMetros(observador, marcador);
     if (distancia < 2) continue;   // está justo encima: no lo enseñamos
 
@@ -210,6 +210,7 @@ function dibujarPuntosEnPantalla(observador) {
   let html = dibujarSol(observador);
   let avisosIzquierda = '';
   let avisosDerecha = '';
+  const colocados = [];   // dónde ya hay un punto dibujado, para no pisar nombres
 
   for (const punto of puntos) {
     const marcador = punto.marcador;
@@ -221,7 +222,22 @@ function dibujarPuntosEnPantalla(observador) {
       // ----- 9.1 Se ve: flota en su sitio -----
       // Más lejos = más abajo (más cerca del horizonte). Math.min no deja pasar de 1.
       const cuantoLejos = Math.min(punto.distancia / DISTANCIA_LEJOS, 1);
-      const y = ALTURA_PUNTO_CERCA + cuantoLejos * (ALTURA_PUNTO_LEJOS - ALTURA_PUNTO_CERCA);
+      let y = ALTURA_PUNTO_CERCA + cuantoLejos * (ALTURA_PUNTO_LEJOS - ALTURA_PUNTO_CERCA);
+
+      // Si ya hay otro punto casi en el mismo sitio (menos de 14 % a los lados
+      // y 7 % arriba o abajo), probamos a moverlo un escalón: arriba, abajo, dos arriba...
+      // Solo valen alturas entre la brújula (16 %) y el horizonte (55 %).
+      const yOriginal = y;
+      for (const escalon of [0, -7, 7, -14, 14, -21, 21]) {
+        const prueba = yOriginal + escalon;
+        if (prueba < 16 || prueba > 55) continue;
+        const pisa = colocados.some(c => Math.abs(c.x - punto.x) < 14 && Math.abs(c.y - prueba) < 7);
+        if (!pisa) {
+          y = prueba;
+          break;
+        }
+      }
+      colocados.push({ x: punto.x, y: y });
 
       let clases = 'punto-hud ' + marcador.tipo;
       if (marcador.atendida) clases += ' atendida';
@@ -299,8 +315,26 @@ function dibujarInfoObservador(observador) {
 // 9.5 El minimapa usa la MISMA función que el mapa grande.
 // Resaltamos al observador para saber dónde estamos.
 function dibujarMinimapa(observador) {
+  const minimapa = document.getElementById('minimapa');
   pintarElementosDelMapa(document.getElementById('capa-minimapa'), observador.id);
-  document.getElementById('minimapa').classList.toggle('ampliado', estado.minimapaAmpliado);
+  minimapa.classList.toggle('ampliado', estado.minimapaAmpliado);
+
+  // Bloque 4: la misma imagen real que el mapa grande, con su forma
+  ponerFondoDelMapa(minimapa);   // mapa.js
+
+  // Tamaño: que quepa sin tapar nada (el alto depende de la forma del mapa)
+  const mapa = mapaActual();
+  const proporcion = mapa.anchoPx / mapa.altoPx;
+  const vista = document.getElementById('vista-pov');
+  let ancho;
+  if (estado.minimapaAmpliado) {
+    // Grande: como mucho el 70 % del ancho y el 72 % del alto de la vista
+    ancho = Math.min(vista.clientWidth * 0.7, vista.clientHeight * 0.72 * proporcion);
+  } else {
+    // Pequeño: como mucho 240 px de ancho y 180 px de alto
+    ancho = Math.min(240, 180 * proporcion);
+  }
+  minimapa.style.width = ancho + 'px';
 }
 
 // 9.5 Amplía o encoge el minimapa (botón "Minimapa (M)" o tecla M)

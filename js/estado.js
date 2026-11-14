@@ -12,26 +12,42 @@
 */
 
 // =========================================================
-// 2.1 CONSTANTES DEL MAPA
+// 2.1 CONSTANTES
 // Las posiciones van en porcentaje del mapa (0 a 100).
-// Estas constantes sirven para pasar de porcentaje a metros reales.
-// (Los metros se ajustan en el bloque 4 con la zona real de Marte.)
+// Bloque 4: cada mapa real tiene su propio tamaño en metros (está en estado.mapas),
+// así que los metros de cada punto los calculan metrosPorPuntoX() y metrosPorPuntoY().
 // =========================================================
-
-const MAPA_ANCHO_METROS = 4000;   // de izquierda a derecha (oeste → este)
-const MAPA_ALTO_METROS = 2500;    // de arriba abajo (norte → sur)
-
-// Cuántos metros hay en 1 punto de porcentaje.
-// Ejemplo: 4000 m / 100 = 40 m por cada punto en horizontal.
-const METROS_POR_PUNTO_X = MAPA_ANCHO_METROS / 100;
-const METROS_POR_PUNTO_Y = MAPA_ALTO_METROS / 100;
 
 // Cuántos grados ve el astronauta a la vez en la vista del casco
 const CAMPO_DE_VISION = 90;
 
-// Cuántos metros avanza un astronauta en cada paso, y cada cuánto da un paso
-const PASO_METROS = 3;            // se ajusta en el bloque 12 para la demo
+// Cuántos metros avanza un astronauta en cada paso, y cada cuánto da un paso.
+// Los mapas reales miden unos 300-700 m: con 1 m cada 50 ms se cruzan en 15-35 s.
+const PASO_METROS = 1;            // se ajusta en el bloque 12 para la demo
 const TIEMPO_ENTRE_PASOS = 50;    // en milisegundos (50 ms = 20 pasos por segundo)
+
+// Bloque 4: fuentes que se repiten en las fichas de los marcadores.
+// Los datos completos de cada una están en FUENTES.md.
+const FUENTE_GOLOMBEK = {
+  texto: 'Golombek et al. (2020), Nature Communications 11, 1014',
+  enlace: 'https://doi.org/10.1038/s41467-020-14679-1'
+};
+const FUENTE_PIA26515 = {
+  texto: 'NASA/JPL-Caltech/UArizona · PIA26515 (HiRISE, 2024)',
+  enlace: 'https://science.nasa.gov/photojournal/hirise-studies-the-dust-on-insight/'
+};
+const FUENTE_HIRISE_2018 = {
+  texto: 'NASA/JPL-Caltech/UArizona · HiRISE ESP_058005_1845 (2018)',
+  enlace: 'https://www.uahirise.org/ESP_058005_1845'
+};
+const FUENTE_PIA22875 = {
+  texto: 'NASA/JPL-Caltech/UArizona · PIA22875 (2018)',
+  enlace: 'https://science.nasa.gov/photojournal/insight-on-mars-as-seen-by-hirise/'
+};
+const FUENTE_JPL_2022 = {
+  texto: 'NASA/JPL, "NASA Retires InSight Mars Lander Mission After Years of Science" (21/12/2022)',
+  enlace: 'https://www.jpl.nasa.gov/news/nasa-retires-insight-mars-lander-mission-after-years-of-science/'
+};
 
 // Los nombres de las 3 vistas (coinciden con los id "vista-..." del HTML)
 const VISTAS = ['control', 'pov', 'dispositivos'];
@@ -47,29 +63,147 @@ const estado = {
   camaraActiva: 'a1',        // id de quien "mira" en la vista del casco (astronauta o dispositivo)
   modoMarcador: null,        // null (ninguno), 'interes' o 'alerta' (bloque 6)
   minimapaAmpliado: false,   // true cuando el minimapa está en grande (bloque 9)
-  siguienteId: 3,            // número del próximo marcador nuevo: 'm3', 'm4', ...
+  siguienteId: 20,           // número del próximo marcador nuevo: 'm20', 'm21', ... (los reales usan m1-m9)
+  mapaActivo: 'zona-a',      // bloque 4: el id del mapa que se está usando
+  marcadorSeleccionado: null, // bloque 4: el marcador cuya ficha se ve en el panel
 
-  // ----- Espacio para la información del mapa real -----
-  // Se rellena en el bloque 4 (con lo anotado en FUENTES.md)
-  // y se muestra en el panel del centro de control en el bloque 5.
-  infoMapa: {
-    nombre: '',        // ej.: "Cráter Jezero, Marte"
-    mision: '',        // misión que tomó la imagen
-    instrumento: '',   // cámara o instrumento
-    fecha: '',         // cuándo se tomó la imagen
-    credito: '',       // ej.: "NASA/JPL-Caltech/University of Arizona"
-    enlace: '',        // página oficial de la imagen
-    descripcion: ''    // texto del equipo: qué es este lugar y por qué lo elegimos
-  },
+  // =========================================================
+  // BLOQUE 4 · LOS MAPAS REALES DE NASA
+  // anchoPx / altoPx: tamaño de la imagen en píxeles (para que no se deforme).
+  // anchoMetros / altoMetros: medidos con la barra de escala que trae cada imagen.
+  // base: dónde aparecen los astronautas y los dispositivos al llegar a la zona.
+  // descargado: si ya se puede usar. La zona nueva se descarga en "Dispositivos".
+  // info: lo que sale en "Sobre este mapa". Fuentes completas en FUENTES.md.
+  // Las coordenadas son aproximadas: salen de la posición de InSight
+  // (4,502° N, 135,623° E, Golombek et al. 2020) y de la escala, con el norte arriba.
+  // =========================================================
+  mapas: [
+    {
+      id: 'zona-a',
+      imagen: 'img/mapa-insight-2024.jpg',
+      anchoPx: 1106, altoPx: 977,
+      anchoMetros: 339, altoMetros: 299,     // barra de escala: 100 m = 327 px
+      base: { x: 12, y: 80 },
+      descargado: true,
+      info: {
+        nombre: 'Elysium Planitia · InSight en 2024',
+        mision: 'Mars Reconnaissance Orbiter (MRO)',
+        instrumento: 'Cámara HiRISE · imagen PIA26515',
+        fecha: '23 de octubre de 2024',
+        coordenadas: '4,4994°–4,5045° N · 135,6206°–135,6264° E (aprox.)',
+        tamano: '339 × 299 m',
+        credito: 'NASA/JPL-Caltech/UArizona',
+        enlace: 'https://science.nasa.gov/photojournal/hirise-studies-the-dust-on-insight/',
+        descripcion: ''   // texto del equipo: qué es este lugar y por qué lo elegimos
+      }
+    },
+    {
+      id: 'zona-b',
+      imagen: 'img/mapa-insight-2018.jpg',
+      anchoPx: 1131, altoPx: 1280,
+      anchoMetros: 635, altoMetros: 719,     // barra de escala: 100 m = 178 px
+      base: { x: 8, y: 64 },
+      descargado: false,
+      info: {
+        nombre: 'Zona de aterrizaje de InSight en 2018',
+        mision: 'Mars Reconnaissance Orbiter (MRO)',
+        instrumento: 'Cámara HiRISE · imagen ESP_058005_1845',
+        fecha: '11 de diciembre de 2018',
+        coordenadas: '4,4949°–4,5071° N · 135,6211°–135,6319° E (aprox.)',
+        tamano: '635 × 719 m',
+        credito: 'NASA/JPL-Caltech/UArizona',
+        enlace: 'https://www.uahirise.org/ESP_058005_1845',
+        descripcion: ''   // texto del equipo
+      }
+    }
+  ],
 
-  // ----- 2.3 LAS TRES LISTAS (datos de prueba) -----
-  // Los puntos reales de NASA llegan en el bloque 4.
+  // ----- 2.3 LAS TRES LISTAS -----
   // Cada cosa tiene un id distinto: 'm' = marcador, 'a' = astronauta, 'd' = dispositivo.
 
   // tipo: 'interes' o 'alerta'. atendida: solo importa en las alertas.
+  // mapaId: en qué mapa está. x e y: medidos sobre la imagen de ese mapa.
+  // ficha: lo que sale al pulsar ⓘ (texto y fuentes). Los marcadores nuevos no tienen.
   marcadores: [
-    { id: 'm1', tipo: 'interes', nombre: 'Punto de prueba', x: 30, y: 40, atendida: false },
-    { id: 'm2', tipo: 'alerta', nombre: 'Fuga de oxígeno (prueba)', x: 70, y: 30, atendida: false }
+    // ----- Zona A: InSight en 2024 (PIA26515) -----
+    {
+      id: 'm1', mapaId: 'zona-a', tipo: 'interes', nombre: 'InSight', x: 41.2, y: 49.3, atendida: false,
+      ficha: {
+        texto: 'Aterrizador de NASA que llegó el 26 de noviembre de 2018 para estudiar el interior de Marte. ' +
+               'Su sismómetro detectó 1.319 sismos marcianos. El polvo fue tapando sus paneles solares ' +
+               'hasta dejarlo sin energía: habló con la Tierra por última vez el 15 de diciembre de 2022. ' +
+               'En esta foto de 2024 ya tiene el mismo color rojizo que el suelo.',
+        fuentes: [FUENTE_HIRISE_2018, FUENTE_JPL_2022, FUENTE_PIA26515]
+      }
+    },
+    {
+      id: 'm2', mapaId: 'zona-a', tipo: 'interes', nombre: 'Halo de los retrocohetes', x: 37.5, y: 54.2, atendida: false,
+      ficha: {
+        texto: 'Al aterrizar, los retrocohetes barrieron el polvo fino y dejaron el suelo más oscuro. ' +
+               'Con los años el polvo vuelve a caer y el halo se va borrando. Medir lo rápido que se borra ' +
+               'ayuda a calcular la edad de los cráteres.',
+        fuentes: [FUENTE_GOLOMBEK, FUENTE_PIA26515]
+      }
+    },
+    {
+      id: 'm3', mapaId: 'zona-a', tipo: 'interes', nombre: 'Suelo de Homestead hollow', x: 45.1, y: 45.0, atendida: false,
+      ficha: {
+        texto: 'InSight está en el lado oeste de Homestead hollow, un cráter de impacto muy erosionado de unos 27 m. ' +
+               'El suelo es arena con gránulos y guijarros, con muy pocas rocas. Por capas: polvo arriba, ' +
+               'una capa fina de arena suelta, una costra endurecida (duricostra) de grosor variable y, debajo, arena con rocas.',
+        fuentes: [FUENTE_GOLOMBEK]
+      }
+    },
+    {
+      id: 'm4', mapaId: 'zona-a', tipo: 'alerta', nombre: 'Terreno más rocoso', x: 26.2, y: 40.4, atendida: false,
+      ficha: {
+        texto: 'Al oeste de Homestead hollow el terreno es algo más rocoso y áspero que el suelo arenoso del cráter. ' +
+               'En la simulación lo marcamos como zona para caminar con cuidado.',
+        fuentes: [FUENTE_GOLOMBEK]
+      }
+    },
+    {
+      id: 'm5', mapaId: 'zona-a', tipo: 'interes', nombre: 'Cráter de impacto', x: 71.1, y: 80.4, atendida: false,
+      ficha: {
+        texto: 'Pequeño cráter de impacto. En esta llanura los cráteres pequeños son comunes. ' +
+               'El suelo es regolito (roca rota por impactos) de 3 a 18 m de grosor, encima de antiguas coladas de lava de basalto.',
+        fuentes: [FUENTE_GOLOMBEK, FUENTE_PIA26515]
+      }
+    },
+
+    // ----- Zona B: la zona nueva, InSight en 2018 (HiRISE ESP_058005_1845) -----
+    {
+      id: 'm6', mapaId: 'zona-b', tipo: 'interes', nombre: 'InSight (2018)', x: 17.5, y: 42.0, atendida: false,
+      ficha: {
+        texto: 'InSight dos semanas después de aterrizar. El suelo de alrededor está oscuro porque los retrocohetes ' +
+               'lo barrieron. Con los paneles solares abiertos mide unos 6 m de ancho.',
+        fuentes: [FUENTE_HIRISE_2018, FUENTE_PIA22875]
+      }
+    },
+    {
+      id: 'm7', mapaId: 'zona-b', tipo: 'interes', nombre: 'Escudo térmico', x: 90.8, y: 17.1, atendida: false,
+      ficha: {
+        texto: 'El escudo térmico de InSight se soltó durante la bajada y quedó aquí. ' +
+               'Brilla tanto porque refleja la luz del Sol, como un espejo.',
+        fuentes: [FUENTE_HIRISE_2018, FUENTE_PIA22875]
+      }
+    },
+    {
+      id: 'm8', mapaId: 'zona-b', tipo: 'interes', nombre: 'Escudo trasero y paracaídas', x: 37.5, y: 90.3, atendida: false,
+      ficha: {
+        texto: 'El escudo trasero sigue unido al paracaídas que frenó la bajada de InSight. ' +
+               'La raya que sale hacia el sur probablemente es una huella antigua de un remolino de polvo.',
+        fuentes: [FUENTE_HIRISE_2018, FUENTE_PIA22875]
+      }
+    },
+    {
+      id: 'm9', mapaId: 'zona-b', tipo: 'alerta', nombre: 'Cráter (pendiente)', x: 60.1, y: 52.1, atendida: false,
+      ficha: {
+        texto: 'Cráter de impacto de unos 50-60 m de ancho (medido por el equipo sobre la imagen). ' +
+               'En esta llanura los cráteres son comunes. En la simulación sus paredes inclinadas son una zona peligrosa.',
+        fuentes: [FUENTE_HIRISE_2018, FUENTE_GOLOMBEK]
+      }
+    }
   ],
 
   // rumbo: hacia dónde mira, en grados (0 = norte, 90 = este).
@@ -77,24 +211,35 @@ const estado = {
   // destinoId: el id del marcador al que camina (null = está quieto).
   // lugarId: el id del marcador donde está ahora (null = en la base).
   // destinoElegido: lo que está elegido en su menú de destino (bloque 7).
+  // Empiezan en la base de la zona A.
   astronautas: [
-    { id: 'a1', nombre: 'Vega', x: 50, y: 60, rumbo: 0, oxigeno: 100,
+    { id: 'a1', nombre: 'Vega', x: 12, y: 80, rumbo: 0, oxigeno: 100,
       destinoId: null, lugarId: null, destinoElegido: null },
-    { id: 'a2', nombre: 'Ríos', x: 48, y: 65, rumbo: 0, oxigeno: 86,
+    { id: 'a2', nombre: 'Ríos', x: 12, y: 85, rumbo: 0, oxigeno: 86,
       destinoId: null, lugarId: null, destinoElegido: null }
   ],
 
-  // tipo: 'rover' o 'dron' (coincide con el nombre de su imagen: img/rover.svg, img/dron.svg).
-  // conectado / conectando / progreso / mensaje: los usa la barra de carga del bloque 10.
+  // tipo: 'rover', 'dron' o 'mapa'. imagen: el dibujo de su tarjeta.
+  // fases: los dos mensajes de la barra de carga (bloque 10).
+  // El de tipo 'mapa' es la ZONA NUEVA: se "conecta" como un dispositivo y al terminar
+  // su mapa (mapaId) queda descargado. No sale en el mapa ni tiene cámara.
   dispositivos: [
     {
       id: 'd1', tipo: 'rover', nombre: 'Rover R-1', camara: 'Cámara de navegación',
-      x: 44, y: 70, rumbo: 90,
+      imagen: 'img/rover.svg', x: 21, y: 80, rumbo: 90,
+      fases: ['Escaneando dispositivo…', 'Instalando sistema de navegación…'],
       conectado: false, conectando: false, progreso: 0, mensaje: ''
     },
     {
       id: 'd2', tipo: 'dron', nombre: 'Dron D-1', camara: 'Cámara inferior',
-      x: 56, y: 55, rumbo: 0,
+      imagen: 'img/dron.svg', x: 21, y: 85, rumbo: 0,
+      fases: ['Escaneando dispositivo…', 'Instalando sistema de navegación…'],
+      conectado: false, conectando: false, progreso: 0, mensaje: ''
+    },
+    {
+      id: 'd3', tipo: 'mapa', nombre: 'Zona nueva', camara: 'Mapa HiRISE de la zona de aterrizaje (2018)',
+      imagen: 'img/mapa-insight-2018-mini.jpg', mapaId: 'zona-b', x: 0, y: 0, rumbo: 0,
+      fases: ['Buscando señal del orbitador MRO…', 'Descargando mapa de la zona nueva…'],
       conectado: false, conectando: false, progreso: 0, mensaje: ''
     }
   ]
@@ -128,6 +273,63 @@ function buscarObservador() {
 }
 
 // =========================================================
+// BLOQUE 4 · FUNCIONES DE LOS MAPAS
+// =========================================================
+
+function buscarMapa(id) {
+  return estado.mapas.find(m => m.id === id);
+}
+
+// El mapa que se está usando ahora
+function mapaActual() {
+  return buscarMapa(estado.mapaActivo);
+}
+
+// Cuántos metros hay en 1 punto de porcentaje DEL MAPA ACTUAL.
+// Ejemplo en la zona A: 339 m / 100 = 3,39 m por cada punto en horizontal.
+function metrosPorPuntoX() {
+  return mapaActual().anchoMetros / 100;
+}
+function metrosPorPuntoY() {
+  return mapaActual().altoMetros / 100;
+}
+
+// Solo los marcadores del mapa actual (cada marcador sabe su mapaId)
+function marcadoresDelMapa() {
+  return estado.marcadores.filter(m => m.mapaId === estado.mapaActivo);
+}
+
+// Lleva al equipo a otra zona: astronautas y dispositivos aparecen en su base
+function cambiarMapa(id) {
+  estado.mapaActivo = id;
+  estado.modoMarcador = null;
+  estado.marcadorSeleccionado = null;
+
+  const base = mapaActual().base;
+
+  // Los astronautas, uno debajo del otro (5 puntos de separación) para que
+  // sus nombres no se pisen, y quietos
+  for (let i = 0; i < estado.astronautas.length; i++) {
+    const astronauta = estado.astronautas[i];
+    astronauta.x = base.x;
+    astronauta.y = base.y + i * 5;
+    astronauta.destinoId = null;
+    astronauta.lugarId = null;
+    astronauta.destinoElegido = null;
+  }
+
+  // Los dispositivos (menos el mapa, que no es una máquina), en otra columna a la derecha
+  const maquinas = estado.dispositivos.filter(d => d.tipo !== 'mapa');
+  for (let i = 0; i < maquinas.length; i++) {
+    maquinas[i].x = base.x + 9;
+    maquinas[i].y = base.y + i * 5;
+  }
+
+  estado.vista = 'control';
+  dibujar();
+}
+
+// =========================================================
 // BLOQUE 3 · MATEMÁTICA DE NAVEGACIÓN
 // "desde" y "hasta" son cualquier cosa con x e y en porcentaje:
 // un astronauta, un marcador, un dispositivo...
@@ -140,9 +342,9 @@ function buscarObservador() {
 function distanciaEnMetros(desde, hasta) {
   // Pasamos la diferencia de porcentaje a metros en cada eje.
   // Hay que hacerlo ANTES de Pitágoras porque el mapa no es cuadrado:
-  // 1 % de ancho (40 m) no mide lo mismo que 1 % de alto (25 m).
-  const metrosX = (hasta.x - desde.x) * METROS_POR_PUNTO_X;
-  const metrosY = (hasta.y - desde.y) * METROS_POR_PUNTO_Y;
+  // 1 % de ancho no mide lo mismo que 1 % de alto (zona A: 3,39 m y 2,99 m).
+  const metrosX = (hasta.x - desde.x) * metrosPorPuntoX();
+  const metrosY = (hasta.y - desde.y) * metrosPorPuntoY();
 
   // Hipotenusa = raíz cuadrada de (a² + b²)
   return Math.sqrt(metrosX * metrosX + metrosY * metrosY);
@@ -164,10 +366,10 @@ function normalizarAngulo(grados) {
 // 0 = norte, 90 = este, 180 = sur, 270 = oeste.
 function anguloHacia(desde, hasta) {
   // Cuántos metros hay que ir hacia el este (positivo) o el oeste (negativo)
-  const haciaEste = (hasta.x - desde.x) * METROS_POR_PUNTO_X;
+  const haciaEste = (hasta.x - desde.x) * metrosPorPuntoX();
   // Cuántos metros hacia el norte. Va al revés (desde − hasta)
   // porque en la pantalla y crece hacia abajo, o sea, hacia el sur.
-  const haciaNorte = (desde.y - hasta.y) * METROS_POR_PUNTO_Y;
+  const haciaNorte = (desde.y - hasta.y) * metrosPorPuntoY();
 
   // Math.atan2 devuelve el ángulo en radianes.
   // En clase de mates el ángulo se mide desde el este y girando a la izquierda,
@@ -205,10 +407,11 @@ function textoSeguro(texto) {
 }
 
 // 3.6 PRUEBAS · Escríbelas en la consola del navegador (F12 › Console).
-// Solo valen con el mapa de prueba de 4000 × 2500 m.
+// Las de la lista usaban un mapa de prueba de 4000 × 2500 m. Con el mapa real
+// (zona A: 339 × 299 m) las distancias cambian, pero los ángulos y formatos no:
 //   anguloHacia({x: 50, y: 50}, {x: 50, y: 40})    → 0
 //   anguloHacia({x: 50, y: 50}, {x: 60, y: 50})    → 90
-//   distanciaEnMetros({x: 0, y: 0}, {x: 10, y: 0}) → 400
+//   distanciaEnMetros({x: 0, y: 0}, {x: 10, y: 0}) → 33,9 (era 400 con el mapa de prueba)
 //   formatearDistancia(1240)                       → "1,2 km"
 //   normalizarAngulo(-10)                          → 350
 
@@ -293,6 +496,9 @@ function iniciar() {
 
   // 7.5 Los astronautas dan un paso cada TIEMPO_ENTRE_PASOS (50 ms)
   setInterval(moverAstronautas, TIEMPO_ENTRE_PASOS);   // mapa.js
+
+  // Bloque 4: si cambia el tamaño de la ventana, el mapa se vuelve a ajustar
+  window.addEventListener('resize', dibujar);
 
   dibujar();
 }

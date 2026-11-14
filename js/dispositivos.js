@@ -17,10 +17,11 @@ const PAUSA_BARRA = 80;       // cuánto espera entre paso y paso (en milisegund
 function dibujarTarjetasDispositivos() {
   let html = '';
   for (const dispositivo of estado.dispositivos) {
-    // La imagen se llama igual que el tipo: img/rover.svg o img/dron.svg
+    // La imagen sale de dispositivo.imagen. La clase con el tipo (rover, dron, mapa)
+    // deja dar estilo a cada uno: el mapa sin descargar se ve borroso.
     html += `
-      <div class="tarjeta-dispositivo ${dispositivo.conectado ? 'conectado' : ''}" data-id="${dispositivo.id}">
-        <img src="img/${dispositivo.tipo}.svg" alt="${textoSeguro(dispositivo.nombre)}">
+      <div class="tarjeta-dispositivo ${dispositivo.tipo} ${dispositivo.conectado ? 'conectado' : ''}" data-id="${dispositivo.id}">
+        <img src="${dispositivo.imagen}" alt="${textoSeguro(dispositivo.nombre)}">
         <h3>${textoSeguro(dispositivo.nombre)}</h3>
         <p class="tipo-dispositivo">${textoSeguro(dispositivo.camara)}</p>
         <div class="parte-inferior">${parteInferiorDeTarjeta(dispositivo)}</div>
@@ -31,7 +32,14 @@ function dibujarTarjetasDispositivos() {
 
 // 10.3 La parte de abajo de la tarjeta cambia según el estado del dispositivo
 function parteInferiorDeTarjeta(dispositivo) {
-  // 3) Conectado → mensaje y botón para ver su cámara (verCamara llega en el bloque 11)
+  const esMapa = dispositivo.tipo === 'mapa';
+
+  // 3) Conectado → mensaje y botón: el mapa lleva a la zona nueva; el resto, a su cámara
+  if (dispositivo.conectado && esMapa) {
+    return `
+      <div class="mensaje-tarjeta ok">✓ Mapa descargado</div>
+      <button class="boton-tarjeta" onclick="cambiarMapa('${dispositivo.mapaId}')">Ir a la zona</button>`;
+  }
   if (dispositivo.conectado) {
     return `
       <div class="mensaje-tarjeta ok">✓ Conectado</div>
@@ -46,10 +54,10 @@ function parteInferiorDeTarjeta(dispositivo) {
       <div class="porcentaje-carga">${dispositivo.progreso} %</div>`;
   }
 
-  // 1) Sin conectar → botón Conectar
+  // 1) Sin conectar → botón Conectar (o Descargar, si es el mapa)
   return `
-    <div class="mensaje-tarjeta apagado">Sin conectar</div>
-    <button class="boton-tarjeta" onclick="conectarDispositivo('${dispositivo.id}')">Conectar</button>`;
+    <div class="mensaje-tarjeta apagado">${esMapa ? 'Zona sin explorar' : 'Sin conectar'}</div>
+    <button class="boton-tarjeta" onclick="conectarDispositivo('${dispositivo.id}')">${esMapa ? 'Descargar' : 'Conectar'}</button>`;
 }
 
 // 10.4 Cambia SOLO la parte de abajo de una tarjeta (no redibuja toda la vista).
@@ -90,11 +98,18 @@ async function conectarDispositivo(id) {
 
   dispositivo.conectando = true;
 
-  await llenarBarra(dispositivo, 'Escaneando dispositivo…');             // fase 1
-  await llenarBarra(dispositivo, 'Instalando sistema de navegación…');   // fase 2
+  // Cada dispositivo trae sus dos mensajes en "fases" (el mapa tiene los suyos)
+  await llenarBarra(dispositivo, dispositivo.fases[0]);   // fase 1
+  await llenarBarra(dispositivo, dispositivo.fases[1]);   // fase 2
 
   dispositivo.conectando = false;
   dispositivo.conectado = true;
+
+  // Bloque 4: si era el mapa de la zona nueva, esa zona ya se puede usar
+  if (dispositivo.tipo === 'mapa') {
+    buscarMapa(dispositivo.mapaId).descargado = true;
+  }
+
   dibujar();   // ahora sí, todo: la tarjeta queda conectada y el dispositivo sale en el mapa
 }
 
@@ -105,14 +120,15 @@ async function conectarDispositivo(id) {
 // 11.1 Todas las cámaras que se pueden ver: los cascos de los astronautas
 // y las cámaras de los dispositivos YA conectados.
 function obtenerCamarasDisponibles() {
-  const conectados = estado.dispositivos.filter(d => d.conectado);
+  // El mapa de la zona nueva no tiene cámara
+  const conectados = estado.dispositivos.filter(d => d.conectado && d.tipo !== 'mapa');
   return estado.astronautas.concat(conectados);
 }
 
 // 11.2 El panel "Dispositivos conectados" del centro de control, con su botón VER
 function dibujarListaConectados() {
   const lista = document.getElementById('lista-conectados');
-  const conectados = estado.dispositivos.filter(d => d.conectado);
+  const conectados = estado.dispositivos.filter(d => d.conectado && d.tipo !== 'mapa');
 
   if (conectados.length === 0) {
     lista.innerHTML = '<p class="vacio">Ningún dispositivo conectado. Conéctalos en la pestaña Dispositivos.</p>';

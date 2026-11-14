@@ -150,6 +150,9 @@ body {
 #vista-control {
   display: grid;
   grid-template-columns: 1fr 380px;
+  /* Una sola fila que mide justo el alto de la vista: minmax(0, 1fr)
+     no deja que el contenido (un mapa alto) la estire hacia abajo */
+  grid-template-rows: minmax(0, 1fr);
 }
 
 /* Columna izquierda: herramientas arriba y mapa debajo */
@@ -157,6 +160,7 @@ body {
   display: flex;
   flex-direction: column;
   min-width: 0;        /* deja que la columna se encoja si la pantalla es pequeña */
+  min-height: 0;       /* y que no crezca más que la vista */
 }
 
 /* ----- Barra de herramientas ----- */
@@ -200,48 +204,29 @@ body {
 /* El contenedor ocupa el resto de la columna. Si el mapa no cabe, sale una barra para bajar. */
 .contenedor-mapa {
   flex: 1;
+  min-height: 0;       /* sin esto, un mapa alto estiraría el hueco en vez de encogerse */
   overflow: auto;
   padding: 16px;
 }
 
 /* 5.1 y 5.4 El mapa.
-   aspect-ratio mantiene la forma de la imagen (ancho : alto).
-   Si la imagen real no es 16:10, se cambia aquí (bloque 4.3). */
+   Bloque 4: el ancho y la forma (aspect-ratio) los pone mapa.js según la imagen
+   de cada zona (ajustarTamanoMapa y ponerFondoDelMapa), para que quepa entero. */
 .mapa {
   position: relative;          /* las capas se colocan encima con position: absolute */
-  width: 100%;
-  aspect-ratio: 16 / 10;
+  margin: 0 auto;              /* centrado en su columna */
   border: 1px solid var(--color-borde);
   border-radius: var(--radio);
   overflow: hidden;
 }
 
-/* La imagen del mapa. La usan el mapa grande (#mapa) y el minimapa (#minimapa),
-   así que en el bloque 4 solo hay que cambiarla AQUÍ. */
+/* La imagen real del mapa. La usan el mapa grande (#mapa) y el minimapa (#minimapa).
+   La imagen de cada zona la pone mapa.js (está en estado.mapas).
+   background-size: 100% 100% hace que cada % del mapa coincida con el % de la imagen. */
 .fondo-mapa {
-  /* ---- MAPA PROVISIONAL (se borra en el bloque 4) ----
-     Color de Marte con una cuadrícula cada 10 % */
-  background-color: #4a2617;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-  background-size: 10% 10%;
-
-  /* ---- MAPA REAL (bloque 4): borrar lo de arriba y quitar los comentarios ----
-  background-image: url('../img/mapa.jpg');
-  background-size: 100% 100%;   así cada % del mapa coincide con el % de la imagen
-  */
-}
-
-/* Aviso para que nadie confunda la cuadrícula con datos reales (se borra en el bloque 4) */
-.mapa::after {
-  content: 'MAPA PROVISIONAL · se cambia por el mapa real de NASA en el bloque 4';
-  position: absolute;
-  left: 10px;
-  bottom: 8px;
-  font-family: var(--letra-pantalla);
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.45);
+  background-color: #3a2418;   /* color de espera mientras carga la imagen */
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
 }
 
 /* Las dos capas tapan el mapa entero, una encima de otra */
@@ -773,8 +758,7 @@ body {
   position: absolute;
   right: 40px;
   bottom: 90px;
-  width: 240px;
-  aspect-ratio: 16 / 10;       /* la misma forma que el mapa grande */
+  /* El ancho y la forma los pone casco.js según el mapa de la zona (bloque 4) */
   border: 2px solid var(--color-interes);
   border-radius: var(--radio);
   overflow: hidden;
@@ -799,9 +783,7 @@ body {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  /* El 70 % del ancho, pero sin pasar de 110vh (vh = 1 % del alto de la ventana),
-     para que en pantallas bajas no tape los botones de abajo */
-  width: min(70%, 110vh);
+  /* El ancho grande lo calcula casco.js para que no tape los botones (bloque 4) */
   z-index: 5;                  /* por encima de todo lo demás del casco */
   box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.55);   /* oscurece el resto de la pantalla */
 }
@@ -1006,6 +988,73 @@ body {
   animation: agitar 0.2s steps(4) infinite;
 }
 
+/* =========================================================
+   BLOQUE 4 · FICHAS, ZONAS Y MAPA DESCARGABLE
+   ========================================================= */
+
+/* Fila del marcador cuya ficha está abierta */
+.fila.seleccionado {
+  border-color: var(--color-ok);
+  box-shadow: inset 3px 0 0 var(--color-ok);   /* rayita verde a la izquierda */
+}
+
+.ficha-titulo {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+.ficha-titulo.interes { color: var(--color-interes); }
+.ficha-titulo.alerta  { color: var(--color-alerta); }
+
+.ficha-texto {
+  margin: 0 0 8px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.ficha-fuentes {
+  font-size: 12px;
+  color: var(--color-texto-suave);
+}
+.ficha-fuentes ul {
+  margin: 4px 0 0;
+  padding-left: 18px;
+}
+.ficha-fuentes a {
+  color: var(--color-interes);
+}
+
+/* Botones para cambiar de zona (cuando hay más de un mapa descargado) */
+.botones-zona {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.boton-zona {
+  font-size: 12px;
+  text-align: left;
+  color: var(--color-texto);
+  background: transparent;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  padding: 6px 10px;
+  cursor: pointer;
+}
+.boton-zona.activo {
+  color: var(--color-fondo);
+  background: var(--color-ok);
+  border-color: var(--color-ok);
+}
+
+/* El mapa de la zona nueva: borroso mientras no se descarga */
+.tarjeta-dispositivo.mapa img {
+  max-width: 160px;
+  border-radius: var(--radio);
+}
+.tarjeta-dispositivo.mapa:not(.conectado) img {
+  filter: blur(4px) grayscale(0.6);
+}
+
 @keyframes agitar {
   0%   { background-position: 0 0; }
   25%  { background-position: -60px 40px; }
@@ -1059,6 +1108,12 @@ body {
   background: rgba(10, 14, 19, 0.75);   /* fondo oscuro para leerlo sobre la foto */
   padding: 1px 5px;
   border-radius: 3px;
+}
+
+/* Cerca del borde derecho la etiqueta va a la IZQUIERDA del dibujo, para que no se corte */
+.en-mapa.etiqueta-izquierda .etiqueta {
+  left: auto;
+  right: 13px;
 }
 
 /* Rombo cian: punto de interés (un cuadrado girado 45°) */
