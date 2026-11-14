@@ -22,11 +22,15 @@
       <button class="pestana activa" data-vista="control">Control center</button>
       <button class="pestana" data-vista="pov">Helmet view</button>
       <button class="pestana" data-vista="dispositivos">Devices</button>
+      <button class="pestana" data-vista="vital">Vital room</button>
     </nav>
 
     <!-- El reloj se pone en marcha en el bloque 2 con actualizarReloj() -->
     <div id="reloj">--:--:--</div>
   </header>
+
+  <!-- Sala vital: barra roja de aviso cuando hay una amenaza (sale en todas las vistas) -->
+  <div id="aviso-amenaza" class="oculta"></div>
 
   <!-- ===== 1.4 LAS 3 VISTAS (solo se ve una a la vez) ===== -->
   <!-- La clase "oculta" esconde una vista. Al empezar solo se ve el centro de control. -->
@@ -141,6 +145,28 @@
     <div id="tarjetas-dispositivos"></div>
   </main>
 
+  <!-- ===== SALA DE CONTROL VITAL: ambiente de Marte y tripulación ===== -->
+  <main id="vista-vital" class="vista oculta">
+    <h2 class="titulo-dispositivos">Vital control room</h2>
+    <p class="texto-dispositivos">
+      Live readings of the Martian environment around the base and the crew's oxygen.
+      The readings are simulated around real values measured by NASA missions.
+    </p>
+
+    <!-- Botones para simular amenazas en la demo -->
+    <div class="botones-evento">
+      <span>Simulate:</span>
+      <button class="boton-evento" onclick="simularEvento('tormenta')">🌪 Dust storm</button>
+      <button class="boton-evento" onclick="simularEvento('solar')">☀ Solar particle event</button>
+      <button class="boton-evento" onclick="simularEvento('sismo')">〰 Marsquake</button>
+    </div>
+
+    <div id="sensores"></div>
+
+    <h3 class="titulo-tripulacion">Crew oxygen</h3>
+    <div id="tripulacion"></div>
+  </main>
+
   <!-- ===== HISTORIA: ventana con la nota encontrada (encima de todo) ===== -->
   <div id="ventana-nota" class="oculta"></div>
 
@@ -151,5 +177,6 @@
   <script src="js/casco.js"></script>
   <script src="js/dispositivos.js"></script>
   <script src="js/historia.js"></script>
+  <script src="js/vital.js"></script>
 </body>
 </html>

@@ -51,7 +51,7 @@ const FUENTE_JPL_2022 = {
 };
 
 // Los nombres de las 3 vistas (coinciden con los id "vista-..." del HTML)
-const VISTAS = ['control', 'pov', 'dispositivos'];
+const VISTAS = ['control', 'pov', 'dispositivos', 'vital'];   // 'vital': Sala de control vital
 
 // =========================================================
 // 2.2 y 2.3 EL OBJETO ESTADO
@@ -505,10 +505,15 @@ function dibujar() {
     dibujarPuntoDeVista();          // casco.js
   } else if (estado.vista === 'dispositivos') {
     dibujarTarjetasDispositivos();  // dispositivos.js
+  } else if (estado.vista === 'vital') {
+    dibujarSalaVital();             // vital.js
   }
 
   // 4) Historia: la ventana de la nota sale encima de cualquier vista
   dibujarVentanaNota();             // historia.js
+
+  // 5) Sala vital: la barra roja de aviso, si hay una amenaza, en todas las vistas
+  dibujarAvisoAmenaza();            // vital.js
 }
 
 // Conecta cada pestaña con su vista.

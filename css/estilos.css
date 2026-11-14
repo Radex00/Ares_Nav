@@ -1212,6 +1212,136 @@ body {
   cursor: not-allowed;
 }
 
+/* =========================================================
+   SALA DE CONTROL VITAL
+   ========================================================= */
+
+#vista-vital {
+  overflow-y: auto;            /* si no cabe todo, baja con la rueda */
+  padding: 28px 32px;
+}
+
+.botones-evento {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  font-family: var(--letra-pantalla);
+  font-size: 13px;
+  color: var(--color-texto-suave);
+}
+.boton-evento {
+  font-family: var(--letra-pantalla);
+  font-size: 13px;
+  color: var(--color-alerta);
+  background: transparent;
+  border: 1px solid var(--color-alerta);
+  border-radius: var(--radio);
+  padding: 6px 12px;
+  cursor: pointer;
+}
+.boton-evento:hover { background: rgba(255, 138, 61, 0.15); }
+
+/* Las tarjetas de los sensores en cuadrícula: caben las que permita el ancho */
+#sensores {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+  max-width: 1100px;
+}
+
+.tarjeta-sensor {
+  padding: 14px 16px;
+  background: var(--color-panel);
+  border: 1px solid var(--color-borde);
+  border-left: 5px solid var(--color-ok);    /* verde: normal */
+  border-radius: var(--radio);
+}
+.tarjeta-sensor.precaucion { border-left-color: var(--color-alerta); }
+.tarjeta-sensor.peligro {
+  border-color: var(--color-peligro);
+  border-left-color: var(--color-peligro);
+  background: rgba(255, 77, 94, 0.1);
+}
+
+.sensor-nombre {
+  font-family: var(--letra-pantalla);
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--color-texto-suave);
+}
+.sensor-valor .numero {
+  font-family: var(--letra-pantalla);
+  font-size: 32px;
+  font-weight: bold;
+}
+.sensor-valor .unidad { color: var(--color-texto-suave); }
+
+.sensor-nivel {
+  font-family: var(--letra-pantalla);
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: var(--color-ok);
+}
+.tarjeta-sensor.precaucion .sensor-nivel { color: var(--color-alerta); }
+.tarjeta-sensor.peligro .sensor-nivel { color: var(--color-peligro); }
+
+.sensor-referencia {
+  margin-top: 8px;
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--color-texto-suave);
+}
+.sensor-referencia a { color: var(--color-interes); }
+
+.titulo-tripulacion {
+  margin: 24px 0 10px;
+  font-family: var(--letra-pantalla);
+  font-weight: normal;
+  font-size: 14px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-interes);
+}
+.fila-o2 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 520px;
+  margin-bottom: 8px;
+  font-family: var(--letra-pantalla);
+  font-size: 13px;
+}
+.fila-o2 .nombre-astronauta { width: 60px; }
+
+/* La barra roja de aviso, bajo la barra superior, en todas las vistas */
+#aviso-amenaza {
+  flex-shrink: 0;
+  padding: 8px 20px;
+  font-family: var(--letra-pantalla);
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #fff;
+  background: #b3202f;
+  animation: parpadeo 1.2s infinite;
+}
+.aviso-simulado {
+  font-weight: normal;
+  opacity: 0.8;
+}
+
+/* Tormenta de polvo: el casco se llena de polvo y se ve menos */
+body.tormenta #polvo {
+  background-color: rgba(185, 120, 80, 0.45);
+}
+body.tormenta #horizonte {
+  filter: brightness(0.75) saturate(0.8) blur(1px);
+}
+
 @keyframes agitar {
   0%   { background-position: 0 0; }
   25%  { background-position: -60px 40px; }

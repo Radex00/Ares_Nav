@@ -95,6 +95,16 @@ Comprobé cada dato contra la fuente oficial. Pon el número al final de la fras
     → Enunciado y recursos del reto.
 13. NASA/JPL-Caltech. (2019). *InSight Sol 14 Panorama* (PIA23136) [Image]. InSight, Instrument Deployment Camera. https://science.nasa.gov/photojournal/insight-sol-14-panorama
     → Horizonte del casco. Panorama de 290° hecho con 30 imágenes de la cámara del brazo, el 9 dic 2018; muestra el borde de Homestead hollow. Descarga original: PNG de 6446 × 962 px.
+14. NASA/JPL. (2019, February 19). *InSight Is the Newest Mars Weather Service*. https://www.jpl.nasa.gov/news/news.php?feature=7337
+    → Sala de control vital: temperatura de referencia en el sitio de InSight (máxima −17 °C, mínima −95 °C) y viento de hasta 16,9 m/s.
+15. NASA/JPL. (2018). *Opportunity Hunkers Down During Dust Storm*. https://www.jpl.nasa.gov/news/opportunity-hunkers-down-during-dust-storm/
+    → Sala de control vital: opacidad del polvo (τ) normal ≈ 0,5; en la tormenta de 2018, τ 10,8.
+16. NASA Science. (2013, December 9). *Radiation Measurements on Mars* (PIA17600). https://science.nasa.gov/resource/radiation-measurements-on-mars/
+    → Sala de control vital: dosis de radiación de rayos cósmicos en la superficie, unos 210 µGy al día (Curiosity, RAD).
+17. NASA/JPL. (2022). *NASA's InSight Records Monster Quake on Mars*. https://www.jpl.nasa.gov/news/nasas-insight-records-monster-quake-on-mars/
+    → Sala de control vital: el mayor sismo registrado por InSight, de magnitud ~5, el 4 de mayo de 2022.
+
+La Sala de control vital usa también la *Mars Fact Sheet* [11]: presión media de 636 Pa (400-870 Pa según la estación) y viento de 2-10 m/s normal y 17-30 m/s en tormentas de polvo (sitios Viking).
 
 ---
 
@@ -111,6 +121,7 @@ Estos números no vienen escritos en ninguna fuente: los calculamos nosotros con
 | Cráter de la zona nueva: unos 50-60 m | Medido sobre la imagen con la escala |
 | Peligros "Terreno más rocoso" y "Cráter (pendiente)" | Los datos del terreno vienen de [10] y [8]; tratarlos como **peligro** es una decisión de la simulación, y así lo dice su ficha |
 | Horizonte de 360° a partir del panorama de 290° [13] | 6446 px ÷ 290° = 22,2 px por grado. Quitamos los bordes negros y blancos (sin datos), y quedan 6246 px = **281°** de foto real. Los **79°** que faltan se rellenaron mezclando los dos bordes en espejo, para que la tira se una sin corte; ese tramo lleva escrito "NO PHOTO IN THIS DIRECTION" (la página está en inglés). Los bordes de arriba y abajo se difuminan hacia el color del cielo y del suelo de la propia foto |
+| Lecturas de la Sala de control vital | **Simuladas**: se mueven al azar alrededor de los valores reales de [11], [14], [15], [16] y [17]. La temperatura sube y baja como en un día de InSight, pero un "sol" dura 4 minutos. Los umbrales verde / naranja / rojo y los 3 eventos (tormenta de polvo, tormenta solar, sismo) son decisiones de la simulación; en la página se indica "(simulation)" |
 | Orientación del horizonte | **No está calibrada:** la fuente no dice hacia dónde miraba la cámara. El paisaje es decorativo; los puntos flotantes y la brújula sí usan los rumbos reales del mapa |
 
 ---
