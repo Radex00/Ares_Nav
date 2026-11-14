@@ -6,3 +6,14 @@
 */
 
 // Se llena en los bloques 8 y 9.
+
+// ----- Funciones vacías por ahora (truco del bloque 2.5) -----
+// Existen solo para que iniciar() y dibujar() no den error.
+
+// Bloque 8: botones Girar y teclas ← → Esc
+function prepararCasco() {
+}
+
+// Bloque 8: dibuja el horizonte, la brújula y los puntos flotantes
+function dibujarPuntoDeVista() {
+}
