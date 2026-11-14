@@ -98,8 +98,78 @@ async function conectarDispositivo(id) {
   dibujar();   // ahora sí, todo: la tarjeta queda conectada y el dispositivo sale en el mapa
 }
 
-// ----- Función vacía por ahora (truco del bloque 2.5) -----
+// =========================================================
+// BLOQUE 11 · CÁMARAS
+// =========================================================
 
-// Bloque 11: abre la cámara de un astronauta (casco) o de un dispositivo
+// 11.1 Todas las cámaras que se pueden ver: los cascos de los astronautas
+// y las cámaras de los dispositivos YA conectados.
+function obtenerCamarasDisponibles() {
+  const conectados = estado.dispositivos.filter(d => d.conectado);
+  return estado.astronautas.concat(conectados);
+}
+
+// 11.2 El panel "Dispositivos conectados" del centro de control, con su botón VER
+function dibujarListaConectados() {
+  const lista = document.getElementById('lista-conectados');
+  const conectados = estado.dispositivos.filter(d => d.conectado);
+
+  if (conectados.length === 0) {
+    lista.innerHTML = '<p class="vacio">Ningún dispositivo conectado. Conéctalos en la pestaña Dispositivos.</p>';
+    return;
+  }
+
+  let html = '';
+  for (const dispositivo of conectados) {
+    html += `
+      <div class="fila">
+        <span class="simbolo dispositivo">■</span>
+        <div class="fila-texto">
+          <div class="fila-nombre">${textoSeguro(dispositivo.nombre)}</div>
+          <div class="fila-detalle">${textoSeguro(dispositivo.camara)}</div>
+        </div>
+        <button class="boton-ver" onclick="verCamara('${dispositivo.id}')">VER</button>
+      </div>`;
+  }
+  lista.innerHTML = html;
+}
+
+// 11.3 Abre la cámara de alguien:
+//   - si es un astronauta → la vista del casco
+//   - si es un dispositivo → la misma vista, pero en "modo cámara" (11.5)
+// Las dos usan la vista 'pov': lo que cambia es quién mira (estado.camaraActiva).
 function verCamara(id) {
+  estado.camaraActiva = id;
+  estado.vista = 'pov';
+  mostrarEstatica();   // ⭐ un instante de estática, como al cambiar de canal
+  dibujar();
+}
+
+// 11.4 Botones para cambiar de cámara dentro de la vista del casco
+function dibujarSelectorCamaras(observador) {
+  let html = '';
+  for (const camara of obtenerCamarasDisponibles()) {
+    // Los astronautas tienen casco; los dispositivos, cámara
+    const tipo = buscarAstronauta(camara.id) ? 'CASCO' : 'CÁM';
+    const activa = camara.id === observador.id ? 'activa' : '';
+    html += `<button class="boton-camara ${activa}" onclick="verCamara('${camara.id}')">${tipo} · ${textoSeguro(camara.nombre)}</button>`;
+  }
+  document.getElementById('selector-camaras').innerHTML = html;
+}
+
+// 11.5 Si quien mira es un dispositivo, la vista pasa a "modo cámara":
+// gris, con rayas de televisión (todo eso lo hace el CSS con la clase modo-camara)
+function aplicarModoCamara(observador) {
+  const esDispositivo = !buscarAstronauta(observador.id);
+  document.getElementById('vista-pov').classList.toggle('modo-camara', esDispositivo);
+}
+
+// 11.6 ⭐ Estática de televisión durante un instante.
+// Es solo un efecto de 0,4 segundos, no un dato: por eso no se guarda en `estado`.
+function mostrarEstatica() {
+  const estatica = document.getElementById('estatica');
+  estatica.classList.remove('oculta');
+  setTimeout(function () {
+    estatica.classList.add('oculta');
+  }, 400);
 }

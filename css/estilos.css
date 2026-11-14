@@ -925,6 +925,95 @@ body {
   filter: brightness(1.15);   /* un poco más claro al pasar el ratón */
 }
 
+/* =========================================================
+   BLOQUE 11 · CÁMARAS
+   ========================================================= */
+
+/* 11.2 Filas de "Dispositivos conectados" en el panel */
+.fila .simbolo.dispositivo { color: var(--color-dispositivo); }
+
+.boton-ver {
+  font-family: var(--letra-pantalla);
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: var(--color-fondo);
+  background: var(--color-dispositivo);
+  border: none;
+  border-radius: var(--radio);
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+/* 11.4 Selector de cámaras, arriba a la izquierda de la vista del casco */
+#selector-camaras {
+  position: absolute;
+  top: 110px;
+  left: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.boton-camara {
+  font-family: var(--letra-pantalla);
+  font-size: 12px;
+  color: var(--color-texto);
+  background: rgba(10, 14, 19, 0.75);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.boton-camara.activa {
+  color: var(--color-fondo);
+  background: var(--color-interes);
+  border-color: var(--color-interes);
+}
+
+/* 11.5 MODO CÁMARA: cuando mira un dispositivo, la vista se ve como una tele.
+   filter cambia los colores de una capa: grayscale(1) = blanco y negro. */
+#vista-pov.modo-camara #horizonte,
+#vista-pov.modo-camara #polvo {
+  filter: grayscale(1) contrast(1.2) brightness(0.85);
+}
+
+/* Rayas de televisión: líneas oscuras de 2 px cada 4 px */
+#vista-pov.modo-camara #lineas-tv {
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.28) 0px,
+    rgba(0, 0, 0, 0.28) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+}
+
+/* En modo cámara no hay casco: el visor pasa a ser un marco rectangular gris */
+#vista-pov.modo-camara #marco-visor::before {
+  border-color: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+/* 11.6 ⭐ Estática de televisión.
+   El "ruido" es un filtro de SVG (feTurbulence) escrito dentro de la URL.
+   La animación mueve ese ruido a saltos (steps) para que parezca que se agita. */
+#estatica {
+  z-index: 10;                 /* encima de todo */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='ruido'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23ruido)'/%3E%3C/svg%3E");
+  background-color: #777;
+  filter: grayscale(1) contrast(1.8);
+  animation: agitar 0.2s steps(4) infinite;
+}
+
+@keyframes agitar {
+  0%   { background-position: 0 0; }
+  25%  { background-position: -60px 40px; }
+  50%  { background-position: 80px -30px; }
+  75%  { background-position: -20px -90px; }
+  100% { background-position: 0 0; }
+}
+
 /* "Sobre este mapa": una lista de dato → valor */
 #info-mapa dl {
   margin: 0;

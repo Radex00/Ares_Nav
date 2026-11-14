@@ -254,7 +254,12 @@ function prepararPestanas() {
   const pestanas = document.querySelectorAll('.pestana');
   for (const pestana of pestanas) {
     pestana.addEventListener('click', function () {
-      cambiarVista(pestana.dataset.vista);
+      if (pestana.dataset.vista === 'pov') {
+        // Bloque 11.3: la pestaña del casco abre la última cámara que se vio
+        verCamara(estado.camaraActiva);
+      } else {
+        cambiarVista(pestana.dataset.vista);
+      }
     });
   }
 }

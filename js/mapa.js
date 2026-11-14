@@ -295,8 +295,8 @@ function dibujarMapa() {
   dibujarListaMarcadores();     // bloque 6
   dibujarListaAstronautas();    // bloque 7
   dibujarRutas();               // bloque 7
+  dibujarListaConectados();     // bloque 11 (dispositivos.js)
   dibujarInfoMapa();
-  // Más adelante se añade aquí dibujarListaConectados() (bloque 11).
 }
 
 // =========================================================

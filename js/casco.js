@@ -18,6 +18,7 @@ const ALTURA_PUNTO_CERCA = 24;   // un punto muy cerca flota alto...
 const ALTURA_PUNTO_LEJOS = 48;   // ...y uno muy lejos, cerca del horizonte
 const DISTANCIA_LEJOS = 4000;    // a partir de estos metros, un punto ya cuenta como "muy lejos"
 const RUMBO_DEL_SOL = 90;        // ⭐ el sol decorativo está al este
+const MARGEN_PANTALLA = 4;       // un punto a menos de un 4 % del borde saldría cortado: va como aviso
 
 // =========================================================
 // 8.4 DIBUJAR LA VISTA DEL CASCO
@@ -26,6 +27,7 @@ const RUMBO_DEL_SOL = 90;        // ⭐ el sol decorativo está al este
 // Dibuja todo lo que ve el observador (astronauta o dispositivo)
 function dibujarPuntoDeVista() {
   const observador = buscarObservador();
+  aplicarModoCamara(observador);   // bloque 11: gris y rayas si mira un dispositivo
   dibujarHorizonte(observador);
   dibujarHUD(observador);
 }
@@ -36,6 +38,7 @@ function dibujarHUD(observador) {
   dibujarPuntosEnPantalla(observador);   // bloque 9
   dibujarInfoObservador(observador);     // bloque 9
   dibujarMinimapa(observador);           // bloque 9
+  dibujarSelectorCamaras(observador);    // bloque 11 (dispositivos.js)
 }
 
 // Desliza el paisaje según el rumbo.
@@ -214,7 +217,7 @@ function dibujarPuntosEnPantalla(observador) {
     const textoNombre = textoSeguro(marcador.nombre);
     const textoDistancia = formatearDistancia(punto.distancia);
 
-    if (punto.x >= 0 && punto.x <= 100) {
+    if (punto.x >= MARGEN_PANTALLA && punto.x <= 100 - MARGEN_PANTALLA) {
       // ----- 9.1 Se ve: flota en su sitio -----
       // Más lejos = más abajo (más cerca del horizonte). Math.min no deja pasar de 1.
       const cuantoLejos = Math.min(punto.distancia / DISTANCIA_LEJOS, 1);
