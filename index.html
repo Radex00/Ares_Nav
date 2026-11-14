@@ -91,8 +91,31 @@
   </main>
 
   <main id="vista-pov" class="vista oculta">
-    <!-- Bloques 8 y 9: horizonte, brújula, puntos flotantes y minimapa -->
-    <p class="aviso-vacio">Vista del casco · se construye en el bloque 8</p>
+    <!-- 8.2 Capas, de la de más abajo a la de más arriba.
+         Todas ocupan la pantalla entera (clase "capa"). -->
+    <div id="horizonte" class="capa"></div>    <!-- el paisaje que se desliza al girar -->
+    <div id="polvo" class="capa"></div>        <!-- polvo que pasa con el viento -->
+    <div id="lineas-tv" class="capa"></div>    <!-- rayas de televisión (modo cámara, bloque 11) -->
+    <div id="capa-hud" class="capa"></div>     <!-- puntos flotantes (bloque 9) -->
+    <div id="marco-visor" class="capa"></div>  <!-- el borde oscuro del casco -->
+
+    <!-- Encima de las capas: la información del casco -->
+    <div id="brujula"></div>
+    <div id="info-observador"></div>            <!-- bloque 9.4 -->
+    <div id="selector-camaras"></div>           <!-- bloque 11.4 -->
+    <div id="minimapa">                         <!-- bloques 9.5 y 9.6 -->
+      <div id="capa-minimapa"></div>
+    </div>
+
+    <div class="botones-casco">
+      <button id="boton-girar-izquierda" class="boton-casco">◀ Girar</button>
+      <button id="boton-minimapa" class="boton-casco">Minimapa (M)</button>
+      <button id="boton-girar-derecha" class="boton-casco">Girar ▶</button>
+      <button id="boton-volver" class="boton-casco">Centro de control (Esc)</button>
+    </div>
+
+    <!-- Estática de televisión al cambiar de cámara (bloque 11.6) -->
+    <div id="estatica" class="capa oculta"></div>
   </main>
 
   <main id="vista-dispositivos" class="vista oculta">

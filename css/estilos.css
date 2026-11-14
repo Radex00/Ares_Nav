@@ -452,6 +452,152 @@ body {
   cursor: not-allowed;
 }
 
+/* =========================================================
+   BLOQUE 8 · VISTA DEL CASCO
+   ========================================================= */
+
+#vista-pov {
+  background: #000;
+}
+
+/* 8.3 Todas las capas ocupan la pantalla entera, una encima de otra.
+   pointer-events: none deja pasar los clics a los botones de encima. */
+.capa {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* El paisaje. Se repite hacia los lados (repeat-x) para dar la vuelta completa.
+   El tamaño y la posición los pone casco.js según el rumbo (dibujarHorizonte). */
+#horizonte {
+  /* PROVISIONAL (dibujado por IA, con marca de agua). En el bloque 4.6 se cambia
+     por el panorama real de NASA: url('../img/panorama.jpg') */
+  background-image: url('../img/horizonte-provisional.svg');
+  background-repeat: repeat-x;
+}
+
+/* ⭐ Polvo: puntitos de dos tamaños que el viento mueve hacia la izquierda */
+#polvo {
+  background-image:
+    radial-gradient(circle, rgba(240, 200, 160, 0.35) 1px, transparent 2px),
+    radial-gradient(circle, rgba(240, 200, 160, 0.20) 2px, transparent 3px);
+  background-size: 140px 90px, 230px 160px;
+  animation: viento 7s linear infinite;
+}
+
+@keyframes viento {
+  from { background-position: 0 0, 0 0; }
+  to   { background-position: -280px 45px, -230px 80px; }   /* múltiplos del tamaño: el bucle no se nota */
+}
+
+/* El visor del casco: los bordes se oscurecen (sombra hacia dentro)
+   y una línea fina marca el cristal */
+#marco-visor {
+  box-shadow: inset 0 0 140px 50px rgba(0, 0, 0, 0.85);
+}
+#marco-visor::before {
+  content: '';
+  position: absolute;
+  inset: 14px;
+  border: 2px solid rgba(63, 214, 232, 0.25);
+  border-radius: 60px;
+}
+
+/* ----- 8.6 Brújula: una tira arriba que se desliza con el rumbo ----- */
+#brujula {
+  position: absolute;
+  top: 18px;
+  left: 0;
+  right: 0;
+  height: 70px;
+  font-family: var(--letra-pantalla);
+  color: var(--color-texto);
+  /* Los lados se desvanecen (mask-image): solo se ve bien el centro */
+  mask-image: linear-gradient(to right, transparent, black 20%, black 80%, transparent);
+}
+
+/* Las rayitas. translateX(-50%) las centra justo en su ángulo. */
+.brujula-raya {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.6);
+  transform: translateX(-50%);
+}
+.brujula-raya.grande {
+  height: 18px;
+  background: #fff;
+}
+
+/* Letras N, NE, E... y números pequeños de los grados */
+.brujula-letra,
+.brujula-grados {
+  position: absolute;
+  top: 20px;
+  transform: translateX(-50%);
+  text-shadow: 0 0 4px #000;
+}
+.brujula-letra {
+  font-size: 18px;
+  font-weight: bold;
+}
+.brujula-letra.norte {
+  color: var(--color-alerta);   /* la N se destaca */
+}
+.brujula-grados {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* El triangulito del centro y el número del rumbo */
+.brujula-centro {
+  position: absolute;
+  top: 0;                       /* dentro de la tira: lo de fuera lo borra la máscara */
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--color-interes);
+  font-size: 12px;
+}
+.brujula-numero {
+  position: absolute;
+  top: 44px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 2px 10px;
+  font-size: 16px;
+  color: var(--color-interes);
+  background: rgba(10, 14, 19, 0.75);
+  border: 1px solid var(--color-interes);
+  border-radius: var(--radio);
+}
+
+/* ----- Botones del casco, abajo en el centro ----- */
+.botones-casco {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+}
+
+.boton-casco {
+  font-family: var(--letra-pantalla);
+  font-size: 13px;
+  color: var(--color-interes);
+  background: rgba(10, 14, 19, 0.8);
+  border: 1px solid var(--color-interes);
+  border-radius: var(--radio);
+  padding: 8px 14px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.boton-casco:hover {
+  background: rgba(63, 214, 232, 0.2);
+}
+
 /* "Sobre este mapa": una lista de dato → valor */
 #info-mapa dl {
   margin: 0;
