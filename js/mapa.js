@@ -61,7 +61,9 @@ function alHacerClicEnElMapa(evento) {
   // closest() busca, desde donde cayó el clic hacia fuera, el primer elemento con esa clase.
   if (estado.modoMarcador === null) {
     const marcadorTocado = evento.target.closest('.marcador');
-    if (marcadorTocado) {
+    if (marcadorTocado && marcadorTocado.classList.contains('nota')) {
+      clicEnNota(marcadorTocado.dataset.id);   // historia.js
+    } else if (marcadorTocado) {
       seleccionarMarcador(marcadorTocado.dataset.id);
     }
     return;
@@ -125,7 +127,8 @@ function prioridadDe(marcador) {
 // así ordenamos la copia y no cambiamos el orden de estado.marcadores.
 // sort() compara de dos en dos: si la resta es negativa, "a" va antes que "b".
 function marcadoresOrdenados() {
-  return marcadoresDelMapa().sort(function (a, b) {
+  // Las notas de la historia no van en esta lista: tienen su sección "Misión"
+  return marcadoresDelMapa().filter(m => m.tipo !== 'nota').sort(function (a, b) {
     return prioridadDe(a) - prioridadDe(b);
   });
 }
@@ -134,7 +137,7 @@ function marcadoresOrdenados() {
 function dibujarListaMarcadores() {
   const lista = document.getElementById('lista-marcadores');
 
-  if (marcadoresDelMapa().length === 0) {
+  if (marcadoresOrdenados().length === 0) {
     lista.innerHTML = '<p class="vacio">No hay marcadores. Usa + Interés o + Alerta.</p>';
     return;
   }
@@ -231,11 +234,21 @@ function pintarElementosDelMapa(capa, idResaltado) {
     if (marcador.id === idResaltado) clases += ' resaltado';
     if (marcador.x > 75) clases += ' etiqueta-izquierda';   // cerca del borde derecho
 
+    // Historia: las notas bloqueadas llevan candado y las leídas se ven apagadas
+    let nombre = marcador.nombre;
+    if (marcador.tipo === 'nota') {
+      if (!marcador.nota.desbloqueada) {
+        clases += ' bloqueada';
+        nombre = '🔒 ' + nombre;
+      }
+      if (marcador.nota.leida) clases += ' leida';
+    }
+
     // data-id guarda el id dentro del HTML, para poder encontrar este elemento después
     html += `
       <div class="${clases}" data-id="${marcador.id}" style="left: ${marcador.x}%; top: ${marcador.y}%;">
         <span class="icono"></span>
-        <span class="etiqueta">${textoSeguro(marcador.nombre)}</span>
+        <span class="etiqueta">${textoSeguro(nombre)}</span>
       </div>`;
   }
 
@@ -368,7 +381,10 @@ function dibujarFichaMarcador() {
 
   let html = `<h3 class="ficha-titulo ${marcador.tipo}">${textoSeguro(marcador.nombre)}</h3>`;
 
-  if (marcador.ficha) {
+  if (marcador.tipo === 'nota') {
+    // Historia: una base abierta que nadie ha visitado todavía
+    html += '<p class="ficha-texto">Base abandonada de la expedición anterior. Envía un astronauta hasta aquí para leer su nota.</p>';
+  } else if (marcador.ficha) {
     html += `<p class="ficha-texto">${textoSeguro(marcador.ficha.texto)}</p>`;
     html += '<div class="ficha-fuentes">Fuentes:<ul>';
     for (const fuente of marcador.ficha.fuentes) {
@@ -398,6 +414,7 @@ function dibujarMapa() {
   dibujarListaConectados();     // bloque 11 (dispositivos.js)
   dibujarFichaMarcador();       // bloque 4
   dibujarInfoMapa();            // bloque 4
+  dibujarBitacora();            // historia.js
 }
 
 // =========================================================
@@ -409,8 +426,10 @@ function dibujarMapa() {
 // (Las alertas ya atendidas no salen: ya no hace falta ir.)
 function destinosPosibles() {
   const alertas = marcadoresDelMapa().filter(m => m.tipo === 'alerta' && !m.atendida);
+  // Historia: las bases abiertas (las bloqueadas no, hasta tener su código)
+  const notas = marcadoresDelMapa().filter(m => m.tipo === 'nota' && m.nota.desbloqueada);
   const intereses = marcadoresDelMapa().filter(m => m.tipo === 'interes');
-  return alertas.concat(intereses);   // concat() une las dos listas
+  return alertas.concat(notas, intereses);   // concat() une las listas
 }
 
 // 7.2 Las opciones (<option>) del menú de destino de un astronauta
@@ -422,7 +441,9 @@ function opcionesDeDestino(astronauta) {
 
   let html = '';
   for (const destino of destinos) {
-    const simbolo = destino.tipo === 'alerta' ? '⚠' : '◆';
+    let simbolo = '◆';
+    if (destino.tipo === 'alerta') simbolo = '⚠';
+    if (destino.tipo === 'nota') simbolo = '✉';
     // "selected" deja marcada la opción que el usuario eligió antes
     const marcada = destino.id === astronauta.destinoElegido ? 'selected' : '';
     html += `<option value="${destino.id}" ${marcada}>${simbolo} ${textoSeguro(destino.nombre)}</option>`;
@@ -526,8 +547,10 @@ function moverAstronautas() {
     astronauta.rumbo = anguloHacia(astronauta, destino);
 
     // 2) ¿Le queda menos de un paso? Entonces llega.
+    //    El paso depende de la zona: las zonas grandes van más rápido (velocidad en estado.mapas)
+    const paso = PASO_METROS * mapaActual().velocidad;
     const distancia = distanciaEnMetros(astronauta, destino);
-    if (distancia <= PASO_METROS) {
+    if (distancia <= paso) {
       astronauta.x = destino.x;
       astronauta.y = destino.y;
       astronauta.destinoId = null;
@@ -535,13 +558,16 @@ function moverAstronautas() {
       if (destino.tipo === 'alerta') {
         destino.atendida = true;                   // ¡alerta atendida!
       }
+      if (destino.tipo === 'nota') {
+        leerNota(destino);                         // historia.js: se abre la nota
+      }
       alguienLlego = true;
     } else {
-      // 3) Si no, avanza PASO_METROS hacia el destino.
+      // 3) Si no, avanza un paso hacia el destino.
       //    Regla de tres: si el camino entero mide "distancia" metros,
-      //    un paso es la fracción PASO_METROS / distancia del camino.
+      //    un paso es la fracción paso / distancia del camino.
       //    Avanzamos esa misma fracción en x y en y.
-      const fraccion = PASO_METROS / distancia;
+      const fraccion = paso / distancia;
       astronauta.x = astronauta.x + (destino.x - astronauta.x) * fraccion;
       astronauta.y = astronauta.y + (destino.y - astronauta.y) * fraccion;
       alguienSeMovio = true;

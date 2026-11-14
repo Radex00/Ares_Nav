@@ -67,6 +67,12 @@
 
     <!-- 5.3 Panel derecho -->
     <aside class="panel">
+      <!-- Historia: objetivo de la misión y notas de la expedición anterior -->
+      <section class="seccion-panel seccion-mision">
+        <h2>Misión</h2>
+        <div id="bitacora"></div>
+      </section>
+
       <section class="seccion-panel">
         <h2>Marcadores</h2>
         <div id="lista-marcadores"></div>
@@ -135,11 +141,15 @@
     <div id="tarjetas-dispositivos"></div>
   </main>
 
+  <!-- ===== HISTORIA: ventana con la nota encontrada (encima de todo) ===== -->
+  <div id="ventana-nota" class="oculta"></div>
+
   <!-- ===== 1.2 SCRIPTS (el orden importa: estado.js va primero
-       porque los otros tres usan sus datos y funciones) ===== -->
+       porque los demás usan sus datos y funciones) ===== -->
   <script src="js/estado.js"></script>
   <script src="js/mapa.js"></script>
   <script src="js/casco.js"></script>
   <script src="js/dispositivos.js"></script>
+  <script src="js/historia.js"></script>
 </body>
 </html>

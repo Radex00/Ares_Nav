@@ -113,6 +113,12 @@ function girar(grados) {
 // Teclas: ← y → para girar, Esc para volver al centro de control.
 // Solo funcionan cuando se está viendo la vista del casco.
 function alPresionarTecla(evento) {
+  // Historia: con una nota abierta, Esc la cierra y las demás teclas no hacen nada
+  if (estado.notaAbierta !== null) {
+    if (evento.key === 'Escape') cerrarNota();   // historia.js
+    return;
+  }
+
   if (estado.vista !== 'pov') return;
 
   if (evento.key === 'ArrowLeft') {
@@ -236,7 +242,8 @@ function dibujarPuntosEnPantalla(observador) {
   for (const punto of puntos) {
     const marcador = punto.marcador;
     const esDestino = marcador.id === destinoId;
-    const textoNombre = textoSeguro(marcador.nombre);
+    const bloqueada = marcador.tipo === 'nota' && !marcador.nota.desbloqueada;   // historia
+    const textoNombre = textoSeguro((bloqueada ? '🔒 ' : '') + marcador.nombre);
     const textoDistancia = formatearDistancia(punto.distancia);
 
     if (punto.x >= MARGEN_PANTALLA && punto.x <= 100 - MARGEN_PANTALLA) {
@@ -279,7 +286,9 @@ function dibujarPuntosEnPantalla(observador) {
       const esAlertaPendiente = marcador.tipo === 'alerta' && !marcador.atendida;
       if (!esAlertaPendiente && !esDestino) continue;
 
-      const simbolo = marcador.tipo === 'alerta' ? '⚠' : '◆';
+      let simbolo = '◆';
+      if (marcador.tipo === 'alerta') simbolo = '⚠';
+      if (marcador.tipo === 'nota') simbolo = '✉';
       const clase = 'aviso-borde ' + marcador.tipo;
       if (punto.diferencia < 0) {
         avisosIzquierda += `<div class="${clase}">◀ ${simbolo} ${textoNombre} · ${textoDistancia}</div>`;

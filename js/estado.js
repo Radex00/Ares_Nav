@@ -68,6 +68,7 @@ const estado = {
   siguienteId: 20,           // número del próximo marcador nuevo: 'm20', 'm21', ... (los reales usan m1-m9)
   mapaActivo: 'zona-a',      // bloque 4: el id del mapa que se está usando
   marcadorSeleccionado: null, // bloque 4: el marcador cuya ficha se ve en el panel
+  notaAbierta: null,         // historia: el id de la nota que se está leyendo en la ventana (o null)
 
   // =========================================================
   // BLOQUE 4 · LOS MAPAS REALES DE NASA
@@ -86,6 +87,7 @@ const estado = {
       anchoPx: 1106, altoPx: 977,
       anchoMetros: 339, altoMetros: 299,     // barra de escala: 100 m = 327 px
       base: { x: 12, y: 80 },
+      velocidad: 1,                          // × PASO_METROS (zona pequeña: velocidad normal)
       descargado: true,
       info: {
         nombre: 'Elysium Planitia · InSight en 2024',
@@ -105,6 +107,7 @@ const estado = {
       anchoPx: 1131, altoPx: 1280,
       anchoMetros: 635, altoMetros: 719,     // barra de escala: 100 m = 178 px
       base: { x: 8, y: 64 },
+      velocidad: 3,                          // × PASO_METROS: es el doble de grande, así la demo no se alarga
       descargado: false,
       info: {
         nombre: 'Zona de aterrizaje de InSight en 2018',
@@ -205,6 +208,56 @@ const estado = {
                'En esta llanura los cráteres son comunes. En la simulación sus paredes inclinadas son una zona peligrosa.',
         fuentes: [FUENTE_HIRISE_2018, FUENTE_GOLOMBEK]
       }
+    },
+
+    // =========================================================
+    // HISTORIA · LAS NOTAS DEL EQUIPO ANTERIOR (ficción: textos del equipo)
+    // Son marcadores de tipo 'nota'. Una nota se lee cuando un astronauta LLEGA a ella.
+    //   codigo: el código para abrir ESTA base (null = abierta desde el principio)
+    //   siguiente: la base cuyo código se enseña al leer esta nota
+    //   desbloqueaMapa: el dispositivo-mapa que se puede descargar al leerla
+    //   final: true en la última nota (sale "MISIÓN COMPLETADA")
+    // Las bases de la zona nueva están junto a las 3 piezas reales de NASA.
+    // =========================================================
+    {
+      id: 'n1', mapaId: 'zona-a', tipo: 'nota', nombre: 'Base abandonada 1', x: 30, y: 72, atendida: false, ficha: null,
+      nota: {
+        texto: '✏ TEXTO PENDIENTE · Nota 1: lo que dejó escrito la expedición anterior en esta base.',
+        codigo: null, desbloqueada: true, leida: false,
+        siguiente: 'n2', desbloqueaMapa: null, final: false
+      }
+    },
+    {
+      id: 'n2', mapaId: 'zona-a', tipo: 'nota', nombre: 'Base abandonada 2', x: 52, y: 60, atendida: false, ficha: null,
+      nota: {
+        texto: '✏ TEXTO PENDIENTE · Nota 2: aquí la expedición anterior pide que descarguéis el mapa de la zona nueva.',
+        codigo: 'HOLLOW', desbloqueada: false, leida: false,
+        siguiente: 'n3', desbloqueaMapa: 'd3', final: false
+      }
+    },
+    {
+      id: 'n3', mapaId: 'zona-b', tipo: 'nota', nombre: 'Base abandonada 3', x: 23, y: 48, atendida: false, ficha: null,
+      nota: {
+        texto: '✏ TEXTO PENDIENTE · Nota 3 (junto a InSight).',
+        codigo: null, desbloqueada: true, leida: false,
+        siguiente: 'n4', desbloqueaMapa: null, final: false
+      }
+    },
+    {
+      id: 'n4', mapaId: 'zona-b', tipo: 'nota', nombre: 'Base abandonada 4', x: 84, y: 25, atendida: false, ficha: null,
+      nota: {
+        texto: '✏ TEXTO PENDIENTE · Nota 4 (junto al escudo térmico).',
+        codigo: 'MARSQUAKE', desbloqueada: false, leida: false,
+        siguiente: 'n5', desbloqueaMapa: null, final: false
+      }
+    },
+    {
+      id: 'n5', mapaId: 'zona-b', tipo: 'nota', nombre: 'Base abandonada 5', x: 45, y: 83, atendida: false, ficha: null,
+      nota: {
+        texto: '✏ TEXTO PENDIENTE · Nota final (junto al paracaídas): cómo los salváis.',
+        codigo: 'SOL14', desbloqueada: false, leida: false,
+        siguiente: null, desbloqueaMapa: null, final: true
+      }
     }
   ],
 
@@ -242,6 +295,7 @@ const estado = {
       id: 'd3', tipo: 'mapa', nombre: 'Zona nueva', camara: 'Mapa HiRISE de la zona de aterrizaje (2018)',
       imagen: 'img/mapa-insight-2018-mini.jpg', mapaId: 'zona-b', x: 0, y: 0, rumbo: 0,
       fases: ['Buscando señal del orbitador MRO…', 'Descargando mapa de la zona nueva…'],
+      bloqueado: true,   // historia: no se puede descargar hasta leer la nota de la Base abandonada 2
       conectado: false, conectando: false, progreso: 0, mensaje: ''
     }
   ]
@@ -306,6 +360,7 @@ function cambiarMapa(id) {
   estado.mapaActivo = id;
   estado.modoMarcador = null;
   estado.marcadorSeleccionado = null;
+  estado.notaAbierta = null;
 
   const base = mapaActual().base;
 
@@ -451,6 +506,9 @@ function dibujar() {
   } else if (estado.vista === 'dispositivos') {
     dibujarTarjetasDispositivos();  // dispositivos.js
   }
+
+  // 4) Historia: la ventana de la nota sale encima de cualquier vista
+  dibujarVentanaNota();             // historia.js
 }
 
 // Conecta cada pestaña con su vista.

@@ -25,6 +25,7 @@
   --color-ok: #5ee38a;           /* verde: conectado o atendido */
   --color-marte: #c8582f;        /* óxido de Marte, para el logo */
   --color-astronauta: #f2f5f7;   /* blanco: astronautas */
+  --color-nota: #ffd34d;         /* amarillo: notas de la historia */
   --color-dispositivo: #b48cff;  /* violeta: rover y dron */
 
   /* Letras: fuentes que ya vienen en el ordenador, no hay que descargar nada */
@@ -1061,6 +1062,154 @@ body {
 }
 .tarjeta-dispositivo.mapa:not(.conectado) img {
   filter: blur(4px) grayscale(0.6);
+}
+
+/* =========================================================
+   HISTORIA · NOTAS DE LA EXPEDICIÓN ANTERIOR
+   ========================================================= */
+
+/* En el mapa: un cuadrado amarillo como un papel. Bloqueada = gris; leída = apagada. */
+.marcador.nota .icono {
+  left: -8px;
+  top: -8px;
+  width: 16px;
+  height: 16px;
+  background: var(--color-nota);
+  border: 2px solid var(--color-fondo);
+  border-radius: 3px;
+  box-shadow: 0 0 10px var(--color-nota);
+}
+.marcador.nota.bloqueada .icono {
+  background: var(--color-texto-suave);
+  box-shadow: none;
+}
+.marcador.nota.leida .icono {
+  opacity: 0.55;
+  box-shadow: none;
+}
+.marcador.nota .etiqueta { color: var(--color-nota); }
+.marcador.nota.bloqueada .etiqueta { color: var(--color-texto-suave); }
+.marcador.nota { cursor: pointer; }
+
+/* En el casco */
+.punto-hud.nota .nombre-hud { color: var(--color-nota); }
+.punto-hud.nota .icono-hud {
+  background: var(--color-nota);
+  border-radius: 3px;
+}
+.linea-hud.nota { border-left-color: rgba(255, 211, 77, 0.7); }
+.aviso-borde.nota { border-color: var(--color-nota); color: var(--color-nota); }
+
+/* Sección "Misión" del panel */
+.seccion-mision {
+  background: rgba(255, 211, 77, 0.06);
+}
+.objetivo {
+  padding: 8px 10px;
+  margin-bottom: 8px;
+  border: 1px solid var(--color-nota);
+  border-radius: var(--radio);
+  font-size: 14px;
+  color: var(--color-texto);
+}
+.objetivo-titulo {
+  display: block;
+  font-family: var(--letra-pantalla);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-nota);
+}
+.objetivo.completado {
+  border-color: var(--color-ok);
+  color: var(--color-ok);
+  font-weight: bold;
+}
+.progreso-notas {
+  margin-bottom: 8px;
+  font-family: var(--letra-pantalla);
+  font-size: 12px;
+  color: var(--color-texto-suave);
+}
+.fila .simbolo.nota { color: var(--color-nota); }
+.fila.nota-fila.leida { opacity: 0.7; }
+.aviso-ficcion {
+  margin: 6px 0 0;
+  font-size: 11px;
+  font-style: italic;
+  color: var(--color-texto-suave);
+}
+
+/* La ventana con la nota: oscurece todo y pone la nota en el centro */
+#ventana-nota {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.65);
+}
+.tarjeta-nota {
+  max-width: 560px;
+  width: 100%;
+  padding: 24px 26px;
+  background: #1a1710;                 /* papel oscuro */
+  border: 2px solid var(--color-nota);
+  border-radius: 10px;
+  box-shadow: 0 0 40px rgba(255, 211, 77, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.nota-cabecera {
+  font-family: var(--letra-pantalla);
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--color-nota);
+}
+.nota-texto {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.55;
+  white-space: pre-line;               /* respeta los saltos de línea del texto */
+}
+.nota-codigo {
+  padding: 10px 12px;
+  font-family: var(--letra-pantalla);
+  font-size: 14px;
+  background: rgba(255, 211, 77, 0.1);
+  border: 1px dashed var(--color-nota);
+  border-radius: var(--radio);
+}
+.nota-codigo strong {
+  font-size: 18px;
+  letter-spacing: 3px;
+  color: var(--color-nota);
+}
+.nota-pista {
+  font-size: 14px;
+  color: var(--color-interes);
+}
+.nota-final {
+  font-family: var(--letra-pantalla);
+  font-size: 26px;
+  font-weight: bold;
+  letter-spacing: 4px;
+  text-align: center;
+  color: var(--color-ok);
+}
+
+/* Tarjeta del mapa bloqueado: pista de qué hacer y botón apagado */
+.pista-tarjeta {
+  font-size: 12px;
+  color: var(--color-texto-suave);
+}
+.boton-tarjeta:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 @keyframes agitar {

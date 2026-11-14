@@ -34,6 +34,14 @@ function dibujarTarjetasDispositivos() {
 function parteInferiorDeTarjeta(dispositivo) {
   const esMapa = dispositivo.tipo === 'mapa';
 
+  // Historia: el mapa de la zona nueva está bloqueado hasta leer la nota de la Base 2
+  if (dispositivo.bloqueado) {
+    return `
+      <div class="mensaje-tarjeta apagado">🔒 Señal bloqueada</div>
+      <div class="pista-tarjeta">Lee la nota de la Base abandonada 2</div>
+      <button class="boton-tarjeta" disabled>Descargar</button>`;
+  }
+
   // 3) Conectado → mensaje y botón: el mapa lleva a la zona nueva; el resto, a su cámara
   if (dispositivo.conectado && esMapa) {
     return `
@@ -93,8 +101,9 @@ async function llenarBarra(dispositivo, mensaje) {
 // 10.5 Conecta un dispositivo en dos fases y al final lo marca como conectado
 async function conectarDispositivo(id) {
   const dispositivo = buscarDispositivo(id);
-  // Si ya está conectado o conectándose, no hacemos nada (evita doble clic)
-  if (dispositivo.conectado || dispositivo.conectando) return;
+  // Si ya está conectado o conectándose, no hacemos nada (evita doble clic).
+  // Tampoco si está bloqueado por la historia.
+  if (dispositivo.conectado || dispositivo.conectando || dispositivo.bloqueado) return;
 
   dispositivo.conectando = true;
 
