@@ -22,8 +22,9 @@
 const CAMPO_DE_VISION = 90;
 
 // Cuántos metros avanza un astronauta en cada paso, y cada cuánto da un paso.
-// Los mapas reales miden unos 300-700 m: con 1 m cada 50 ms se cruzan en 15-35 s.
-const PASO_METROS = 1;            // se ajusta en el bloque 12 para la demo
+// 12.3: 0,5 m cada 50 ms = 10 m/s. Así, de la base a una alerta (unos 150 m)
+// se tarda unos 15 s: da tiempo a pasar al casco y ver la alerta flotando.
+const PASO_METROS = 0.5;          // ajustado en el bloque 12 para la demo
 const TIEMPO_ENTRE_PASOS = 50;    // en milisegundos (50 ms = 20 pasos por segundo)
 
 // Bloque 4: fuentes que se repiten en las fichas de los marcadores.
