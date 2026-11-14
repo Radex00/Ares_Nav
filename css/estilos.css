@@ -185,11 +185,17 @@ body {
   border-radius: var(--radio);
   padding: 6px 12px;
   cursor: pointer;
+  white-space: nowrap;         /* el texto del botón nunca se parte en dos líneas */
+  flex-shrink: 0;              /* y el botón no se aplasta si el texto de ayuda es largo */
 }
 
 /* Cada botón lleva el color de lo que crea */
 .boton-herramienta.interes { border-color: var(--color-interes); color: var(--color-interes); }
 .boton-herramienta.alerta  { border-color: var(--color-alerta);  color: var(--color-alerta); }
+
+/* Botón encendido (bloque 6): se rellena con su color */
+.boton-herramienta.interes.encendido { background: var(--color-interes); color: var(--color-fondo); }
+.boton-herramienta.alerta.encendido  { background: var(--color-alerta);  color: var(--color-fondo); }
 
 #texto-ayuda {
   font-size: 13px;
@@ -254,6 +260,11 @@ body {
   pointer-events: none;        /* las líneas no "atrapan" los clics */
 }
 
+/* Mientras hay un modo elegido (bloque 6), el cursor es una cruz para apuntar */
+.mapa.modo-poner {
+  cursor: crosshair;
+}
+
 /* ----- Panel derecho (las filas se diseñan en el bloque 7.1) ----- */
 .panel {
   overflow-y: auto;            /* si hay muchas cosas, el panel baja con la rueda */
@@ -281,6 +292,75 @@ body {
   font-size: 13px;
   color: var(--color-texto-suave);
   font-style: italic;
+}
+
+/* ----- Filas de la lista de marcadores (bloque 6; el bloque 7.1 añade las de astronautas) ----- */
+.fila {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  margin-bottom: 6px;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+}
+
+/* Alerta sin atender: borde y fondo naranja suave */
+.fila.urgente {
+  border-color: var(--color-alerta);
+  background: rgba(255, 138, 61, 0.1);
+}
+
+/* Alerta atendida: todo más apagado */
+.fila.atendida {
+  opacity: 0.55;
+}
+
+.fila .simbolo {
+  font-size: 16px;
+  width: 18px;
+  text-align: center;
+}
+.fila .simbolo.interes { color: var(--color-interes); }
+.fila .simbolo.alerta  { color: var(--color-alerta); }
+.fila.atendida .simbolo { color: var(--color-texto-suave); }
+
+.fila-texto {
+  flex: 1;                     /* ocupa todo el hueco entre el símbolo y los botones */
+  min-width: 0;
+}
+
+.fila-nombre {
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;     /* si el nombre es muy largo, termina en "…" */
+}
+
+.fila-detalle {
+  font-family: var(--letra-pantalla);
+  font-size: 11px;
+  color: var(--color-texto-suave);
+}
+.fila.urgente .fila-detalle {
+  color: var(--color-alerta);
+  font-weight: bold;
+}
+
+/* Botones pequeños ✎ y ✕ */
+.boton-mini {
+  width: 28px;
+  height: 28px;
+  font-size: 14px;
+  color: var(--color-texto-suave);
+  background: transparent;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  cursor: pointer;
+}
+.boton-mini:hover {
+  color: var(--color-texto);
+  border-color: var(--color-texto-suave);
 }
 
 /* "Sobre este mapa": una lista de dato → valor */
