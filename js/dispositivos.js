@@ -156,6 +156,9 @@ function dibujarListaConectados() {
 // Las dos usan la vista 'pov': lo que cambia es quién mira (estado.camaraActiva).
 function verCamara(id) {
   estado.camaraActiva = id;
+  if (buscarAstronauta(id)) {
+    estado.ultimoCasco = id;   // lo recordamos para la pestaña "Vista del casco"
+  }
   estado.vista = 'pov';
   mostrarEstatica();   // ⭐ un instante de estática, como al cambiar de canal
   dibujar();

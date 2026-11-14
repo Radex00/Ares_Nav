@@ -61,6 +61,7 @@ const estado = {
   // ----- 2.2 Qué se está viendo y qué está haciendo el usuario -----
   vista: 'control',          // la vista que se ve: 'control', 'pov' o 'dispositivos'
   camaraActiva: 'a1',        // id de quien "mira" en la vista del casco (astronauta o dispositivo)
+  ultimoCasco: 'a1',         // el último astronauta cuyo casco se vio (lo usa la pestaña del casco)
   modoMarcador: null,        // null (ninguno), 'interes' o 'alerta' (bloque 6)
   minimapaAmpliado: false,   // true cuando el minimapa está en grande (bloque 9)
   siguienteId: 20,           // número del próximo marcador nuevo: 'm20', 'm21', ... (los reales usan m1-m9)
@@ -458,8 +459,9 @@ function prepararPestanas() {
   for (const pestana of pestanas) {
     pestana.addEventListener('click', function () {
       if (pestana.dataset.vista === 'pov') {
-        // Bloque 11.3: la pestaña del casco abre la última cámara que se vio
-        verCamara(estado.camaraActiva);
+        // Bloque 11.3: la pestaña del casco abre el casco del último astronauta que se vio.
+        // (Si lo último fue la cámara del rover, igualmente abre un CASCO, como dice la pestaña.)
+        verCamara(estado.ultimoCasco);
       } else {
         cambiarVista(pestana.dataset.vista);
       }

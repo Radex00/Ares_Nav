@@ -932,15 +932,17 @@ body {
   cursor: pointer;
 }
 
-/* 11.4 Selector de cámaras, arriba a la izquierda de la vista del casco */
+/* 11.4 Selector de cámaras: una fila centrada justo encima de los botones del casco.
+   (Ahí no flota ningún punto ni hay avisos, así nada se mezcla.) */
 #selector-camaras {
   position: absolute;
-  top: 110px;
-  left: 40px;
+  bottom: 76px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
   gap: 6px;
+  white-space: nowrap;
+  z-index: 6;                  /* encima del minimapa ampliado, como los botones */
 }
 
 .boton-camara {

@@ -29,7 +29,9 @@ const ALTURA_PUNTO_CERCA = 24;   // un punto muy cerca flota alto...
 const ALTURA_PUNTO_LEJOS = 48;   // ...y uno muy lejos, cerca del horizonte
 const DISTANCIA_LEJOS = 400;     // a partir de estos metros, un punto ya cuenta como "muy lejos" (mapas de 300-700 m)
 const RUMBO_DEL_SOL = 90;        // ⭐ el sol decorativo está al este
-const MARGEN_PANTALLA = 4;       // un punto a menos de un 4 % del borde saldría cortado: va como aviso
+// Los puntos solo flotan en la parte central de la vista (del 20 % al 80 %).
+// Más a los lados se mezclarían con los avisos ◀ ▶ y se cortarían: allí van como aviso.
+const MARGEN_PANTALLA = 20;
 
 // =========================================================
 // 8.4 DIBUJAR LA VISTA DEL CASCO
