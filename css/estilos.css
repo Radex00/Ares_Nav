@@ -1,0 +1,147 @@
+/*
+  ARES NAV · NASA Space Apps Challenge 2026
+  Este archivo se escribió con ayuda de IA (Claude, de Anthropic).
+*/
+
+/* =========================================================
+   1.5 VARIABLES: colores y letras de toda la página
+   Si cambias un color aquí, cambia en todos los sitios donde se usa.
+   Para usar una variable se escribe: var(--nombre)
+   ========================================================= */
+:root {
+  /* Fondos */
+  --color-fondo: #0a0e13;        /* casi negro, como una pantalla de control */
+  --color-panel: #111a22;        /* paneles y barra superior */
+  --color-borde: #22323f;        /* líneas que separan zonas */
+
+  /* Textos */
+  --color-texto: #d9e4ec;        /* texto normal */
+  --color-texto-suave: #7d92a3;  /* texto secundario o apagado */
+
+  /* Colores con significado (se usan en el mapa y en el casco) */
+  --color-interes: #3fd6e8;      /* cian: puntos de interés */
+  --color-alerta: #ff8a3d;       /* naranja: alertas */
+  --color-peligro: #ff4d5e;      /* rojo: prioridad máxima */
+  --color-ok: #5ee38a;           /* verde: conectado o atendido */
+  --color-marte: #c8582f;        /* óxido de Marte, para el logo */
+
+  /* Letras: fuentes que ya vienen en el ordenador, no hay que descargar nada */
+  --letra-normal: "Segoe UI", Roboto, Arial, sans-serif;
+  --letra-pantalla: Consolas, "Courier New", monospace;  /* estilo pantalla de nave */
+
+  /* Medidas que se repiten */
+  --alto-barra: 56px;
+  --radio: 6px;                  /* esquinas redondeadas */
+}
+
+/* =========================================================
+   ESTILOS BASE
+   ========================================================= */
+
+/* border-box: el borde y el relleno cuentan dentro del ancho.
+   Así cada caja mide lo que decimos y no se sale de su sitio. */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+/* El body es una columna: arriba la barra y debajo la vista,
+   que ocupa todo lo que sobra de la pantalla. */
+body {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-fondo);
+  color: var(--color-texto);
+  font-family: var(--letra-normal);
+}
+
+/* Cada vista ocupa el espacio que deja la barra superior */
+.vista {
+  flex: 1;
+  position: relative;  /* sirve para poner capas encima (bloques 5 y 8) */
+  overflow: hidden;    /* lo que se salga de la vista no se ve */
+}
+
+/* Esconde cualquier elemento.
+   !important hace que esta regla gane aunque otra clase diga display: flex. */
+.oculta {
+  display: none !important;
+}
+
+/* Texto temporal de las vistas vacías (se borra cuando cada vista tenga contenido) */
+.aviso-vacio {
+  margin: 40px;
+  font-family: var(--letra-pantalla);
+  color: var(--color-texto-suave);
+}
+
+/* =========================================================
+   1.6 BARRA SUPERIOR Y PESTAÑAS
+   ========================================================= */
+.barra-superior {
+  height: var(--alto-barra);
+  flex-shrink: 0;            /* que la barra nunca se aplaste */
+  display: flex;             /* logo, pestañas y reloj en una fila */
+  align-items: center;       /* centrados en vertical */
+  gap: 24px;                 /* espacio entre ellos */
+  padding: 0 20px;
+  background: var(--color-panel);
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.logo {
+  font-family: var(--letra-pantalla);
+  font-size: 22px;
+  font-weight: bold;
+  letter-spacing: 4px;       /* letras separadas, estilo nave */
+  color: var(--color-marte);
+}
+
+/* La palabra NAV va en otro color */
+.logo span {
+  color: var(--color-interes);
+}
+
+.pestanas {
+  flex: 1;                   /* ocupa el centro y empuja el reloj a la derecha */
+  display: flex;
+  gap: 6px;
+}
+
+.pestana {
+  font-family: var(--letra-pantalla);
+  font-size: 14px;
+  text-transform: uppercase; /* todo en mayúsculas */
+  letter-spacing: 1px;
+  color: var(--color-texto-suave);
+  background: transparent;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  padding: 8px 16px;
+  cursor: pointer;           /* manita al pasar el ratón */
+}
+
+/* Al pasar el ratón por encima */
+.pestana:hover {
+  color: var(--color-texto);
+  border-color: var(--color-texto-suave);
+}
+
+/* La pestaña de la vista que se está viendo */
+.pestana.activa {
+  color: var(--color-fondo);
+  background: var(--color-interes);
+  border-color: var(--color-interes);
+}
+
+#reloj {
+  font-family: var(--letra-pantalla);
+  font-size: 18px;
+  letter-spacing: 2px;
+  color: var(--color-ok);
+}

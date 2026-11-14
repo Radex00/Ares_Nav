@@ -1,0 +1,56 @@
+<!--
+  ARES NAV · NASA Space Apps Challenge 2026
+  Reto: "Abandoned but not Forgotten" (equipo de NASA abandonado en la Luna y Marte)
+  Este archivo se escribió con ayuda de IA (Claude, de Anthropic).
+-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARES NAV · Navegación en Marte</title>
+  <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+  <!-- ===== 1.3 BARRA SUPERIOR: logo, pestañas y reloj ===== -->
+  <header class="barra-superior">
+    <div class="logo">ARES <span>NAV</span></div>
+
+    <!-- data-vista dice qué vista abre cada pestaña (lo usamos en el bloque 2) -->
+    <nav class="pestanas">
+      <button class="pestana activa" data-vista="control">Centro de control</button>
+      <button class="pestana" data-vista="pov">Vista del casco</button>
+      <button class="pestana" data-vista="dispositivos">Dispositivos</button>
+    </nav>
+
+    <!-- El reloj se pone en marcha en el bloque 2 con actualizarReloj() -->
+    <div id="reloj">--:--:--</div>
+  </header>
+
+  <!-- ===== 1.4 LAS 3 VISTAS (solo se ve una a la vez) ===== -->
+  <!-- La clase "oculta" esconde una vista. Al empezar solo se ve el centro de control. -->
+
+  <main id="vista-control" class="vista">
+    <!-- Bloque 5: mapa real, barra de herramientas y panel derecho -->
+    <p class="aviso-vacio">Centro de control · se construye en el bloque 5</p>
+  </main>
+
+  <main id="vista-pov" class="vista oculta">
+    <!-- Bloques 8 y 9: horizonte, brújula, puntos flotantes y minimapa -->
+    <p class="aviso-vacio">Vista del casco · se construye en el bloque 8</p>
+  </main>
+
+  <main id="vista-dispositivos" class="vista oculta">
+    <!-- Bloque 10: tarjetas del rover y del dron -->
+    <p class="aviso-vacio">Dispositivos · se construye en el bloque 10</p>
+  </main>
+
+  <!-- ===== 1.2 SCRIPTS (el orden importa: estado.js va primero
+       porque los otros tres usan sus datos y funciones) ===== -->
+  <script src="js/estado.js"></script>
+  <script src="js/mapa.js"></script>
+  <script src="js/casco.js"></script>
+  <script src="js/dispositivos.js"></script>
+</body>
+</html>
