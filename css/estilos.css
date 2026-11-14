@@ -221,7 +221,11 @@ body {
   border: 1px solid var(--color-borde);
   border-radius: var(--radio);
   overflow: hidden;
+}
 
+/* La imagen del mapa. La usan el mapa grande (#mapa) y el minimapa (#minimapa),
+   así que en el bloque 4 solo hay que cambiarla AQUÍ. */
+.fondo-mapa {
   /* ---- MAPA PROVISIONAL (se borra en el bloque 4) ----
      Color de Marte con una cuadrícula cada 10 % */
   background-color: #4a2617;
@@ -581,6 +585,7 @@ body {
   transform: translateX(-50%);
   display: flex;
   gap: 10px;
+  z-index: 6;                  /* siempre encima, también del minimapa ampliado */
 }
 
 .boton-casco {
@@ -596,6 +601,219 @@ body {
 }
 .boton-casco:hover {
   background: rgba(63, 214, 232, 0.2);
+}
+
+/* =========================================================
+   BLOQUE 9 · PUNTOS FLOTANTES, INFORMACIÓN Y MINIMAPA
+   ========================================================= */
+
+/* 9.2 Un punto flotante. Su "top" marca dónde está el icono:
+   translate(-50%, -100%) centra la caja y la pone ENCIMA de ese sitio. */
+.punto-hud {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  display: flex;
+  flex-direction: column;      /* nombre, distancia e icono, uno debajo del otro */
+  align-items: center;
+  gap: 2px;
+  font-family: var(--letra-pantalla);
+  text-shadow: 0 0 4px #000, 0 0 2px #000;   /* se lee sobre cualquier fondo */
+  white-space: nowrap;
+}
+
+.nombre-hud {
+  font-size: 14px;
+  font-weight: bold;
+}
+.distancia-hud {
+  font-size: 12px;
+  color: var(--color-texto);
+}
+
+.icono-hud {
+  width: 14px;
+  height: 14px;
+  margin-top: 4px;
+}
+
+/* Punto de interés: cian con rombo */
+.punto-hud.interes .nombre-hud { color: var(--color-interes); }
+.punto-hud.interes .icono-hud {
+  background: var(--color-interes);
+  transform: rotate(45deg);
+}
+
+/* Alerta: naranja con triángulo, y parpadea */
+.punto-hud.alerta .nombre-hud { color: var(--color-alerta); }
+.punto-hud.alerta .icono-hud {
+  width: 18px;
+  height: 16px;
+  background: var(--color-alerta);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+.punto-hud.alerta {
+  animation: parpadeo 1s infinite;
+}
+@keyframes parpadeo {
+  50% { opacity: 0.25; }
+}
+
+/* Alerta atendida: gris y quieta */
+.punto-hud.atendida {
+  animation: none;
+  opacity: 0.6;
+}
+.punto-hud.atendida .nombre-hud { color: var(--color-texto-suave); }
+.punto-hud.atendida .icono-hud  { background: var(--color-texto-suave); }
+
+/* El destino del astronauta lleva una etiqueta encima */
+.etiqueta-destino {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--color-fondo);
+  background: var(--color-ok);
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+
+/* La línea punteada del punto al horizonte */
+.linea-hud {
+  position: absolute;
+  border-left: 2px dashed rgba(63, 214, 232, 0.6);
+  transform: translateX(-1px);
+}
+.linea-hud.alerta {
+  border-left-color: rgba(255, 138, 61, 0.7);
+}
+
+/* 9.3 Avisos en los bordes: una columna a cada lado */
+.avisos-borde {
+  position: absolute;
+  top: 34%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.avisos-borde.izquierda { left: 40px;  align-items: flex-start; }
+.avisos-borde.derecha   { right: 40px; align-items: flex-end; }
+
+.aviso-borde {
+  font-family: var(--letra-pantalla);
+  font-size: 13px;
+  padding: 5px 10px;
+  background: rgba(10, 14, 19, 0.8);
+  border: 1px solid var(--color-interes);
+  border-radius: var(--radio);
+  color: var(--color-interes);
+}
+.aviso-borde.alerta {
+  border-color: var(--color-alerta);
+  color: var(--color-alerta);
+}
+
+/* ⭐ El sol: un círculo blanco con brillo, alto en el cielo */
+.sol {
+  position: absolute;
+  top: 16%;
+  width: 26px;
+  height: 26px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: #fffbe8;
+  box-shadow: 0 0 30px 14px rgba(255, 244, 214, 0.6);
+}
+
+/* 9.4 Información del observador, abajo a la izquierda */
+#info-observador {
+  position: absolute;
+  left: 40px;
+  bottom: 90px;
+  min-width: 240px;
+  padding: 10px 14px;
+  font-family: var(--letra-pantalla);
+  font-size: 13px;
+  background: rgba(10, 14, 19, 0.75);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+}
+
+.info-titulo {
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: var(--color-interes);
+  margin-bottom: 6px;
+}
+
+.info-o2 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.barra-o2 {
+  flex: 1;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.relleno-o2 {
+  height: 100%;
+}
+.relleno-o2.oxigeno-bien  { background: var(--color-ok); }
+.relleno-o2.oxigeno-medio { background: var(--color-alerta); }
+.relleno-o2.oxigeno-bajo  { background: var(--color-peligro); }
+
+.info-ruta {
+  margin-top: 6px;
+  color: var(--color-texto-suave);
+}
+
+/* "● REC" rojo que parpadea */
+.rec {
+  color: var(--color-peligro);
+  animation: parpadeo 1s infinite;
+}
+
+/* 9.6 Minimapa pequeño, abajo a la derecha, sin nombres */
+#minimapa {
+  position: absolute;
+  right: 40px;
+  bottom: 90px;
+  width: 240px;
+  aspect-ratio: 16 / 10;       /* la misma forma que el mapa grande */
+  border: 2px solid var(--color-interes);
+  border-radius: var(--radio);
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+}
+
+#capa-minimapa {
+  position: absolute;
+  inset: 0;
+}
+
+/* En pequeño no caben los nombres ni el anillo de las alertas */
+#minimapa .etiqueta,
+#minimapa .marcador.alerta::before {
+  display: none;
+}
+
+/* Minimapa ampliado: grande y en el centro, con nombres */
+#minimapa.ampliado {
+  right: auto;
+  bottom: auto;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  /* El 70 % del ancho, pero sin pasar de 110vh (vh = 1 % del alto de la ventana),
+     para que en pantallas bajas no tape los botones de abajo */
+  width: min(70%, 110vh);
+  z-index: 5;                  /* por encima de todo lo demás del casco */
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.55);   /* oscurece el resto de la pantalla */
+}
+#minimapa.ampliado .etiqueta {
+  display: block;
 }
 
 /* "Sobre este mapa": una lista de dato → valor */

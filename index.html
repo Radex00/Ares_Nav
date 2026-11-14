@@ -57,7 +57,7 @@
            1) svg#rutas: las líneas punteadas de las rutas (bloque 7)
            2) div#capa-mapa: marcadores, astronautas y dispositivos -->
       <div class="contenedor-mapa">
-        <div id="mapa" class="mapa">
+        <div id="mapa" class="mapa fondo-mapa">
           <!-- viewBox 0-100: dentro del SVG también medimos en porcentaje -->
           <svg id="rutas" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
           <div id="capa-mapa"></div>
@@ -103,7 +103,7 @@
     <div id="brujula"></div>
     <div id="info-observador"></div>            <!-- bloque 9.4 -->
     <div id="selector-camaras"></div>           <!-- bloque 11.4 -->
-    <div id="minimapa">                         <!-- bloques 9.5 y 9.6 -->
+    <div id="minimapa" class="fondo-mapa">      <!-- bloques 9.5 y 9.6: mismo fondo que el mapa grande -->
       <div id="capa-minimapa"></div>
     </div>
 

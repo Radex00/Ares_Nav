@@ -49,8 +49,8 @@
   <ellipse cx="2212" cy="915" rx="22" ry="10" fill="#3d1d0f" opacity="0.7"/>
   <ellipse cx="3436" cy="907" rx="36" ry="16" fill="#3d1d0f" opacity="0.7"/>
   <ellipse cx="3662" cy="884" rx="35" ry="15" fill="#3d1d0f" opacity="0.7"/>
-  <text x="400" y="300" font-family="monospace" font-size="36" fill="#ffffff" fill-opacity="0.6">AI-generated · horizonte provisional</text>
-  <text x="2000" y="300" font-family="monospace" font-size="36" fill="#ffffff" fill-opacity="0.6">AI-generated · horizonte provisional</text>
-  <text x="3600" y="300" font-family="monospace" font-size="36" fill="#ffffff" fill-opacity="0.6">AI-generated · horizonte provisional</text>
-  <text x="5200" y="300" font-family="monospace" font-size="36" fill="#ffffff" fill-opacity="0.6">AI-generated · horizonte provisional</text>
+  <text x="400" y="800" font-family="monospace" font-size="36" fill="#ffffff" fill-opacity="0.6">AI-generated · horizonte provisional</text>
+  <text x="2000" y="800" font-family="monospace" font-size="36" fill="#ffffff" fill-opacity="0.6">AI-generated · horizonte provisional</text>
+  <text x="3600" y="800" font-family="monospace" font-size="36" fill="#ffffff" fill-opacity="0.6">AI-generated · horizonte provisional</text>
+  <text x="5200" y="800" font-family="monospace" font-size="36" fill="#ffffff" fill-opacity="0.6">AI-generated · horizonte provisional</text>
 </svg>
