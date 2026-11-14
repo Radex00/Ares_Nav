@@ -453,10 +453,16 @@ body {
 /* El paisaje. Se repite hacia los lados (repeat-x) para dar la vuelta completa.
    El tamaño y la posición los pone casco.js según el rumbo (dibujarHorizonte). */
 #horizonte {
-  /* PROVISIONAL (dibujado por IA, con marca de agua). En el bloque 4.6 se cambia
-     por el panorama real de NASA: url('../img/panorama.jpg') */
-  background-image: url('../img/horizonte-provisional.svg');
-  background-repeat: repeat-x;
+  /* 4.6 Dos fondos, el primero encima del segundo:
+     1) el panorama real de InSight (PIA23136), que se repite hacia los lados;
+     2) los colores de la foto para rellenar lo que no tapa: cielo arriba y suelo abajo
+        (el corte está en el 58 %, la misma altura que ALTURA_HORIZONTE en casco.js).
+        Los bordes de la foto se difuminan justo hacia estos colores: así no se nota la unión.
+     El tamaño y la posición de los dos los pone casco.js (dibujarHorizonte). */
+  background-image:
+    url('../img/horizonte-insight.jpg'),
+    linear-gradient(to bottom, #c6ac9b 0%, #c6ac9b 58%, #583628 58%, #2e1a12 100%);
+  background-repeat: repeat-x, no-repeat;
 }
 
 /* ⭐ Polvo: puntitos de dos tamaños que el viento mueve hacia la izquierda */

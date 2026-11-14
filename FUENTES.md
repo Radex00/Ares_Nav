@@ -69,6 +69,7 @@ Comprobé cada dato contra la fuente oficial. Pon el número al final de la fras
 | `mapa-insight-2024.jpg` | Mapa de la **zona A**: InSight el 23 oct 2024, con el polvo encima | Mars Reconnaissance Orbiter / HiRISE · PIA26515 | NASA/JPL-Caltech/UArizona (*) | [7] | Ninguno: la imagen JPEG oficial tal cual |
 | `mapa-insight-2018.jpg` | Mapa de la **zona nueva**: InSight, escudo térmico, y escudo trasero con paracaídas, el 11 dic 2018 | Mars Reconnaissance Orbiter / HiRISE · ESP_058005_1845 | NASA/JPL-Caltech/UArizona | [8] | Recortamos el panel grande de la imagen "labels" y quitamos los 3 recuadros de la izquierda |
 | `mapa-insight-2018-mini.jpg` | Miniatura del mapa anterior para la tarjeta "Zona nueva" | Igual que el anterior | NASA/JPL-Caltech/UArizona | [8] | Reducida a 300 px de ancho |
+| `horizonte-insight.jpg` | **Horizonte de la vista del casco** (tarea 4.6): panorama de 290° tomado por InSight el 9 dic 2018 (sol 14), con el borde de Homestead hollow y un panel solar del aterrizador | InSight / Instrument Deployment Camera (IDC) · PIA23136 | NASA/JPL-Caltech | [13] | Ver la sección 5: recorte de bordes negros, relleno de los 79° que faltan (marcado en la imagen), bordes difuminados y reducida al 70 % |
 
 **Uso permitido:** el equipo de HiRISE dice que sus imágenes son de **dominio público** y pide poner el crédito "NASA/JPL-Caltech/UArizona" [8].
 
@@ -92,6 +93,8 @@ Comprobé cada dato contra la fuente oficial. Pon el número al final de la fras
     → Radio medio de Marte (3389,5 km), para calcular las coordenadas aproximadas.
 12. NASA Space Apps Challenge. (2026). *Abandoned but not Forgotten: Storytelling about NASA's Discarded Equipment on the Moon and Mars*. https://www.spaceappschallenge.org/2026/challenges/nasas-discarded-equipment-storytelling/
     → Enunciado y recursos del reto.
+13. NASA/JPL-Caltech. (2019). *InSight Sol 14 Panorama* (PIA23136) [Image]. InSight, Instrument Deployment Camera. https://science.nasa.gov/photojournal/insight-sol-14-panorama
+    → Horizonte del casco. Panorama de 290° hecho con 30 imágenes de la cámara del brazo, el 9 dic 2018; muestra el borde de Homestead hollow. Descarga original: PNG de 6446 × 962 px.
 
 ---
 
@@ -107,6 +110,8 @@ Estos números no vienen escritos en ninguna fuente: los calculamos nosotros con
 | Coordenadas aproximadas de cada zona | Desde InSight (4,502° N, 135,623° E) [10], moviéndose con la escala. En Marte, 1° de latitud ≈ 59,16 km (radio 3389,5 km [11]). Se supone el norte arriba, como en las imágenes de HiRISE proyectadas [8] |
 | Cráter de la zona nueva: unos 50-60 m | Medido sobre la imagen con la escala |
 | Peligros "Terreno más rocoso" y "Cráter (pendiente)" | Los datos del terreno vienen de [10] y [8]; tratarlos como **peligro** es una decisión de la simulación, y así lo dice su ficha |
+| Horizonte de 360° a partir del panorama de 290° [13] | 6446 px ÷ 290° = 22,2 px por grado. Quitamos los bordes negros y blancos (sin datos), y quedan 6246 px = **281°** de foto real. Los **79°** que faltan se rellenaron mezclando los dos bordes en espejo, para que la tira se una sin corte; ese tramo lleva escrito "SIN FOTO EN ESTA DIRECCIÓN". Los bordes de arriba y abajo se difuminan hacia el color del cielo y del suelo de la propia foto |
+| Orientación del horizonte | **No está calibrada:** la fuente no dice hacia dónde miraba la cámara. El paisaje es decorativo; los puntos flotantes y la brújula sí usan los rumbos reales del mapa |
 
 ---
 
@@ -114,9 +119,10 @@ Estos números no vienen escritos en ninguna fuente: los calculamos nosotros con
 
 | Archivo | Qué es | Hecho con |
 |---|---|---|
-| `img/horizonte-provisional.svg` | Paisaje provisional para la vista del casco (falta cambiarlo por un panorama real, tarea 4.6) | Claude (Anthropic) |
 | `img/rover.svg` | Dibujo del rover R-1 | Claude (Anthropic) |
 | `img/dron.svg` | Dibujo del dron D-1 | Claude (Anthropic) |
+
+Hasta la tarea 4.6 se usó un horizonte provisional dibujado con IA (`img/horizonte-provisional.svg`, con su marca). Se cambió por el panorama real de InSight [13] y ya no está en el proyecto (queda en el historial de Git).
 
 ---
 

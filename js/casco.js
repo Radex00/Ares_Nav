@@ -8,6 +8,17 @@
 // Cuántos grados gira la vista con cada botón o cada flecha del teclado
 const GIRO_GRADOS = 10;
 
+// 4.6 El panorama real del horizonte: InSight, sol 14 (PIA23136, NASA/JPL-Caltech).
+// La foto cubre 281° y los 79° que faltan son un relleno que mezcla sus dos bordes
+// (dentro de la imagen lo dice). Así la tira da la vuelta entera: 360°.
+const PANORAMA = {
+  anchoPx: 5601,     // tamaño de img/horizonte-insight.jpg
+  altoPx: 406,
+  horizonte: 0.352   // a qué altura de la imagen está el horizonte (0 = arriba, 1 = abajo)
+  // No sabemos hacia dónde miraba la cámara: el norte del paisaje no está calibrado.
+  // El paisaje es decorativo; los puntos y la brújula sí usan los rumbos reales del mapa.
+};
+
 // Las 8 direcciones de la brújula, cada 45°, empezando por el norte (0°).
 // En español el oeste es "O" (SO = suroeste, NO = noroeste).
 const LETRAS_BRUJULA = ['N', 'NE', 'E', 'SE', 'S', 'SO', 'O', 'NO'];
@@ -47,19 +58,27 @@ function dibujarHUD(observador) {
 function dibujarHorizonte(observador) {
   const horizonte = document.getElementById('horizonte');
   const anchoPantalla = horizonte.clientWidth;
+  const altoPantalla = horizonte.clientHeight;
   const anchoImagen = anchoPantalla * (360 / CAMPO_DE_VISION);   // 4 pantallas
 
-  // El borde izquierdo de la imagen (x = 0) es el norte (0°).
+  // 4.6 El alto sale de la forma de la foto (regla de tres): así no se deforma
+  const altoImagen = anchoImagen * PANORAMA.altoPx / PANORAMA.anchoPx;
+
+  // El borde izquierdo de la imagen (x = 0) cuenta como el norte (0°).
   // Queremos que el punto de la imagen que corresponde al rumbo quede
   // en el CENTRO de la pantalla: por eso movemos la imagen hacia la izquierda
   // (número negativo) y le sumamos media pantalla.
   const puntoDelRumbo = (observador.rumbo / 360) * anchoImagen;
-  const desplazamiento = anchoPantalla / 2 - puntoDelRumbo;
+  const x = anchoPantalla / 2 - puntoDelRumbo;
 
-  horizonte.style.backgroundSize = anchoImagen + 'px 100%';
-  horizonte.style.backgroundPositionX = desplazamiento + 'px';
-  // Con un panorama real cuyo borde izquierdo NO sea el norte, habría que
-  // sumar aquí la diferencia (lo vemos en el bloque 4.6).
+  // 4.6 Subimos o bajamos la foto para que SU horizonte quede a la altura
+  // ALTURA_HORIZONTE de la pantalla (donde acaban las líneas de los puntos)
+  const y = altoPantalla * ALTURA_HORIZONTE / 100 - altoImagen * PANORAMA.horizonte;
+
+  // Dos fondos separados por comas: 1) la foto, 2) el degradado de cielo y suelo
+  // que rellena lo que la foto no tapa por arriba y por abajo (está en el CSS)
+  horizonte.style.backgroundSize = `${anchoImagen}px ${altoImagen}px, 100% 100%`;
+  horizonte.style.backgroundPosition = `${x}px ${y}px, 0 0`;
 }
 
 // =========================================================
