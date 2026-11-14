@@ -265,6 +265,19 @@ body {
   cursor: crosshair;
 }
 
+/* 7.6 Rutas: línea punteada del astronauta a su destino.
+   vector-effect: non-scaling-stroke hace que el grosor y los puntos se midan
+   en píxeles de la pantalla, aunque el SVG esté estirado (preserveAspectRatio="none"). */
+.ruta {
+  stroke: var(--color-interes);
+  stroke-width: 2;
+  stroke-dasharray: 6 5;       /* 6 px de línea, 5 px de hueco */
+  vector-effect: non-scaling-stroke;
+}
+.ruta.alerta {
+  stroke: var(--color-alerta);
+}
+
 /* ----- Panel derecho (las filas se diseñan en el bloque 7.1) ----- */
 .panel {
   overflow-y: auto;            /* si hay muchas cosas, el panel baja con la rueda */
@@ -361,6 +374,82 @@ body {
 .boton-mini:hover {
   color: var(--color-texto);
   border-color: var(--color-texto-suave);
+}
+
+/* ----- 7.1 Tarjetas de astronauta ----- */
+.tarjeta-astronauta {
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+}
+
+/* Mientras camina, la tarjeta se marca en cian */
+.tarjeta-astronauta.en-ruta {
+  border-color: var(--color-interes);
+  background: rgba(63, 214, 232, 0.07);
+}
+
+.tarjeta-cabecera {
+  display: flex;
+  justify-content: space-between;   /* nombre a la izquierda, O₂ a la derecha */
+  align-items: baseline;
+}
+
+.nombre-astronauta {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.oxigeno {
+  font-family: var(--letra-pantalla);
+  font-size: 13px;
+}
+.oxigeno-bien  { color: var(--color-ok); }
+.oxigeno-medio { color: var(--color-alerta); }
+.oxigeno-bajo  { color: var(--color-peligro); }
+
+.estado-astronauta {
+  margin: 4px 0 8px;
+  font-size: 13px;
+  color: var(--color-texto-suave);
+}
+.tarjeta-astronauta.en-ruta .estado-astronauta {
+  color: var(--color-interes);
+}
+
+.tarjeta-controles {
+  display: flex;
+  gap: 8px;
+}
+
+.tarjeta-controles select {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+  color: var(--color-texto);
+  background: var(--color-fondo);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  padding: 5px 6px;
+}
+
+.boton-desplegar {
+  font-family: var(--letra-pantalla);
+  font-size: 13px;
+  color: var(--color-fondo);
+  background: var(--color-interes);
+  border: none;
+  border-radius: var(--radio);
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+/* Botón y menú apagados (disabled): cuando no hay destinos */
+.boton-desplegar:disabled,
+.tarjeta-controles select:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 /* "Sobre este mapa": una lista de dato → valor */

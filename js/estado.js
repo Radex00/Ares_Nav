@@ -73,10 +73,15 @@ const estado = {
   ],
 
   // rumbo: hacia dónde mira, en grados (0 = norte, 90 = este).
+  // oxigeno: porcentaje de O₂ que le queda en el traje.
   // destinoId: el id del marcador al que camina (null = está quieto).
+  // lugarId: el id del marcador donde está ahora (null = en la base).
+  // destinoElegido: lo que está elegido en su menú de destino (bloque 7).
   astronautas: [
-    { id: 'a1', nombre: 'Vega', x: 50, y: 60, rumbo: 0, oxigeno: 100, destinoId: null },
-    { id: 'a2', nombre: 'Ríos', x: 48, y: 65, rumbo: 0, oxigeno: 100, destinoId: null }
+    { id: 'a1', nombre: 'Vega', x: 50, y: 60, rumbo: 0, oxigeno: 100,
+      destinoId: null, lugarId: null, destinoElegido: null },
+    { id: 'a2', nombre: 'Ríos', x: 48, y: 65, rumbo: 0, oxigeno: 86,
+      destinoId: null, lugarId: null, destinoElegido: null }
   ],
 
   // tipo: 'rover' o 'dron' (coincide con el nombre de su imagen: img/rover.svg, img/dron.svg).
@@ -280,6 +285,9 @@ function iniciar() {
 
   actualizarReloj();                    // la hora aparece enseguida...
   setInterval(actualizarReloj, 1000);   // ...y se actualiza cada 1000 ms (1 segundo)
+
+  // 7.5 Los astronautas dan un paso cada TIEMPO_ENTRE_PASOS (50 ms)
+  setInterval(moverAstronautas, TIEMPO_ENTRE_PASOS);   // mapa.js
 
   dibujar();
 }

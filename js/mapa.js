@@ -209,8 +209,9 @@ function pintarElementosDelMapa(capa, idResaltado) {
     if (marcador.atendida) clases += ' atendida';
     if (marcador.id === idResaltado) clases += ' resaltado';
 
+    // data-id guarda el id dentro del HTML, para poder encontrar este elemento después
     html += `
-      <div class="${clases}" style="left: ${marcador.x}%; top: ${marcador.y}%;">
+      <div class="${clases}" data-id="${marcador.id}" style="left: ${marcador.x}%; top: ${marcador.y}%;">
         <span class="icono"></span>
         <span class="etiqueta">${textoSeguro(marcador.nombre)}</span>
       </div>`;
@@ -222,7 +223,7 @@ function pintarElementosDelMapa(capa, idResaltado) {
     if (astronauta.id === idResaltado) clases += ' resaltado';
 
     html += `
-      <div class="${clases}" style="left: ${astronauta.x}%; top: ${astronauta.y}%;">
+      <div class="${clases}" data-id="${astronauta.id}" style="left: ${astronauta.x}%; top: ${astronauta.y}%;">
         <span class="flecha" style="transform: rotate(${astronauta.rumbo}deg);"></span>
         <span class="icono"></span>
         <span class="etiqueta">${textoSeguro(astronauta.nombre)}</span>
@@ -237,7 +238,7 @@ function pintarElementosDelMapa(capa, idResaltado) {
     if (dispositivo.id === idResaltado) clases += ' resaltado';
 
     html += `
-      <div class="${clases}" style="left: ${dispositivo.x}%; top: ${dispositivo.y}%;">
+      <div class="${clases}" data-id="${dispositivo.id}" style="left: ${dispositivo.x}%; top: ${dispositivo.y}%;">
         <span class="icono"></span>
         <span class="etiqueta">${textoSeguro(dispositivo.nombre)}</span>
       </div>`;
@@ -292,7 +293,206 @@ function dibujarMapa() {
   pintarElementosDelMapa(document.getElementById('capa-mapa'), null);
   dibujarBarraHerramientas();   // bloque 6
   dibujarListaMarcadores();     // bloque 6
+  dibujarListaAstronautas();    // bloque 7
+  dibujarRutas();               // bloque 7
   dibujarInfoMapa();
-  // Más adelante se añaden aquí: dibujarListaAstronautas() y dibujarRutas() (bloque 7)
-  // y dibujarListaConectados() (bloque 11).
+  // Más adelante se añade aquí dibujarListaConectados() (bloque 11).
+}
+
+// =========================================================
+// BLOQUE 7 · ASTRONAUTAS EN MOVIMIENTO
+// =========================================================
+
+// Los marcadores a los que se puede mandar a un astronauta, en orden:
+// primero las alertas sin atender y después los puntos de interés.
+// (Las alertas ya atendidas no salen: ya no hace falta ir.)
+function destinosPosibles() {
+  const alertas = estado.marcadores.filter(m => m.tipo === 'alerta' && !m.atendida);
+  const intereses = estado.marcadores.filter(m => m.tipo === 'interes');
+  return alertas.concat(intereses);   // concat() une las dos listas
+}
+
+// 7.2 Las opciones (<option>) del menú de destino de un astronauta
+function opcionesDeDestino(astronauta) {
+  const destinos = destinosPosibles();
+  if (destinos.length === 0) {
+    return '<option value="">No hay destinos</option>';
+  }
+
+  let html = '';
+  for (const destino of destinos) {
+    const simbolo = destino.tipo === 'alerta' ? '⚠' : '◆';
+    // "selected" deja marcada la opción que el usuario eligió antes
+    const marcada = destino.id === astronauta.destinoElegido ? 'selected' : '';
+    html += `<option value="${destino.id}" ${marcada}>${simbolo} ${textoSeguro(destino.nombre)}</option>`;
+  }
+  return html;
+}
+
+// Se llama al cambiar el menú: guardamos la elección en el estado.
+// Así no se pierde cuando la lista se vuelve a dibujar.
+function elegirDestino(idAstronauta, idDestino) {
+  buscarAstronauta(idAstronauta).destinoElegido = idDestino;
+}
+
+// 7.4 El texto de estado: "En ruta a …" o "En …"
+function textoEstadoAstronauta(astronauta) {
+  if (astronauta.destinoId !== null) {
+    const destino = buscarMarcador(astronauta.destinoId);
+    if (destino) {
+      return 'En ruta a ' + destino.nombre;
+    }
+  }
+  if (astronauta.lugarId === null) {
+    return 'En la base';
+  }
+  const lugar = buscarMarcador(astronauta.lugarId);
+  if (!lugar) {
+    return 'En terreno abierto';   // el marcador donde estaba se borró
+  }
+  return 'En ' + lugar.nombre;
+}
+
+// Color del oxígeno: verde si hay mucho, naranja si baja, rojo si queda poco
+function claseOxigeno(oxigeno) {
+  if (oxigeno > 50) return 'oxigeno-bien';
+  if (oxigeno > 25) return 'oxigeno-medio';
+  return 'oxigeno-bajo';
+}
+
+// 7.3 Dibuja una tarjeta por astronauta en el panel derecho
+function dibujarListaAstronautas() {
+  const hayDestinos = destinosPosibles().length > 0;
+
+  let html = '';
+  for (const astronauta of estado.astronautas) {
+    const enRuta = astronauta.destinoId !== null;
+    // disabled apaga el botón cuando no hay ningún sitio al que ir
+    const apagado = hayDestinos ? '' : 'disabled';
+
+    html += `
+      <div class="tarjeta-astronauta ${enRuta ? 'en-ruta' : ''}">
+        <div class="tarjeta-cabecera">
+          <span class="nombre-astronauta">${textoSeguro(astronauta.nombre)}</span>
+          <span class="oxigeno ${claseOxigeno(astronauta.oxigeno)}">O₂ ${astronauta.oxigeno} %</span>
+        </div>
+        <div class="estado-astronauta">${textoSeguro(textoEstadoAstronauta(astronauta))}</div>
+        <div class="tarjeta-controles">
+          <select onchange="elegirDestino('${astronauta.id}', this.value)" ${apagado}>
+            ${opcionesDeDestino(astronauta)}
+          </select>
+          <button class="boton-desplegar" onclick="desplegarAstronauta('${astronauta.id}')" ${apagado}>Desplegar</button>
+        </div>
+      </div>`;
+  }
+  document.getElementById('lista-astronautas').innerHTML = html;
+}
+
+// 7.4 Manda al astronauta hacia el destino elegido en su menú
+function desplegarAstronauta(id) {
+  const astronauta = buscarAstronauta(id);
+  const destinos = destinosPosibles();
+  if (destinos.length === 0) return;
+
+  // Si lo elegido ya no existe (se borró o se atendió), usamos el primero del menú,
+  // que es justo el que el menú enseña marcado.
+  let destino = destinos.find(d => d.id === astronauta.destinoElegido);
+  if (!destino) {
+    destino = destinos[0];
+  }
+
+  astronauta.destinoId = destino.id;
+  astronauta.lugarId = null;   // sale del sitio donde estaba
+  dibujar();
+}
+
+// 7.5 Un paso de todos los astronautas. Se repite cada 50 ms (setInterval en iniciar).
+function moverAstronautas() {
+  let alguienSeMovio = false;
+  let alguienLlego = false;
+
+  for (const astronauta of estado.astronautas) {
+    if (astronauta.destinoId === null) continue;   // está quieto
+
+    const destino = buscarMarcador(astronauta.destinoId);
+    if (!destino) {                                // el destino se borró
+      astronauta.destinoId = null;
+      alguienLlego = true;
+      continue;
+    }
+
+    // 1) Mirar hacia el destino (la flecha del mapa gira)
+    astronauta.rumbo = anguloHacia(astronauta, destino);
+
+    // 2) ¿Le queda menos de un paso? Entonces llega.
+    const distancia = distanciaEnMetros(astronauta, destino);
+    if (distancia <= PASO_METROS) {
+      astronauta.x = destino.x;
+      astronauta.y = destino.y;
+      astronauta.destinoId = null;
+      astronauta.lugarId = destino.id;
+      if (destino.tipo === 'alerta') {
+        destino.atendida = true;                   // ¡alerta atendida!
+      }
+      alguienLlego = true;
+    } else {
+      // 3) Si no, avanza PASO_METROS hacia el destino.
+      //    Regla de tres: si el camino entero mide "distancia" metros,
+      //    un paso es la fracción PASO_METROS / distancia del camino.
+      //    Avanzamos esa misma fracción en x y en y.
+      const fraccion = PASO_METROS / distancia;
+      astronauta.x = astronauta.x + (destino.x - astronauta.x) * fraccion;
+      astronauta.y = astronauta.y + (destino.y - astronauta.y) * fraccion;
+      alguienSeMovio = true;
+    }
+  }
+
+  if (alguienLlego) {
+    dibujar();              // cambia la lista, el color de la alerta... todo
+  } else if (alguienSeMovio) {
+    dibujarMovimiento();    // solo lo que se mueve (ver abajo)
+  }
+}
+
+// Mientras caminan solo redibujamos lo que se mueve, 20 veces por segundo.
+// No llamamos a dibujar() porque volvería a crear el panel entero
+// y los menús de destino se cerrarían solos mientras los usas.
+function dibujarMovimiento() {
+  if (estado.vista === 'control') {
+    moverAstronautasEnPantalla(document.getElementById('capa-mapa'));
+    dibujarRutas();
+  } else if (estado.vista === 'pov') {
+    dibujarPuntoDeVista();  // casco.js (bloque 8)
+  }
+}
+
+// Mueve los astronautas que YA están dibujados en una capa, sin crearlos de nuevo.
+// (Si creáramos el mapa de nuevo 20 veces por segundo, el anillo de las alertas
+// volvería a empezar su animación todo el rato y parecería congelado.)
+function moverAstronautasEnPantalla(capa) {
+  for (const astronauta of estado.astronautas) {
+    // Buscamos el elemento por su data-id
+    const elemento = capa.querySelector(`[data-id="${astronauta.id}"]`);
+    if (!elemento) continue;
+    elemento.style.left = astronauta.x + '%';
+    elemento.style.top = astronauta.y + '%';
+    elemento.querySelector('.flecha').style.transform = `rotate(${astronauta.rumbo}deg)`;
+  }
+}
+
+// 7.6 Línea punteada desde cada astronauta hasta su destino.
+// El SVG mide 0-100 por dentro (viewBox), así que x e y van directos en porcentaje.
+function dibujarRutas() {
+  let html = '';
+  for (const astronauta of estado.astronautas) {
+    if (astronauta.destinoId === null) continue;
+    const destino = buscarMarcador(astronauta.destinoId);
+    if (!destino) continue;
+
+    // La clase "alerta" o "interes" decide el color (naranja o cian) en el CSS
+    html += `<line class="ruta ${destino.tipo}"
+                   x1="${astronauta.x}" y1="${astronauta.y}"
+                   x2="${destino.x}" y2="${destino.y}" />`;
+  }
+  document.getElementById('rutas').innerHTML = html;
 }
