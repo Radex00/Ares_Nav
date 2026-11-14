@@ -20,8 +20,8 @@ const PANORAMA = {
 };
 
 // Las 8 direcciones de la brújula, cada 45°, empezando por el norte (0°).
-// En español el oeste es "O" (SO = suroeste, NO = noroeste).
-const LETRAS_BRUJULA = ['N', 'NE', 'E', 'SE', 'S', 'SO', 'O', 'NO'];
+// La página está en inglés: el oeste es "W" (SW = suroeste, NW = noroeste).
+const LETRAS_BRUJULA = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
 
 // Bloque 9: alturas en la pantalla del casco (en %, desde arriba)
 const ALTURA_HORIZONTE = 58;     // dónde está más o menos el horizonte del paisaje
@@ -275,7 +275,7 @@ function dibujarPuntosEnPantalla(observador) {
       html += `<div class="linea-hud ${marcador.tipo}" style="left: ${punto.x}%; top: ${y}%; height: ${ALTURA_HORIZONTE - y}%;"></div>`;
       html += `
         <div class="${clases}" style="left: ${punto.x}%; top: ${y}%; animation-delay: ${retrasoDeParpadeo()};">
-          ${esDestino ? '<span class="etiqueta-destino">DESTINO</span>' : ''}
+          ${esDestino ? '<span class="etiqueta-destino">TARGET</span>' : ''}
           <span class="nombre-hud">${textoNombre}</span>
           <span class="distancia-hud">${textoDistancia}</span>
           <span class="icono-hud"></span>
@@ -323,11 +323,11 @@ function dibujarInfoObservador(observador) {
     let ruta = textoEstadoAstronauta(astronauta);
     const destino = buscarMarcador(astronauta.destinoId);
     if (destino) {
-      ruta = 'Destino: ' + destino.nombre + ' · ' + formatearDistancia(distanciaEnMetros(astronauta, destino));
+      ruta = 'Target: ' + destino.nombre + ' · ' + formatearDistancia(distanciaEnMetros(astronauta, destino));
     }
 
     caja.innerHTML = `
-      <div class="info-titulo">CASCO · ${textoSeguro(astronauta.nombre)}</div>
+      <div class="info-titulo">HELMET · ${textoSeguro(astronauta.nombre)}</div>
       <div class="info-o2">
         <span>O₂</span>
         <div class="barra-o2"><div class="relleno-o2 ${claseOxigeno(astronauta.oxigeno)}" style="width: ${astronauta.oxigeno}%;"></div></div>

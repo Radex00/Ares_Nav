@@ -4,11 +4,11 @@
   Este archivo se escribió con ayuda de IA (Claude, de Anthropic).
 -->
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ARES NAV · Navegación en Marte</title>
+  <title>ARES NAV · Mars Navigation</title>
   <link rel="stylesheet" href="css/estilos.css">
 </head>
 <body>
@@ -19,9 +19,9 @@
 
     <!-- data-vista dice qué vista abre cada pestaña (lo usamos en el bloque 2) -->
     <nav class="pestanas">
-      <button class="pestana activa" data-vista="control">Centro de control</button>
-      <button class="pestana" data-vista="pov">Vista del casco</button>
-      <button class="pestana" data-vista="dispositivos">Dispositivos</button>
+      <button class="pestana activa" data-vista="control">Control center</button>
+      <button class="pestana" data-vista="pov">Helmet view</button>
+      <button class="pestana" data-vista="dispositivos">Devices</button>
     </nav>
 
     <!-- El reloj se pone en marcha en el bloque 2 con actualizarReloj() -->
@@ -38,19 +38,19 @@
 
       <!-- 5.2 Barra de herramientas (los botones se conectan en el bloque 6) -->
       <div class="barra-herramientas">
-        <button id="boton-interes" class="boton-herramienta interes">+ Interés</button>
-        <button id="boton-alerta" class="boton-herramienta alerta">+ Alerta</button>
+        <button id="boton-interes" class="boton-herramienta interes">+ Interest</button>
+        <button id="boton-alerta" class="boton-herramienta alerta">+ Alert</button>
 
         <!-- El nombre de una alerta nueva sale de este menú -->
-        <select id="tipo-alerta" title="Tipo de alerta">
-          <option>Fuga de oxígeno</option>
-          <option>Tormenta de polvo</option>
-          <option>Pendiente peligrosa</option>
-          <option>Campo de rocas</option>
-          <option>Radiación alta</option>
+        <select id="tipo-alerta" title="Alert type">
+          <option>Oxygen leak</option>
+          <option>Dust storm</option>
+          <option>Dangerous slope</option>
+          <option>Rock field</option>
+          <option>High radiation</option>
         </select>
 
-        <span id="texto-ayuda">Elige + Interés o + Alerta y haz clic en el mapa</span>
+        <span id="texto-ayuda">Choose + Interest or + Alert and click on the map</span>
       </div>
 
       <!-- 5.2 El mapa con sus dos capas, una encima de la otra:
@@ -69,34 +69,34 @@
     <aside class="panel">
       <!-- Historia: objetivo de la misión y notas de la expedición anterior -->
       <section class="seccion-panel seccion-mision">
-        <h2>Misión</h2>
+        <h2>Mission</h2>
         <div id="bitacora"></div>
       </section>
 
       <section class="seccion-panel">
-        <h2>Marcadores</h2>
+        <h2>Markers</h2>
         <div id="lista-marcadores"></div>
       </section>
 
       <!-- Bloque 4: ficha del marcador elegido (texto y fuentes), justo debajo de la lista -->
       <section class="seccion-panel">
-        <h2>Ficha del marcador</h2>
+        <h2>Marker info</h2>
         <div id="ficha-marcador"></div>
       </section>
 
       <section class="seccion-panel">
-        <h2>Astronautas</h2>
+        <h2>Astronauts</h2>
         <div id="lista-astronautas"></div>
       </section>
 
       <section class="seccion-panel">
-        <h2>Dispositivos conectados</h2>
+        <h2>Connected devices</h2>
         <div id="lista-conectados"></div>
       </section>
 
       <!-- Información del mapa real de la zona actual (viene de estado.mapas) -->
       <section class="seccion-panel">
-        <h2>Sobre este mapa</h2>
+        <h2>About this map</h2>
         <div id="info-mapa"></div>
       </section>
     </aside>
@@ -120,10 +120,10 @@
     </div>
 
     <div class="botones-casco">
-      <button id="boton-girar-izquierda" class="boton-casco">◀ Girar</button>
-      <button id="boton-minimapa" class="boton-casco">Minimapa (M)</button>
-      <button id="boton-girar-derecha" class="boton-casco">Girar ▶</button>
-      <button id="boton-volver" class="boton-casco">Centro de control (Esc)</button>
+      <button id="boton-girar-izquierda" class="boton-casco">◀ Turn</button>
+      <button id="boton-minimapa" class="boton-casco">Minimap (M)</button>
+      <button id="boton-girar-derecha" class="boton-casco">Turn ▶</button>
+      <button id="boton-volver" class="boton-casco">Control center (Esc)</button>
     </div>
 
     <!-- Estática de televisión al cambiar de cámara (bloque 11.6) -->
@@ -132,11 +132,11 @@
 
   <main id="vista-dispositivos" class="vista oculta">
     <!-- 10.2 Título, explicación y tarjetas (las tarjetas las dibuja dispositivos.js) -->
-    <h2 class="titulo-dispositivos">Dispositivos</h2>
+    <h2 class="titulo-dispositivos">Devices</h2>
     <p class="texto-dispositivos">
-      Conecta un rover o un dron al sistema de navegación ARES NAV.
-      Cuando esté conectado, aparecerá en el mapa y podrás ver su cámara
-      desde el centro de control. También puedes descargar el mapa de una zona nueva.
+      Connect a rover or a drone to the ARES NAV navigation system.
+      Once connected, it appears on the map and you can watch its camera
+      from the control center. You can also download the map of a new zone.
     </p>
     <div id="tarjetas-dispositivos"></div>
   </main>

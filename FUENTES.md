@@ -110,7 +110,7 @@ Estos números no vienen escritos en ninguna fuente: los calculamos nosotros con
 | Coordenadas aproximadas de cada zona | Desde InSight (4,502° N, 135,623° E) [10], moviéndose con la escala. En Marte, 1° de latitud ≈ 59,16 km (radio 3389,5 km [11]). Se supone el norte arriba, como en las imágenes de HiRISE proyectadas [8] |
 | Cráter de la zona nueva: unos 50-60 m | Medido sobre la imagen con la escala |
 | Peligros "Terreno más rocoso" y "Cráter (pendiente)" | Los datos del terreno vienen de [10] y [8]; tratarlos como **peligro** es una decisión de la simulación, y así lo dice su ficha |
-| Horizonte de 360° a partir del panorama de 290° [13] | 6446 px ÷ 290° = 22,2 px por grado. Quitamos los bordes negros y blancos (sin datos), y quedan 6246 px = **281°** de foto real. Los **79°** que faltan se rellenaron mezclando los dos bordes en espejo, para que la tira se una sin corte; ese tramo lleva escrito "SIN FOTO EN ESTA DIRECCIÓN". Los bordes de arriba y abajo se difuminan hacia el color del cielo y del suelo de la propia foto |
+| Horizonte de 360° a partir del panorama de 290° [13] | 6446 px ÷ 290° = 22,2 px por grado. Quitamos los bordes negros y blancos (sin datos), y quedan 6246 px = **281°** de foto real. Los **79°** que faltan se rellenaron mezclando los dos bordes en espejo, para que la tira se una sin corte; ese tramo lleva escrito "NO PHOTO IN THIS DIRECTION" (la página está en inglés). Los bordes de arriba y abajo se difuminan hacia el color del cielo y del suelo de la propia foto |
 | Orientación del horizonte | **No está calibrada:** la fuente no dice hacia dónde miraba la cámara. El paisaje es decorativo; los puntos flotantes y la brújula sí usan los rumbos reales del mapa |
 
 ---

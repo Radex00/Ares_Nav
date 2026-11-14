@@ -46,7 +46,7 @@ const FUENTE_PIA22875 = {
   enlace: 'https://science.nasa.gov/photojournal/insight-on-mars-as-seen-by-hirise/'
 };
 const FUENTE_JPL_2022 = {
-  texto: 'NASA/JPL, "NASA Retires InSight Mars Lander Mission After Years of Science" (21/12/2022)',
+  texto: 'NASA/JPL, "NASA Retires InSight Mars Lander Mission After Years of Science" (Dec 21, 2022)',
   enlace: 'https://www.jpl.nasa.gov/news/nasa-retires-insight-mars-lander-mission-after-years-of-science/'
 };
 
@@ -90,11 +90,11 @@ const estado = {
       velocidad: 1,                          // × PASO_METROS (zona pequeña: velocidad normal)
       descargado: true,
       info: {
-        nombre: 'Elysium Planitia · InSight en 2024',
+        nombre: 'Elysium Planitia · InSight in 2024',
         mision: 'Mars Reconnaissance Orbiter (MRO)',
-        instrumento: 'Cámara HiRISE · imagen PIA26515',
-        fecha: '23 de octubre de 2024',
-        coordenadas: '4,4994°–4,5045° N · 135,6206°–135,6264° E (aprox.)',
+        instrumento: 'HiRISE camera · image PIA26515',
+        fecha: 'October 23, 2024',
+        coordenadas: '4.4994°–4.5045° N · 135.6206°–135.6264° E (approx.)',
         tamano: '339 × 299 m',
         credito: 'NASA/JPL-Caltech/UArizona',
         enlace: 'https://science.nasa.gov/photojournal/hirise-studies-the-dust-on-insight/',
@@ -110,11 +110,11 @@ const estado = {
       velocidad: 3,                          // × PASO_METROS: es el doble de grande, así la demo no se alarga
       descargado: false,
       info: {
-        nombre: 'Zona de aterrizaje de InSight en 2018',
+        nombre: 'InSight landing zone in 2018',
         mision: 'Mars Reconnaissance Orbiter (MRO)',
-        instrumento: 'Cámara HiRISE · imagen ESP_058005_1845',
-        fecha: '11 de diciembre de 2018',
-        coordenadas: '4,4949°–4,5071° N · 135,6211°–135,6319° E (aprox.)',
+        instrumento: 'HiRISE camera · image ESP_058005_1845',
+        fecha: 'December 11, 2018',
+        coordenadas: '4.4949°–4.5071° N · 135.6211°–135.6319° E (approx.)',
         tamano: '635 × 719 m',
         credito: 'NASA/JPL-Caltech/UArizona',
         enlace: 'https://www.uahirise.org/ESP_058005_1845',
@@ -134,44 +134,44 @@ const estado = {
     {
       id: 'm1', mapaId: 'zona-a', tipo: 'interes', nombre: 'InSight', x: 41.2, y: 49.3, atendida: false,
       ficha: {
-        texto: 'Aterrizador de NASA que llegó el 26 de noviembre de 2018 para estudiar el interior de Marte. ' +
-               'Su sismómetro detectó 1.319 sismos marcianos. El polvo fue tapando sus paneles solares ' +
-               'hasta dejarlo sin energía: habló con la Tierra por última vez el 15 de diciembre de 2022. ' +
-               'En esta foto de 2024 ya tiene el mismo color rojizo que el suelo.',
+        texto: 'NASA lander that arrived on November 26, 2018 to study the interior of Mars. ' +
+               'Its seismometer detected 1,319 marsquakes. Dust slowly covered its solar panels ' +
+               'until it ran out of power: it last talked to Earth on December 15, 2022. ' +
+               'In this 2024 photo it already has the same reddish color as the ground.',
         fuentes: [FUENTE_HIRISE_2018, FUENTE_JPL_2022, FUENTE_PIA26515]
       }
     },
     {
-      id: 'm2', mapaId: 'zona-a', tipo: 'interes', nombre: 'Halo de los retrocohetes', x: 37.5, y: 54.2, atendida: false,
+      id: 'm2', mapaId: 'zona-a', tipo: 'interes', nombre: 'Retrorocket halo', x: 37.5, y: 54.2, atendida: false,
       ficha: {
-        texto: 'Al aterrizar, los retrocohetes barrieron el polvo fino y dejaron el suelo más oscuro. ' +
-               'Con los años el polvo vuelve a caer y el halo se va borrando. Medir lo rápido que se borra ' +
-               'ayuda a calcular la edad de los cráteres.',
+        texto: 'During landing, the retrorockets swept away the fine dust and left the ground darker. ' +
+               'Over the years dust settles again and the halo fades. Measuring how fast it fades ' +
+               'helps estimate the age of craters.',
         fuentes: [FUENTE_GOLOMBEK, FUENTE_PIA26515]
       }
     },
     {
-      id: 'm3', mapaId: 'zona-a', tipo: 'interes', nombre: 'Suelo de Homestead hollow', x: 45.1, y: 45.0, atendida: false,
+      id: 'm3', mapaId: 'zona-a', tipo: 'interes', nombre: 'Homestead hollow soil', x: 45.1, y: 45.0, atendida: false,
       ficha: {
-        texto: 'InSight está en el lado oeste de Homestead hollow, un cráter de impacto muy erosionado de unos 27 m. ' +
-               'El suelo es arena con gránulos y guijarros, con muy pocas rocas. Por capas: polvo arriba, ' +
-               'una capa fina de arena suelta, una costra endurecida (duricostra) de grosor variable y, debajo, arena con rocas.',
+        texto: 'InSight sits on the west side of Homestead hollow, a very eroded impact crater about 27 m wide. ' +
+               'The ground is sand with granules and pebbles, with very few rocks. In layers: dust on top, ' +
+               'a thin layer of loose sand, a hardened crust (duricrust) of varying thickness and, below, sand with rocks.',
         fuentes: [FUENTE_GOLOMBEK]
       }
     },
     {
-      id: 'm4', mapaId: 'zona-a', tipo: 'alerta', nombre: 'Terreno más rocoso', x: 26.2, y: 40.4, atendida: false,
+      id: 'm4', mapaId: 'zona-a', tipo: 'alerta', nombre: 'Rockier terrain', x: 26.2, y: 40.4, atendida: false,
       ficha: {
-        texto: 'Al oeste de Homestead hollow el terreno es algo más rocoso y áspero que el suelo arenoso del cráter. ' +
-               'En la simulación lo marcamos como zona para caminar con cuidado.',
+        texto: 'West of Homestead hollow the terrain is somewhat rockier and rougher than the sandy floor of the crater. ' +
+               'In the simulation we mark it as an area to walk with care.',
         fuentes: [FUENTE_GOLOMBEK]
       }
     },
     {
-      id: 'm5', mapaId: 'zona-a', tipo: 'interes', nombre: 'Cráter de impacto', x: 71.1, y: 80.4, atendida: false,
+      id: 'm5', mapaId: 'zona-a', tipo: 'interes', nombre: 'Impact crater', x: 71.1, y: 80.4, atendida: false,
       ficha: {
-        texto: 'Pequeño cráter de impacto. En esta llanura los cráteres pequeños son comunes. ' +
-               'El suelo es regolito (roca rota por impactos) de 3 a 18 m de grosor, encima de antiguas coladas de lava de basalto.',
+        texto: 'Small impact crater. Small craters are common on this plain. ' +
+               'The ground is regolith (rock broken up by impacts) 3 to 18 m thick, on top of ancient basaltic lava flows.',
         fuentes: [FUENTE_GOLOMBEK, FUENTE_PIA26515]
       }
     },
@@ -180,32 +180,32 @@ const estado = {
     {
       id: 'm6', mapaId: 'zona-b', tipo: 'interes', nombre: 'InSight (2018)', x: 17.5, y: 42.0, atendida: false,
       ficha: {
-        texto: 'InSight dos semanas después de aterrizar. El suelo de alrededor está oscuro porque los retrocohetes ' +
-               'lo barrieron. Con los paneles solares abiertos mide unos 6 m de ancho.',
+        texto: 'InSight two weeks after landing. The ground around it is dark because the retrorockets ' +
+               'swept it. With its solar panels open it is about 6 m wide.',
         fuentes: [FUENTE_HIRISE_2018, FUENTE_PIA22875]
       }
     },
     {
-      id: 'm7', mapaId: 'zona-b', tipo: 'interes', nombre: 'Escudo térmico', x: 90.8, y: 17.1, atendida: false,
+      id: 'm7', mapaId: 'zona-b', tipo: 'interes', nombre: 'Heat shield', x: 90.8, y: 17.1, atendida: false,
       ficha: {
-        texto: 'El escudo térmico de InSight se soltó durante la bajada y quedó aquí. ' +
-               'Brilla tanto porque refleja la luz del Sol, como un espejo.',
+        texto: 'The heat shield of InSight came off during the descent and ended up here. ' +
+               'It shines so much because it reflects sunlight, like a mirror.',
         fuentes: [FUENTE_HIRISE_2018, FUENTE_PIA22875]
       }
     },
     {
-      id: 'm8', mapaId: 'zona-b', tipo: 'interes', nombre: 'Escudo trasero y paracaídas', x: 37.5, y: 90.3, atendida: false,
+      id: 'm8', mapaId: 'zona-b', tipo: 'interes', nombre: 'Backshell and parachute', x: 37.5, y: 90.3, atendida: false,
       ficha: {
-        texto: 'El escudo trasero sigue unido al paracaídas que frenó la bajada de InSight. ' +
-               'La raya que sale hacia el sur probablemente es una huella antigua de un remolino de polvo.',
+        texto: 'The backshell is still attached to the parachute that slowed down the descent of InSight. ' +
+               'The streak going south is probably an old dust devil track.',
         fuentes: [FUENTE_HIRISE_2018, FUENTE_PIA22875]
       }
     },
     {
-      id: 'm9', mapaId: 'zona-b', tipo: 'alerta', nombre: 'Cráter (pendiente)', x: 60.1, y: 52.1, atendida: false,
+      id: 'm9', mapaId: 'zona-b', tipo: 'alerta', nombre: 'Crater (slope)', x: 60.1, y: 52.1, atendida: false,
       ficha: {
-        texto: 'Cráter de impacto de unos 50-60 m de ancho (medido por el equipo sobre la imagen). ' +
-               'En esta llanura los cráteres son comunes. En la simulación sus paredes inclinadas son una zona peligrosa.',
+        texto: 'Impact crater about 50-60 m wide (measured by the team on the image). ' +
+               'Craters are common on this plain. In the simulation its sloping walls are a dangerous area.',
         fuentes: [FUENTE_HIRISE_2018, FUENTE_GOLOMBEK]
       }
     },
@@ -220,41 +220,41 @@ const estado = {
     // Las bases de la zona nueva están junto a las 3 piezas reales de NASA.
     // =========================================================
     {
-      id: 'n1', mapaId: 'zona-a', tipo: 'nota', nombre: 'Base abandonada 1', x: 30, y: 72, atendida: false, ficha: null,
+      id: 'n1', mapaId: 'zona-a', tipo: 'nota', nombre: 'Abandoned base 1', x: 30, y: 72, atendida: false, ficha: null,
       nota: {
-        texto: '✏ TEXTO PENDIENTE · Nota 1: lo que dejó escrito la expedición anterior en esta base.',
+        texto: '✏ TEXT PENDING · Note 1: what the previous expedition left written at this base.',
         codigo: null, desbloqueada: true, leida: false,
         siguiente: 'n2', desbloqueaMapa: null, final: false
       }
     },
     {
-      id: 'n2', mapaId: 'zona-a', tipo: 'nota', nombre: 'Base abandonada 2', x: 52, y: 60, atendida: false, ficha: null,
+      id: 'n2', mapaId: 'zona-a', tipo: 'nota', nombre: 'Abandoned base 2', x: 52, y: 60, atendida: false, ficha: null,
       nota: {
-        texto: '✏ TEXTO PENDIENTE · Nota 2: aquí la expedición anterior pide que descarguéis el mapa de la zona nueva.',
+        texto: '✏ TEXT PENDING · Note 2: here the previous expedition asks you to download the map of the new zone.',
         codigo: 'HOLLOW', desbloqueada: false, leida: false,
         siguiente: 'n3', desbloqueaMapa: 'd3', final: false
       }
     },
     {
-      id: 'n3', mapaId: 'zona-b', tipo: 'nota', nombre: 'Base abandonada 3', x: 23, y: 48, atendida: false, ficha: null,
+      id: 'n3', mapaId: 'zona-b', tipo: 'nota', nombre: 'Abandoned base 3', x: 23, y: 48, atendida: false, ficha: null,
       nota: {
-        texto: '✏ TEXTO PENDIENTE · Nota 3 (junto a InSight).',
+        texto: '✏ TEXT PENDING · Note 3 (next to InSight).',
         codigo: null, desbloqueada: true, leida: false,
         siguiente: 'n4', desbloqueaMapa: null, final: false
       }
     },
     {
-      id: 'n4', mapaId: 'zona-b', tipo: 'nota', nombre: 'Base abandonada 4', x: 84, y: 25, atendida: false, ficha: null,
+      id: 'n4', mapaId: 'zona-b', tipo: 'nota', nombre: 'Abandoned base 4', x: 84, y: 25, atendida: false, ficha: null,
       nota: {
-        texto: '✏ TEXTO PENDIENTE · Nota 4 (junto al escudo térmico).',
+        texto: '✏ TEXT PENDING · Note 4 (next to the heat shield).',
         codigo: 'MARSQUAKE', desbloqueada: false, leida: false,
         siguiente: 'n5', desbloqueaMapa: null, final: false
       }
     },
     {
-      id: 'n5', mapaId: 'zona-b', tipo: 'nota', nombre: 'Base abandonada 5', x: 45, y: 83, atendida: false, ficha: null,
+      id: 'n5', mapaId: 'zona-b', tipo: 'nota', nombre: 'Abandoned base 5', x: 45, y: 83, atendida: false, ficha: null,
       nota: {
-        texto: '✏ TEXTO PENDIENTE · Nota final (junto al paracaídas): cómo los salváis.',
+        texto: '✏ TEXT PENDING · Final note (next to the parachute): how you save them.',
         codigo: 'SOL14', desbloqueada: false, leida: false,
         siguiente: null, desbloqueaMapa: null, final: true
       }
@@ -280,21 +280,21 @@ const estado = {
   // su mapa (mapaId) queda descargado. No sale en el mapa ni tiene cámara.
   dispositivos: [
     {
-      id: 'd1', tipo: 'rover', nombre: 'Rover R-1', camara: 'Cámara de navegación',
+      id: 'd1', tipo: 'rover', nombre: 'Rover R-1', camara: 'Navigation camera',
       imagen: 'img/rover.svg', x: 21, y: 80, rumbo: 90,
-      fases: ['Escaneando dispositivo…', 'Instalando sistema de navegación…'],
+      fases: ['Scanning device…', 'Installing navigation system…'],
       conectado: false, conectando: false, progreso: 0, mensaje: ''
     },
     {
-      id: 'd2', tipo: 'dron', nombre: 'Dron D-1', camara: 'Cámara inferior',
+      id: 'd2', tipo: 'dron', nombre: 'Drone D-1', camara: 'Bottom camera',
       imagen: 'img/dron.svg', x: 21, y: 85, rumbo: 0,
-      fases: ['Escaneando dispositivo…', 'Instalando sistema de navegación…'],
+      fases: ['Scanning device…', 'Installing navigation system…'],
       conectado: false, conectando: false, progreso: 0, mensaje: ''
     },
     {
-      id: 'd3', tipo: 'mapa', nombre: 'Zona nueva', camara: 'Mapa HiRISE de la zona de aterrizaje (2018)',
+      id: 'd3', tipo: 'mapa', nombre: 'New zone', camara: 'HiRISE map of the landing zone (2018)',
       imagen: 'img/mapa-insight-2018-mini.jpg', mapaId: 'zona-b', x: 0, y: 0, rumbo: 0,
-      fases: ['Buscando señal del orbitador MRO…', 'Descargando mapa de la zona nueva…'],
+      fases: ['Searching for the MRO orbiter signal…', 'Downloading the new zone map…'],
       bloqueado: true,   // historia: no se puede descargar hasta leer la nota de la Base abandonada 2
       conectado: false, conectando: false, progreso: 0, mensaje: ''
     }
@@ -441,15 +441,15 @@ function anguloHacia(desde, hasta) {
   return normalizarAngulo(grados);
 }
 
-// 3.4 Distancia bonita para la pantalla: "850 m" o "1,2 km"
+// 3.4 Distancia bonita para la pantalla: "850 m" o "1.2 km" (en inglés el decimal va con punto)
 function formatearDistancia(metros) {
   const redondeado = Math.round(metros);
   if (redondeado < 1000) {
     return redondeado + ' m';
   }
-  // toFixed(1) deja un decimal ("1.2"); luego cambiamos el punto por coma
+  // toFixed(1) deja un decimal ("1.2"), que es como se escribe en inglés
   const kilometros = (metros / 1000).toFixed(1);
-  return kilometros.replace('.', ',') + ' km';
+  return kilometros + ' km';
 }
 
 // 3.5 Cambia los símbolos peligrosos por sus códigos de HTML.
@@ -469,7 +469,7 @@ function textoSeguro(texto) {
 //   anguloHacia({x: 50, y: 50}, {x: 50, y: 40})    → 0
 //   anguloHacia({x: 50, y: 50}, {x: 60, y: 50})    → 90
 //   distanciaEnMetros({x: 0, y: 0}, {x: 10, y: 0}) → 33,9 (era 400 con el mapa de prueba)
-//   formatearDistancia(1240)                       → "1,2 km"
+//   formatearDistancia(1240)                       → "1.2 km" (la página está en inglés)
 //   normalizarAngulo(-10)                          → 350
 
 // =========================================================

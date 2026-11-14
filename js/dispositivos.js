@@ -37,21 +37,21 @@ function parteInferiorDeTarjeta(dispositivo) {
   // Historia: el mapa de la zona nueva está bloqueado hasta leer la nota de la Base 2
   if (dispositivo.bloqueado) {
     return `
-      <div class="mensaje-tarjeta apagado">🔒 Señal bloqueada</div>
-      <div class="pista-tarjeta">Lee la nota de la Base abandonada 2</div>
-      <button class="boton-tarjeta" disabled>Descargar</button>`;
+      <div class="mensaje-tarjeta apagado">🔒 Signal locked</div>
+      <div class="pista-tarjeta">Read the note at Abandoned base 2</div>
+      <button class="boton-tarjeta" disabled>Download</button>`;
   }
 
   // 3) Conectado → mensaje y botón: el mapa lleva a la zona nueva; el resto, a su cámara
   if (dispositivo.conectado && esMapa) {
     return `
-      <div class="mensaje-tarjeta ok">✓ Mapa descargado</div>
-      <button class="boton-tarjeta" onclick="cambiarMapa('${dispositivo.mapaId}')">Ir a la zona</button>`;
+      <div class="mensaje-tarjeta ok">✓ Map downloaded</div>
+      <button class="boton-tarjeta" onclick="cambiarMapa('${dispositivo.mapaId}')">Go to zone</button>`;
   }
   if (dispositivo.conectado) {
     return `
-      <div class="mensaje-tarjeta ok">✓ Conectado</div>
-      <button class="boton-tarjeta" onclick="verCamara('${dispositivo.id}')">Ver cámara</button>`;
+      <div class="mensaje-tarjeta ok">✓ Connected</div>
+      <button class="boton-tarjeta" onclick="verCamara('${dispositivo.id}')">View camera</button>`;
   }
 
   // 2) Conectando → mensaje de la fase, barra de carga y porcentaje
@@ -64,8 +64,8 @@ function parteInferiorDeTarjeta(dispositivo) {
 
   // 1) Sin conectar → botón Conectar (o Descargar, si es el mapa)
   return `
-    <div class="mensaje-tarjeta apagado">${esMapa ? 'Zona sin explorar' : 'Sin conectar'}</div>
-    <button class="boton-tarjeta" onclick="conectarDispositivo('${dispositivo.id}')">${esMapa ? 'Descargar' : 'Conectar'}</button>`;
+    <div class="mensaje-tarjeta apagado">${esMapa ? 'Unexplored zone' : 'Not connected'}</div>
+    <button class="boton-tarjeta" onclick="conectarDispositivo('${dispositivo.id}')">${esMapa ? 'Download' : 'Connect'}</button>`;
 }
 
 // 10.4 Cambia SOLO la parte de abajo de una tarjeta (no redibuja toda la vista).
@@ -140,7 +140,7 @@ function dibujarListaConectados() {
   const conectados = estado.dispositivos.filter(d => d.conectado && d.tipo !== 'mapa');
 
   if (conectados.length === 0) {
-    lista.innerHTML = '<p class="vacio">Ningún dispositivo conectado. Conéctalos en la pestaña Dispositivos.</p>';
+    lista.innerHTML = '<p class="vacio">No devices connected. Connect them in the Devices tab.</p>';
     return;
   }
 
@@ -153,7 +153,7 @@ function dibujarListaConectados() {
           <div class="fila-nombre">${textoSeguro(dispositivo.nombre)}</div>
           <div class="fila-detalle">${textoSeguro(dispositivo.camara)}</div>
         </div>
-        <button class="boton-ver" onclick="verCamara('${dispositivo.id}')">VER</button>
+        <button class="boton-ver" onclick="verCamara('${dispositivo.id}')">VIEW</button>
       </div>`;
   }
   lista.innerHTML = html;
@@ -178,7 +178,7 @@ function dibujarSelectorCamaras(observador) {
   let html = '';
   for (const camara of obtenerCamarasDisponibles()) {
     // Los astronautas tienen casco; los dispositivos, cámara
-    const tipo = buscarAstronauta(camara.id) ? 'CASCO' : 'CÁM';
+    const tipo = buscarAstronauta(camara.id) ? 'HELMET' : 'CAM';
     const activa = camara.id === observador.id ? 'activa' : '';
     html += `<button class="boton-camara ${activa}" onclick="verCamara('${camara.id}')">${tipo} · ${textoSeguro(camara.nombre)}</button>`;
   }

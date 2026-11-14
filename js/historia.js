@@ -45,14 +45,14 @@ function cerrarNota() {
 // toUpperCase() pasa todo a mayúsculas: así da igual escribir "hollow" o "HOLLOW".
 function introducirCodigo(id) {
   const marcador = buscarMarcador(id);
-  const escrito = prompt('Código de acceso de la ' + marcador.nombre + ':');
+  const escrito = prompt('Access code for ' + marcador.nombre + ':');
   if (escrito === null) return;   // pulsó Cancelar
 
   if (escrito.trim().toUpperCase() === marcador.nota.codigo.toUpperCase()) {
     marcador.nota.desbloqueada = true;
     dibujar();
   } else {
-    alert('Código incorrecto. Búscalo en la nota de la base anterior.');
+    alert('Wrong code. Look for it in the note of the previous base.');
   }
 }
 
@@ -75,17 +75,17 @@ function objetivoActual() {
 
     const mapa = buscarMapa(marcador.mapaId);
     if (!mapa.descargado) {
-      return 'Descarga el mapa de la zona nueva (pestaña Dispositivos)';
+      return 'Download the new zone map (Devices tab)';
     }
     if (marcador.mapaId !== estado.mapaActivo) {
-      return 'Ve a la zona: ' + mapa.info.nombre;
+      return 'Go to the zone: ' + mapa.info.nombre;
     }
     if (!marcador.nota.desbloqueada) {
-      return 'Introduce el código de acceso de la ' + marcador.nombre;
+      return 'Enter the access code for ' + marcador.nombre;
     }
-    return 'Envía un astronauta a la ' + marcador.nombre;
+    return 'Send an astronaut to ' + marcador.nombre;
   }
-  return 'MISIÓN COMPLETADA';
+  return 'MISSION COMPLETE';
 }
 
 // La sección "Misión" del panel del centro de control
@@ -96,10 +96,10 @@ function dibujarBitacora() {
 
   let html = `
     <div class="objetivo ${completada ? 'completado' : ''}">
-      <span class="objetivo-titulo">Objetivo</span>
+      <span class="objetivo-titulo">Objective</span>
       ${textoSeguro(objetivoActual())}
     </div>
-    <div class="progreso-notas">Notas encontradas: ${leidas} / ${notas.length}</div>`;
+    <div class="progreso-notas">Notes found: ${leidas} / ${notas.length}</div>`;
 
   for (const marcador of notas) {
     const nota = marcador.nota;
@@ -108,15 +108,15 @@ function dibujarBitacora() {
     let boton = '';
 
     if (nota.leida) {
-      estadoTexto = '✓ Leída';
-      boton = `<button class="boton-mini" title="Leer" onclick="abrirNota('${marcador.id}')">📄</button>`;
+      estadoTexto = '✓ Read';
+      boton = `<button class="boton-mini" title="Read" onclick="abrirNota('${marcador.id}')">📄</button>`;
     } else if (!mapa.descargado) {
-      estadoTexto = 'Zona sin descargar';
+      estadoTexto = 'Zone not downloaded';
     } else if (!nota.desbloqueada) {
-      estadoTexto = '🔒 Bloqueada';
-      boton = `<button class="boton-mini" title="Introducir código" onclick="introducirCodigo('${marcador.id}')">🔑</button>`;
+      estadoTexto = '🔒 Locked';
+      boton = `<button class="boton-mini" title="Enter code" onclick="introducirCodigo('${marcador.id}')">🔑</button>`;
     } else {
-      estadoTexto = 'Sin leer: envía a un astronauta';
+      estadoTexto = 'Unread: send an astronaut';
     }
 
     html += `
@@ -131,7 +131,7 @@ function dibujarBitacora() {
   }
 
   // Para no mezclar historia con datos reales
-  html += '<p class="aviso-ficcion">Las notas son la historia del juego (ficción). Los datos reales de NASA están en las fichas ⓘ.</p>';
+  html += '<p class="aviso-ficcion">The notes are the story of the game (fiction). The real NASA data is in the ⓘ info cards.</p>';
 
   document.getElementById('bitacora').innerHTML = html;
 }
@@ -150,21 +150,21 @@ function dibujarVentanaNota() {
   let html = '<div class="tarjeta-nota">';
 
   if (nota.final) {
-    html += '<div class="nota-final">MISIÓN COMPLETADA</div>';
+    html += '<div class="nota-final">MISSION COMPLETE</div>';
   }
-  html += `<div class="nota-cabecera">📄 Nota encontrada · ${textoSeguro(marcador.nombre)}</div>`;
+  html += `<div class="nota-cabecera">📄 Note found · ${textoSeguro(marcador.nombre)}</div>`;
   html += `<p class="nota-texto">${textoSeguro(nota.texto)}</p>`;
 
   // El código de la base siguiente (si esa base necesita código)
   const siguiente = buscarMarcador(nota.siguiente);
   if (siguiente && siguiente.nota.codigo) {
-    html += `<div class="nota-codigo">Código de acceso de la ${textoSeguro(siguiente.nombre)}: <strong>${textoSeguro(siguiente.nota.codigo)}</strong></div>`;
+    html += `<div class="nota-codigo">Access code for ${textoSeguro(siguiente.nombre)}: <strong>${textoSeguro(siguiente.nota.codigo)}</strong></div>`;
   }
   if (nota.desbloqueaMapa) {
-    html += '<div class="nota-pista">📡 Ya podéis descargar el mapa de la zona nueva en la pestaña Dispositivos.</div>';
+    html += '<div class="nota-pista">📡 You can now download the new zone map in the Devices tab.</div>';
   }
 
-  html += '<button class="boton-tarjeta" onclick="cerrarNota()">Cerrar (Esc)</button>';
+  html += '<button class="boton-tarjeta" onclick="cerrarNota()">Close (Esc)</button>';
   html += '</div>';
 
   ventana.innerHTML = html;

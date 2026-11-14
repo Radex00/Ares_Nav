@@ -47,11 +47,11 @@ function dibujarBarraHerramientas() {
   // Texto de ayuda según el modo
   const ayuda = document.getElementById('texto-ayuda');
   if (modo === 'interes') {
-    ayuda.textContent = 'Haz clic en el mapa para poner el punto. Para cancelar, pulsa otra vez el botón.';
+    ayuda.textContent = 'Click on the map to place the point. To cancel, press the button again.';
   } else if (modo === 'alerta') {
-    ayuda.textContent = 'Haz clic en el mapa para poner la alerta. Para cancelar, pulsa otra vez el botón.';
+    ayuda.textContent = 'Click on the map to place the alert. To cancel, press the button again.';
   } else {
-    ayuda.textContent = 'Elige + Interés o + Alerta y haz clic en el mapa';
+    ayuda.textContent = 'Choose + Interest or + Alert and click on the map';
   }
 }
 
@@ -100,7 +100,7 @@ function agregarMarcador(tipo, x, y) {
     nombre = document.getElementById('tipo-alerta').value;
   } else {
     const cuantos = marcadoresDelMapa().filter(m => m.tipo === 'interes').length;
-    nombre = 'Punto de interés ' + (cuantos + 1);
+    nombre = 'Point of interest ' + (cuantos + 1);
   }
 
   // El marcador nuevo es del mapa actual y no tiene ficha (no viene de NASA)
@@ -138,7 +138,7 @@ function dibujarListaMarcadores() {
   const lista = document.getElementById('lista-marcadores');
 
   if (marcadoresOrdenados().length === 0) {
-    lista.innerHTML = '<p class="vacio">No hay marcadores. Usa + Interés o + Alerta.</p>';
+    lista.innerHTML = '<p class="vacio">No markers. Use + Interest or + Alert.</p>';
     return;
   }
 
@@ -149,15 +149,15 @@ function dibujarListaMarcadores() {
     // Clase de la fila, símbolo y texto pequeño de debajo del nombre
     let clase = 'fila';
     let simbolo = '◆';
-    let detalle = 'Punto de interés';
+    let detalle = 'Point of interest';
     if (prioridad === 0) {
       clase = 'fila urgente';
       simbolo = '⚠';
-      detalle = 'PRIORIDAD MÁXIMA';
+      detalle = 'TOP PRIORITY';
     } else if (prioridad === 2) {
       clase = 'fila atendida';
       simbolo = '⚠';
-      detalle = 'Alerta atendida ✓';
+      detalle = 'Alert handled ✓';
     }
 
     // La fila del marcador cuya ficha se está viendo se resalta (bloque 4)
@@ -171,9 +171,9 @@ function dibujarListaMarcadores() {
           <div class="fila-nombre">${textoSeguro(marcador.nombre)}</div>
           <div class="fila-detalle">${detalle}</div>
         </div>
-        <button class="boton-mini" title="Ver ficha" onclick="seleccionarMarcador('${marcador.id}')">ⓘ</button>
-        <button class="boton-mini" title="Renombrar" onclick="renombrarMarcador('${marcador.id}')">✎</button>
-        <button class="boton-mini" title="Borrar" onclick="borrarMarcador('${marcador.id}')">✕</button>
+        <button class="boton-mini" title="Info" onclick="seleccionarMarcador('${marcador.id}')">ⓘ</button>
+        <button class="boton-mini" title="Rename" onclick="renombrarMarcador('${marcador.id}')">✎</button>
+        <button class="boton-mini" title="Delete" onclick="borrarMarcador('${marcador.id}')">✕</button>
       </div>`;
   }
   lista.innerHTML = html;
@@ -185,7 +185,7 @@ function renombrarMarcador(id) {
   if (!marcador) return;
 
   // prompt() devuelve el texto escrito, o null si se pulsa Cancelar
-  const nuevoNombre = prompt('Nuevo nombre del marcador:', marcador.nombre);
+  const nuevoNombre = prompt('New marker name:', marcador.nombre);
   if (nuevoNombre === null) return;
 
   // trim() quita los espacios de los lados. Si queda vacío, no cambiamos nada.
@@ -292,13 +292,13 @@ function dibujarInfoMapa() {
 
   // Cada fila: [nombre del dato, valor]
   const filas = [
-    ['Lugar', info.nombre],
-    ['Misión', info.mision],
-    ['Instrumento', info.instrumento],
-    ['Fecha', info.fecha],
-    ['Coordenadas', info.coordenadas],
-    ['Tamaño', info.tamano],
-    ['Crédito', info.credito]
+    ['Place', info.nombre],
+    ['Mission', info.mision],
+    ['Instrument', info.instrumento],
+    ['Date', info.fecha],
+    ['Coordinates', info.coordenadas],
+    ['Size', info.tamano],
+    ['Credit', info.credito]
   ];
 
   // Botones para saltar entre las zonas ya descargadas (si hay más de una)
@@ -321,7 +321,7 @@ function dibujarInfoMapa() {
   }
   if (info.enlace !== '') {
     // target="_blank" abre el enlace en otra pestaña
-    html += `<dt>Fuente</dt><dd><a href="${textoSeguro(info.enlace)}" target="_blank" rel="noopener">Ver imagen original</a></dd>`;
+    html += `<dt>Source</dt><dd><a href="${textoSeguro(info.enlace)}" target="_blank" rel="noopener">View original image</a></dd>`;
   }
   html += '</dl>';
 
@@ -375,7 +375,7 @@ function dibujarFichaMarcador() {
   const marcador = buscarMarcador(estado.marcadorSeleccionado);
 
   if (!marcador) {
-    caja.innerHTML = '<p class="vacio">Pulsa ⓘ en un marcador, o haz clic sobre él en el mapa, para ver su ficha.</p>';
+    caja.innerHTML = '<p class="vacio">Press ⓘ on a marker, or click it on the map, to see its info.</p>';
     return;
   }
 
@@ -383,17 +383,17 @@ function dibujarFichaMarcador() {
 
   if (marcador.tipo === 'nota') {
     // Historia: una base abierta que nadie ha visitado todavía
-    html += '<p class="ficha-texto">Base abandonada de la expedición anterior. Envía un astronauta hasta aquí para leer su nota.</p>';
+    html += '<p class="ficha-texto">Abandoned base of the previous expedition. Send an astronaut here to read its note.</p>';
   } else if (marcador.ficha) {
     html += `<p class="ficha-texto">${textoSeguro(marcador.ficha.texto)}</p>`;
-    html += '<div class="ficha-fuentes">Fuentes:<ul>';
+    html += '<div class="ficha-fuentes">Sources:<ul>';
     for (const fuente of marcador.ficha.fuentes) {
       html += `<li><a href="${textoSeguro(fuente.enlace)}" target="_blank" rel="noopener">${textoSeguro(fuente.texto)}</a></li>`;
     }
     html += '</ul></div>';
   } else {
     // Los marcadores que pone el equipo no traen datos de NASA
-    html += '<p class="ficha-texto">Marcador puesto por el centro de control. No tiene datos de NASA.</p>';
+    html += '<p class="ficha-texto">Marker placed by the control center. It has no NASA data.</p>';
   }
 
   caja.innerHTML = html;
@@ -436,7 +436,7 @@ function destinosPosibles() {
 function opcionesDeDestino(astronauta) {
   const destinos = destinosPosibles();
   if (destinos.length === 0) {
-    return '<option value="">No hay destinos</option>';
+    return '<option value="">No destinations</option>';
   }
 
   let html = '';
@@ -462,17 +462,17 @@ function textoEstadoAstronauta(astronauta) {
   if (astronauta.destinoId !== null) {
     const destino = buscarMarcador(astronauta.destinoId);
     if (destino) {
-      return 'En ruta a ' + destino.nombre;
+      return 'On the way to ' + destino.nombre;
     }
   }
   if (astronauta.lugarId === null) {
-    return 'En la base';
+    return 'At base';
   }
   const lugar = buscarMarcador(astronauta.lugarId);
   if (!lugar) {
-    return 'En terreno abierto';   // el marcador donde estaba se borró
+    return 'In open terrain';   // el marcador donde estaba se borró
   }
-  return 'En ' + lugar.nombre;
+  return 'At ' + lugar.nombre;
 }
 
 // Color del oxígeno: verde si hay mucho, naranja si baja, rojo si queda poco
@@ -503,7 +503,7 @@ function dibujarListaAstronautas() {
           <select onchange="elegirDestino('${astronauta.id}', this.value)" ${apagado}>
             ${opcionesDeDestino(astronauta)}
           </select>
-          <button class="boton-desplegar" onclick="desplegarAstronauta('${astronauta.id}')" ${apagado}>Desplegar</button>
+          <button class="boton-desplegar" onclick="desplegarAstronauta('${astronauta.id}')" ${apagado}>Deploy</button>
         </div>
       </div>`;
   }
