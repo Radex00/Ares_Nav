@@ -75,13 +75,6 @@ body {
   display: none !important;
 }
 
-/* Texto temporal de las vistas vacías (se borra cuando cada vista tenga contenido) */
-.aviso-vacio {
-  margin: 40px;
-  font-family: var(--letra-pantalla);
-  color: var(--color-texto-suave);
-}
-
 /* =========================================================
    1.6 BARRA SUPERIOR Y PESTAÑAS
    ========================================================= */
@@ -814,6 +807,122 @@ body {
 }
 #minimapa.ampliado .etiqueta {
   display: block;
+}
+
+/* =========================================================
+   BLOQUE 10 · DISPOSITIVOS
+   ========================================================= */
+
+/* Esta vista sí puede bajar con la rueda si no cabe todo */
+#vista-dispositivos {
+  overflow-y: auto;
+  padding: 28px 32px;
+}
+
+.titulo-dispositivos {
+  margin: 0 0 6px;
+  font-family: var(--letra-pantalla);
+  font-weight: normal;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--color-interes);
+}
+
+.texto-dispositivos {
+  max-width: 640px;
+  margin: 0 0 24px;
+  line-height: 1.5;
+  color: var(--color-texto-suave);
+}
+
+/* 10.6 Las tarjetas en una cuadrícula: caben tantas como permita el ancho,
+   cada una de 260 px como mínimo */
+#tarjetas-dispositivos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+  max-width: 900px;
+}
+
+.tarjeta-dispositivo {
+  padding: 18px;
+  text-align: center;
+  background: var(--color-panel);
+  border: 1px solid var(--color-borde);
+  border-radius: 10px;
+}
+
+/* Tarjeta conectada: borde de color y brillo */
+.tarjeta-dispositivo.conectado {
+  border-color: var(--color-ok);
+  box-shadow: 0 0 18px rgba(94, 227, 138, 0.25);
+}
+
+.tarjeta-dispositivo img {
+  width: 100%;
+  max-width: 220px;
+}
+
+.tarjeta-dispositivo h3 {
+  margin: 8px 0 2px;
+  font-size: 18px;
+}
+
+.tipo-dispositivo {
+  margin: 0 0 14px;
+  font-size: 13px;
+  color: var(--color-texto-suave);
+}
+
+/* La parte de abajo tiene siempre la misma altura, para que la tarjeta no salte */
+.parte-inferior {
+  min-height: 72px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+.mensaje-tarjeta {
+  font-family: var(--letra-pantalla);
+  font-size: 13px;
+  color: var(--color-interes);
+}
+.mensaje-tarjeta.ok      { color: var(--color-ok); font-weight: bold; }
+.mensaje-tarjeta.apagado { color: var(--color-texto-suave); }
+
+/* La barra de carga: un fondo gris y un relleno que crece */
+.barra-carga {
+  height: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  overflow: hidden;
+}
+.relleno-carga {
+  height: 100%;
+  background: var(--color-interes);
+  box-shadow: 0 0 10px var(--color-interes);
+}
+
+.porcentaje-carga {
+  font-family: var(--letra-pantalla);
+  font-size: 12px;
+  color: var(--color-texto-suave);
+}
+
+.boton-tarjeta {
+  align-self: center;
+  font-family: var(--letra-pantalla);
+  font-size: 14px;
+  color: var(--color-fondo);
+  background: var(--color-interes);
+  border: none;
+  border-radius: var(--radio);
+  padding: 8px 22px;
+  cursor: pointer;
+}
+.boton-tarjeta:hover {
+  filter: brightness(1.15);   /* un poco más claro al pasar el ratón */
 }
 
 /* "Sobre este mapa": una lista de dato → valor */
