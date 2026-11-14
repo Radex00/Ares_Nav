@@ -24,6 +24,8 @@
   --color-peligro: #ff4d5e;      /* rojo: prioridad máxima */
   --color-ok: #5ee38a;           /* verde: conectado o atendido */
   --color-marte: #c8582f;        /* óxido de Marte, para el logo */
+  --color-astronauta: #f2f5f7;   /* blanco: astronautas */
+  --color-dispositivo: #b48cff;  /* violeta: rover y dron */
 
   /* Letras: fuentes que ya vienen en el ordenador, no hay que descargar nada */
   --letra-normal: "Segoe UI", Roboto, Arial, sans-serif;
@@ -144,4 +146,271 @@ body {
   font-size: 18px;
   letter-spacing: 2px;
   color: var(--color-ok);
+}
+
+/* =========================================================
+   BLOQUE 5 · CENTRO DE CONTROL
+   ========================================================= */
+
+/* 5.4 La vista se parte en dos columnas: mapa (lo que sobre) | panel (380 px).
+   Ojo: este id gana a la clase .oculta. Por eso .oculta lleva !important. */
+#vista-control {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+}
+
+/* Columna izquierda: herramientas arriba y mapa debajo */
+.zona-mapa {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;        /* deja que la columna se encoja si la pantalla es pequeña */
+}
+
+/* ----- Barra de herramientas ----- */
+.barra-herramientas {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.boton-herramienta,
+#tipo-alerta {
+  font-family: var(--letra-pantalla);
+  font-size: 13px;
+  color: var(--color-texto);
+  background: var(--color-panel);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+/* Cada botón lleva el color de lo que crea */
+.boton-herramienta.interes { border-color: var(--color-interes); color: var(--color-interes); }
+.boton-herramienta.alerta  { border-color: var(--color-alerta);  color: var(--color-alerta); }
+
+#texto-ayuda {
+  font-size: 13px;
+  color: var(--color-texto-suave);
+}
+
+/* ----- El mapa ----- */
+
+/* El contenedor ocupa el resto de la columna. Si el mapa no cabe, sale una barra para bajar. */
+.contenedor-mapa {
+  flex: 1;
+  overflow: auto;
+  padding: 16px;
+}
+
+/* 5.1 y 5.4 El mapa.
+   aspect-ratio mantiene la forma de la imagen (ancho : alto).
+   Si la imagen real no es 16:10, se cambia aquí (bloque 4.3). */
+.mapa {
+  position: relative;          /* las capas se colocan encima con position: absolute */
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  overflow: hidden;
+
+  /* ---- MAPA PROVISIONAL (se borra en el bloque 4) ----
+     Color de Marte con una cuadrícula cada 10 % */
+  background-color: #4a2617;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 10% 10%;
+
+  /* ---- MAPA REAL (bloque 4): borrar lo de arriba y quitar los comentarios ----
+  background-image: url('../img/mapa.jpg');
+  background-size: 100% 100%;   así cada % del mapa coincide con el % de la imagen
+  */
+}
+
+/* Aviso para que nadie confunda la cuadrícula con datos reales (se borra en el bloque 4) */
+.mapa::after {
+  content: 'MAPA PROVISIONAL · se cambia por el mapa real de NASA en el bloque 4';
+  position: absolute;
+  left: 10px;
+  bottom: 8px;
+  font-family: var(--letra-pantalla);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* Las dos capas tapan el mapa entero, una encima de otra */
+#rutas,
+#capa-mapa {
+  position: absolute;
+  inset: 0;                    /* top, right, bottom y left = 0 */
+  width: 100%;
+  height: 100%;
+}
+
+#rutas {
+  pointer-events: none;        /* las líneas no "atrapan" los clics */
+}
+
+/* ----- Panel derecho (las filas se diseñan en el bloque 7.1) ----- */
+.panel {
+  overflow-y: auto;            /* si hay muchas cosas, el panel baja con la rueda */
+  background: var(--color-panel);
+  border-left: 1px solid var(--color-borde);
+}
+
+.seccion-panel {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.seccion-panel h2 {
+  margin: 0 0 10px;
+  font-family: var(--letra-pantalla);
+  font-size: 13px;
+  font-weight: normal;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--color-texto-suave);
+}
+
+.vacio {
+  margin: 0;
+  font-size: 13px;
+  color: var(--color-texto-suave);
+  font-style: italic;
+}
+
+/* "Sobre este mapa": una lista de dato → valor */
+#info-mapa dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;   /* columna del nombre | columna del valor */
+  gap: 4px 10px;
+  font-size: 13px;
+}
+#info-mapa dt { color: var(--color-texto-suave); }
+#info-mapa dd { margin: 0; }
+#info-mapa a  { color: var(--color-interes); }
+#info-mapa p  { margin: 10px 0 0; font-size: 13px; line-height: 1.4; }
+
+/* =========================================================
+   5.5 LO QUE VA SOBRE EL MAPA
+   Cada cosa es un "ancla" de tamaño 0 colocada en su x % y su y %.
+   Sus partes (icono, etiqueta, flecha) se centran alrededor del ancla.
+   ========================================================= */
+.en-mapa {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+/* El dibujo (rombo, triángulo, círculo o cuadrado) */
+.en-mapa .icono {
+  position: absolute;
+  left: -7px;                  /* la mitad de 14 px: así queda centrado */
+  top: -7px;
+  width: 14px;
+  height: 14px;
+}
+
+/* El nombre, a la derecha del dibujo */
+.en-mapa .etiqueta {
+  position: absolute;
+  left: 13px;
+  top: -9px;
+  white-space: nowrap;         /* el nombre no se parte en dos líneas */
+  font-family: var(--letra-pantalla);
+  font-size: 12px;
+  color: var(--color-texto);
+  background: rgba(10, 14, 19, 0.75);   /* fondo oscuro para leerlo sobre la foto */
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+/* Rombo cian: punto de interés (un cuadrado girado 45°) */
+.marcador.interes .icono {
+  background: var(--color-interes);
+  transform: rotate(45deg);
+  box-shadow: 0 0 8px var(--color-interes);   /* brillo */
+}
+
+/* Triángulo naranja: alerta.
+   clip-path recorta el cuadrado y deja solo un triángulo
+   (punta arriba en el centro, abajo a la derecha, abajo a la izquierda) */
+.marcador.alerta .icono {
+  left: -9px;
+  top: -9px;
+  width: 18px;
+  height: 16px;
+  background: var(--color-alerta);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+/* Anillo que late alrededor de la alerta.
+   ::before es un elemento "de mentira" que el CSS añade sin tocar el HTML. */
+.marcador.alerta::before {
+  content: '';
+  position: absolute;
+  left: -16px;
+  top: -16px;
+  width: 32px;
+  height: 32px;
+  border: 2px solid var(--color-alerta);
+  border-radius: 50%;
+  animation: latido 1.4s ease-out infinite;
+}
+
+/* El anillo crece y se desvanece, una y otra vez */
+@keyframes latido {
+  from { transform: scale(0.5); opacity: 1; }
+  to   { transform: scale(1.6); opacity: 0; }
+}
+
+/* Alerta atendida (bloque 7): gris y sin latido */
+.marcador.alerta.atendida .icono { background: var(--color-texto-suave); }
+.marcador.alerta.atendida::before { display: none; }
+.marcador.atendida .etiqueta { color: var(--color-texto-suave); }
+
+/* Círculo blanco: astronauta */
+.astronauta .icono {
+  background: var(--color-astronauta);
+  border: 2px solid var(--color-fondo);
+  border-radius: 50%;
+}
+
+/* Flecha de rumbo del astronauta: una caja de 36 px centrada en el ancla.
+   Al girar la caja (rotate en el HTML), el triangulito de arriba apunta al rumbo. */
+.astronauta .flecha {
+  position: absolute;
+  left: -18px;
+  top: -18px;
+  width: 36px;
+  height: 36px;
+  z-index: 1;                  /* por encima de la etiqueta, para que nunca quede tapada */
+}
+.astronauta .flecha::before {
+  content: '';
+  position: absolute;
+  left: 13px;                  /* (36 − 10) / 2: centrado */
+  top: 0;
+  width: 10px;
+  height: 8px;
+  background: var(--color-astronauta);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+/* Cuadrado violeta: dispositivo conectado (rover o dron) */
+.dispositivo .icono {
+  background: var(--color-dispositivo);
+  border: 2px solid var(--color-fondo);
+  border-radius: 2px;
+}
+
+/* Elemento resaltado (por ejemplo, quien mira en el minimapa del bloque 9) */
+.en-mapa.resaltado .icono {
+  outline: 2px solid var(--color-ok);
+  outline-offset: 3px;
 }

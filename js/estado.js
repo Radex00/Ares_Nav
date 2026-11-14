@@ -76,7 +76,7 @@ const estado = {
   // destinoId: el id del marcador al que camina (null = está quieto).
   astronautas: [
     { id: 'a1', nombre: 'Vega', x: 50, y: 60, rumbo: 0, oxigeno: 100, destinoId: null },
-    { id: 'a2', nombre: 'Ríos', x: 52, y: 62, rumbo: 0, oxigeno: 100, destinoId: null }
+    { id: 'a2', nombre: 'Ríos', x: 48, y: 65, rumbo: 0, oxigeno: 100, destinoId: null }
   ],
 
   // tipo: 'rover' o 'dron' (coincide con el nombre de su imagen: img/rover.svg, img/dron.svg).
@@ -84,12 +84,12 @@ const estado = {
   dispositivos: [
     {
       id: 'd1', tipo: 'rover', nombre: 'Rover R-1', camara: 'Cámara de navegación',
-      x: 48, y: 64, rumbo: 90,
+      x: 44, y: 70, rumbo: 90,
       conectado: false, conectando: false, progreso: 0, mensaje: ''
     },
     {
       id: 'd2', tipo: 'dron', nombre: 'Dron D-1', camara: 'Cámara inferior',
-      x: 54, y: 58, rumbo: 0,
+      x: 56, y: 55, rumbo: 0,
       conectado: false, conectando: false, progreso: 0, mensaje: ''
     }
   ]
