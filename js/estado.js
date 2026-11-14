@@ -123,6 +123,91 @@ function buscarObservador() {
 }
 
 // =========================================================
+// BLOQUE 3 · MATEMÁTICA DE NAVEGACIÓN
+// "desde" y "hasta" son cualquier cosa con x e y en porcentaje:
+// un astronauta, un marcador, un dispositivo...
+//
+// Cuidado con el eje y: en la pantalla, y CRECE HACIA ABAJO.
+// Abajo del mapa es el sur y arriba es el norte.
+// =========================================================
+
+// 3.1 Distancia en metros entre dos puntos (teorema de Pitágoras)
+function distanciaEnMetros(desde, hasta) {
+  // Pasamos la diferencia de porcentaje a metros en cada eje.
+  // Hay que hacerlo ANTES de Pitágoras porque el mapa no es cuadrado:
+  // 1 % de ancho (40 m) no mide lo mismo que 1 % de alto (25 m).
+  const metrosX = (hasta.x - desde.x) * METROS_POR_PUNTO_X;
+  const metrosY = (hasta.y - desde.y) * METROS_POR_PUNTO_Y;
+
+  // Hipotenusa = raíz cuadrada de (a² + b²)
+  return Math.sqrt(metrosX * metrosX + metrosY * metrosY);
+}
+
+// 3.2 Deja cualquier ángulo entre 0 y 360 (sin llegar a 360).
+// Ejemplos: -10 → 350,  370 → 10,  720 → 0.
+function normalizarAngulo(grados) {
+  while (grados < 0) {
+    grados = grados + 360;
+  }
+  while (grados >= 360) {
+    grados = grados - 360;
+  }
+  return grados;
+}
+
+// 3.3 Rumbo para ir de "desde" a "hasta", como en una brújula:
+// 0 = norte, 90 = este, 180 = sur, 270 = oeste.
+function anguloHacia(desde, hasta) {
+  // Cuántos metros hay que ir hacia el este (positivo) o el oeste (negativo)
+  const haciaEste = (hasta.x - desde.x) * METROS_POR_PUNTO_X;
+  // Cuántos metros hacia el norte. Va al revés (desde − hasta)
+  // porque en la pantalla y crece hacia abajo, o sea, hacia el sur.
+  const haciaNorte = (desde.y - hasta.y) * METROS_POR_PUNTO_Y;
+
+  // Math.atan2 devuelve el ángulo en radianes.
+  // En clase de mates el ángulo se mide desde el este y girando a la izquierda,
+  // pero la brújula lo mide desde el norte y girando a la derecha.
+  // Por eso le pasamos (este, norte) en vez del orden normal (y, x).
+  const radianes = Math.atan2(haciaEste, haciaNorte);
+
+  // Radianes → grados: una vuelta son 2π radianes o 360 grados
+  const grados = radianes * 180 / Math.PI;
+
+  // atan2 puede dar números negativos (por ejemplo, -90 para el oeste)
+  return normalizarAngulo(grados);
+}
+
+// 3.4 Distancia bonita para la pantalla: "850 m" o "1,2 km"
+function formatearDistancia(metros) {
+  const redondeado = Math.round(metros);
+  if (redondeado < 1000) {
+    return redondeado + ' m';
+  }
+  // toFixed(1) deja un decimal ("1.2"); luego cambiamos el punto por coma
+  const kilometros = (metros / 1000).toFixed(1);
+  return kilometros.replace('.', ',') + ' km';
+}
+
+// 3.5 Cambia los símbolos peligrosos por sus códigos de HTML.
+// Así, si alguien llama a un marcador "<b>Base</b>", se ve el texto tal cual
+// y no se rompe la página. Se usa siempre que metemos un nombre en el HTML.
+function textoSeguro(texto) {
+  return String(texto)
+    .replaceAll('&', '&amp;')   // el & va PRIMERO: los otros códigos también llevan &
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;');
+}
+
+// 3.6 PRUEBAS · Escríbelas en la consola del navegador (F12 › Console).
+// Solo valen con el mapa de prueba de 4000 × 2500 m.
+//   anguloHacia({x: 50, y: 50}, {x: 50, y: 40})    → 0
+//   anguloHacia({x: 50, y: 50}, {x: 60, y: 50})    → 90
+//   distanciaEnMetros({x: 0, y: 0}, {x: 10, y: 0}) → 400
+//   formatearDistancia(1240)                       → "1,2 km"
+//   normalizarAngulo(-10)                          → 350
+
+// =========================================================
 // 2.5 CAMBIO DE VISTAS Y DIBUJO
 // =========================================================
 
