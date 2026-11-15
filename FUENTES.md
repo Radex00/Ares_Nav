@@ -135,6 +135,7 @@ Estos números no vienen escritos en ninguna fuente: los calculamos nosotros con
 |---|---|---|
 | `img/rover.svg` | Dibujo del rover R-1 | Claude (Anthropic) |
 | `img/dron.svg` | Dibujo del dron D-1 | Claude (Anthropic) |
+| `img/rick.svg` | Retrato de Rick, el ingeniero de la tripulación perdida (sale en la ventana de la bitácora). El parche del hombro es un dibujo propio, no un logo de NASA | Claude (Anthropic) |
 
 Hasta la tarea 4.6 se usó un horizonte provisional dibujado con IA (`img/horizonte-provisional.svg`, con su marca). Se cambió por el panorama real de InSight [13] y ya no está en el proyecto (queda en el historial de Git).
 
@@ -150,7 +151,7 @@ Las postdatas de guía (P.S.) del final de las bitácoras 1 a 4 se escribieron c
 
 ## 7. Herramientas
 
-- **Claude Opus 5.5 (Anthropic), usado desde Claude Code:** ayuda para escribir el código y para buscar y comprobar fuentes. Cada archivo de código empieza con un comentario que lo dice. También dibujó el rover y el dron (sección 6), corrigió la ortografía de las bitácoras del equipo y las tradujo al inglés (los textos son del equipo; ver `HISTORIA.md`).
+- **Claude Opus 5.5 (Anthropic), usado desde Claude Code:** ayuda para escribir el código y para buscar y comprobar fuentes. Cada archivo de código empieza con un comentario que lo dice. También dibujó el rover, el dron y a Rick (sección 6), corrigió la ortografía de las bitácoras del equipo y las tradujo al inglés (los textos son del equipo; ver `HISTORIA.md`).
 - **Python con la librería Pillow:** edición de imágenes. Recorte del mapa de HiRISE de 2018, su miniatura y el horizonte de 360° a partir del panorama de InSight (ver secciones 3 y 5).
 - **Google Chrome (modo headless):** pruebas automáticas. Carga la página sin ventana y comprueba que todo funcione, también en tres tamaños de pantalla.
 - **Voicebox** (https://github.com/jamiepine/voicebox), programa gratuito que funciona en el ordenador, **con el modelo de voz Kokoro** (https://huggingface.co/hexgrad/Kokoro-82M): la voz de IA de las bitácoras. Su transcripción con Whisper sirvió para comprobar la pronunciación.

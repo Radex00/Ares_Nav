@@ -136,6 +136,7 @@ These numbers are not written in any source: we calculated them from data in the
 |---|---|---|
 | `img/rover.svg` | Drawing of the R-1 rover | Claude (Anthropic) |
 | `img/dron.svg` | Drawing of the D-1 drone | Claude (Anthropic) |
+| `img/rick.svg` | Portrait of Rick, the engineer of the lost crew (shown in the log window). The shoulder patch is our own drawing, not a NASA logo | Claude (Anthropic) |
 
 Until task 4.6, a temporary AI-drawn horizon was used (`img/horizonte-provisional.svg`, with its watermark). It was replaced by the real InSight panorama [13] and is no longer in the project (it remains in the Git history).
 
@@ -151,7 +152,7 @@ The guide P.S. lines at the end of logs 1–4 were written with AI help (Claude)
 
 ## 7. Tools
 
-- **Claude Opus 5.5 (Anthropic), used through Claude Code:** help writing the code and finding and checking sources. Every code file starts with a comment that says so. It also drew the rover and the drone (section 6), corrected the spelling of the team's logs and translated them into English (the texts are the team's; see `HISTORIA.md`).
+- **Claude Opus 5.5 (Anthropic), used through Claude Code:** help writing the code and finding and checking sources. Every code file starts with a comment that says so. It also drew the rover, the drone and Rick (section 6), corrected the spelling of the team's logs and translated them into English (the texts are the team's; see `HISTORIA.md`).
 - **Python with the Pillow library:** image editing. Cropping the 2018 HiRISE map, making its thumbnail, and building the 360° horizon from the InSight panorama (see sections 3 and 5).
 - **Google Chrome (headless mode):** automatic tests. It loads the page with no window and checks that everything works, including at three screen sizes.
 - **Voicebox** (https://github.com/jamiepine/voicebox), a free app that runs on the computer, **with the Kokoro voice model** (https://huggingface.co/hexgrad/Kokoro-82M): the AI voice of the logs. Its Whisper transcription was used to check the pronunciation.

@@ -41,6 +41,13 @@ function cerrarNota() {
   dibujar();
 }
 
+// Mientras suena la voz, el retrato de Rick brilla (como un intercomunicador encendido).
+// toggle(clase, true) pone la clase y toggle(clase, false) la quita.
+function rickHabla(hablando) {
+  const retrato = document.querySelector('.retrato-rick');
+  if (retrato) retrato.classList.toggle('hablando', hablando);
+}
+
 // Pide el código de una base bloqueada y, si es el bueno, la abre.
 // toUpperCase() pasa todo a mayúsculas: así da igual escribir "hollow" o "HOLLOW".
 function introducirCodigo(id) {
@@ -160,17 +167,25 @@ function dibujarVentanaNota() {
   if (nota.final) {
     html += '<div class="nota-final">MISSION COMPLETE</div>';
   }
+  // Parte de arriba: a la izquierda el título y la voz, a la derecha el retrato de Rick
+  html += '<div class="nota-arriba"><div class="nota-arriba-izquierda">';
   html += `<div class="nota-cabecera">📄 Log found · ${textoSeguro(marcador.nombre)}</div>`;
 
   // La voz de Rick (autoplay: empieza sola). Va arriba para que se vea sin bajar.
   // La guía de Space Apps pide decir que el audio está hecho con IA.
+  // onplay / onpause / onended: el retrato brilla solo mientras suena la voz.
   if (nota.audio) {
     html += `
       <div class="nota-audio">
-        <audio controls autoplay src="${nota.audio}"></audio>
+        <audio controls autoplay src="${nota.audio}"
+               onplay="rickHabla(true)" onpause="rickHabla(false)" onended="rickHabla(false)"></audio>
         <span class="aviso-ia">🔊 AI-generated voice</span>
       </div>`;
   }
+  html += '</div>';   // fin de la parte izquierda
+  // El retrato (dibujo hecho con IA: lleva la marca "AI-generated" dentro de la imagen)
+  html += '<img class="retrato-rick" src="img/rick.svg" alt="Rick, the engineer of the lost crew (AI-generated drawing)">';
+  html += '</div>';   // fin de la parte de arriba
 
   html += `<p class="nota-texto">${textoSeguro(nota.texto)}</p>`;
 

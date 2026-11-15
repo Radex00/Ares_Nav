@@ -1195,6 +1195,34 @@ body {
   font-size: 14px;
   color: var(--color-interes);
 }
+/* Parte de arriba de la bitácora: título y voz a la izquierda, Rick a la derecha */
+.nota-arriba {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+.nota-arriba-izquierda {
+  flex: 1;
+  min-width: 0;                        /* deja que el reproductor se encoja si hace falta */
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.retrato-rick {
+  width: 120px;
+  flex-shrink: 0;                      /* el retrato no se aplasta */
+  border-radius: 12px;
+  transition: box-shadow 0.3s;
+}
+/* Mientras habla, el marco brilla en amarillo (sube y baja cada 1,2 s) */
+.retrato-rick.hablando {
+  animation: rick-habla 1.2s ease-in-out infinite;
+}
+@keyframes rick-habla {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 211, 77, 0); }
+  50%      { box-shadow: 0 0 16px 4px rgba(255, 211, 77, 0.6); }
+}
+
 /* La voz de la bitácora: reproductor y aviso de que la voz está hecha con IA */
 .nota-audio {
   display: flex;

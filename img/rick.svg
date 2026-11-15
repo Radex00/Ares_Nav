@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 180">
+  <!-- ARES NAV · Retrato de Rick, el ingeniero de la tripulación perdida (personaje del equipo).
+       Dibujo hecho por IA (Claude, de Anthropic). Lleva la marca "AI-generated".
+       Sin logos ni marcas de NASA: el parche del hombro es un dibujo propio (Marte con su órbita). -->
+
+  <defs>
+    <!-- Cielo de Marte al atardecer: oscuro arriba, color óxido abajo -->
+    <linearGradient id="cielo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#151c26"/>
+      <stop offset="0.6" stop-color="#4a2c22"/>
+      <stop offset="1" stop-color="#9a4b2b"/>
+    </linearGradient>
+    <!-- Recorte para que nada se salga del marco redondeado -->
+    <clipPath id="marco">
+      <rect width="160" height="180" rx="12"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#marco)">
+    <!-- Fondo -->
+    <rect width="160" height="180" fill="url(#cielo)"/>
+    <!-- Colinas lejanas -->
+    <path d="M0 132 Q30 120 58 128 T112 124 T160 130 V180 H0 Z" fill="#6e3a24" opacity="0.8"/>
+
+    <!-- Cuerpo del traje (hombros) -->
+    <path d="M6 180 Q8 140 46 130 L114 130 Q152 140 154 180 Z" fill="#d9dee3" stroke="#5b6670" stroke-width="2"/>
+    <!-- Franjas amarillas en los brazos (el color de las notas en la página) -->
+    <path d="M18 152 Q24 140 38 135" fill="none" stroke="#ffd34d" stroke-width="4" stroke-linecap="round"/>
+    <path d="M142 152 Q136 140 122 135" fill="none" stroke="#ffd34d" stroke-width="4" stroke-linecap="round"/>
+
+    <!-- Parche del hombro: Marte con su órbita (dibujo propio) -->
+    <circle cx="44" cy="151" r="8" fill="#c8582f" stroke="#2b3138" stroke-width="1.5"/>
+    <ellipse cx="44" cy="151" rx="12" ry="3.5" fill="none" stroke="#3fd6e8" stroke-width="1.5" transform="rotate(-20 44 151)"/>
+
+    <!-- Caja de control del pecho, con luces -->
+    <rect x="62" y="142" width="36" height="22" rx="3" fill="#2b3138" stroke="#5b6670" stroke-width="1.5"/>
+    <circle cx="70" cy="150" r="2.6" fill="#3fd6e8"/>
+    <circle cx="78" cy="150" r="2.6" fill="#ffd34d"/>
+    <circle cx="86" cy="150" r="2.6" fill="#5ee38a"/>
+    <rect x="67" y="156" width="26" height="3" rx="1.5" fill="#7d92a3"/>
+
+    <!-- Placa con el nombre -->
+    <rect x="106" y="140" width="32" height="12" rx="2" fill="#2b3138"/>
+    <text x="122" y="149" text-anchor="middle" font-family="monospace" font-size="8" font-weight="bold" fill="#ffd34d">RICK</text>
+
+    <!-- Anillo del cuello, donde se engancha el casco -->
+    <ellipse cx="80" cy="128" rx="38" ry="9" fill="#9aa6b2" stroke="#5b6670" stroke-width="2"/>
+    <ellipse cx="80" cy="126" rx="30" ry="5" fill="none" stroke="#3fd6e8" stroke-width="1.5"/>
+
+    <!-- CARA (dentro del casco) -->
+    <!-- Cuello -->
+    <rect x="70" y="98" width="20" height="22" fill="#c98e68"/>
+    <!-- Orejas -->
+    <ellipse cx="57" cy="80" rx="5" ry="7" fill="#d9a07a"/>
+    <ellipse cx="103" cy="80" rx="5" ry="7" fill="#d9a07a"/>
+    <!-- Cabeza -->
+    <ellipse cx="80" cy="78" rx="23" ry="27" fill="#e0ac85"/>
+    <!-- Barba de pocos días -->
+    <path d="M58 82 Q60 104 80 106 Q100 104 102 82 Q96 96 80 97 Q64 96 58 82 Z" fill="#5a3d2b" opacity="0.22"/>
+    <!-- Pelo corto -->
+    <path d="M56 74 Q54 50 80 49 Q106 50 104 74 Q100 62 92 60 Q82 64 70 60 Q60 62 56 74 Z" fill="#4a3426"/>
+    <!-- Cejas -->
+    <path d="M65 69 Q70 66 75 68" fill="none" stroke="#4a3426" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M85 68 Q90 66 95 69" fill="none" stroke="#4a3426" stroke-width="2.4" stroke-linecap="round"/>
+    <!-- Ojos -->
+    <ellipse cx="70" cy="76" rx="2.8" ry="3.2" fill="#2b2b2b"/>
+    <ellipse cx="90" cy="76" rx="2.8" ry="3.2" fill="#2b2b2b"/>
+    <circle cx="71" cy="75" r="0.9" fill="#ffffff"/>
+    <circle cx="91" cy="75" r="0.9" fill="#ffffff"/>
+    <!-- Nariz -->
+    <path d="M80 75 Q79 80 79 84" fill="none" stroke="#b07a58" stroke-width="1.4" stroke-linecap="round" opacity="0.6"/>
+    <path d="M76 86 Q80 89 84 86" fill="none" stroke="#b07a58" stroke-width="1.6" stroke-linecap="round"/>
+    <!-- Boca: media sonrisa cansada -->
+    <path d="M72 95 Q80 99 88 94" fill="none" stroke="#8a4f3a" stroke-width="2" stroke-linecap="round"/>
+
+    <!-- Micrófono del intercomunicador (con él graba las bitácoras) -->
+    <path d="M103 86 Q103 98 96 101" fill="none" stroke="#2b3138" stroke-width="2.2" stroke-linecap="round"/>
+    <circle cx="95" cy="101" r="2.6" fill="#2b3138"/>
+
+    <!-- CASCO: burbuja transparente con brillos -->
+    <circle cx="80" cy="76" r="47" fill="#9fd8e6" fill-opacity="0.12" stroke="#d9dee3" stroke-width="4"/>
+    <path d="M45 58 A40 40 0 0 1 72 34" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity="0.55"/>
+    <path d="M42 70 A40 40 0 0 1 44 64" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity="0.45"/>
+    <!-- Luz del casco -->
+    <rect x="110" y="40" width="12" height="8" rx="2" fill="#d9dee3" stroke="#5b6670" stroke-width="1.5" transform="rotate(35 116 44)"/>
+
+    <!-- Marca de agua obligatoria (franja oscura para que se lea bien) -->
+    <rect x="0" y="164" width="160" height="16" fill="#0a0e13" opacity="0.8"/>
+    <text x="80" y="176" text-anchor="middle" font-family="monospace" font-size="12" font-weight="bold" fill="#f2f5f7">AI-generated</text>
+  </g>
+
+  <!-- Borde del marco -->
+  <rect x="1" y="1" width="158" height="178" rx="11" fill="none" stroke="#ffd34d" stroke-width="2"/>
+</svg>
