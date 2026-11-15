@@ -143,6 +143,8 @@ Until task 4.6, a temporary AI-drawn horizon was used (`img/horizonte-provisiona
 
 ## 7. Tools
 
-- **Claude (Anthropic):** help writing the code and finding sources. Every code file starts with a comment that says so. It also corrected the spelling of the team's logs and translated them into English (the texts are the team's; see `HISTORIA.md`).
+- **Claude Opus 5.5 (Anthropic), used through Claude Code:** help writing the code and finding and checking sources. It also drew the rover and the drone (section 6). Every code file starts with a comment that says so. It also corrected the spelling of the team's logs and translated them into English (the texts are the team's; see `HISTORIA.md`).
+- **Python with the Pillow library:** image editing. Cropping the 2018 HiRISE map, making its thumbnail, and building the 360° horizon from the InSight panorama (see sections 3 and 5).
+- **Google Chrome (headless mode):** automatic tests. It loads the page with no window and checks that everything works, including at three screen sizes.
 - **GitHub and GitHub Pages:** the code is stored on GitHub, and the page is published with GitHub Pages.
 - **No external libraries:** HTML, CSS and JavaScript written by hand. The fonts are ones that already come with the computer (Consolas, Segoe UI).
