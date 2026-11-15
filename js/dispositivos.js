@@ -38,7 +38,7 @@ function parteInferiorDeTarjeta(dispositivo) {
   if (dispositivo.bloqueado) {
     return `
       <div class="mensaje-tarjeta apagado">🔒 Signal locked</div>
-      <div class="pista-tarjeta">Read the note at Abandoned base 2</div>
+      <div class="pista-tarjeta">Read the log at Supply depot 1</div>
       <button class="boton-tarjeta" disabled>Download</button>`;
   }
 

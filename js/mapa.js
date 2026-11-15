@@ -406,7 +406,7 @@ function dibujarFichaMarcador() {
 
   if (marcador.tipo === 'nota') {
     // Historia: una base abierta que nadie ha visitado todavía
-    html += '<p class="ficha-texto">Abandoned base of the previous expedition. Send an astronaut here to read its note.</p>';
+    html += '<p class="ficha-texto">Place where the lost crew left a log. Send an astronaut here to read it.</p>';
   } else if (marcador.ficha) {
     html += `<p class="ficha-texto">${textoSeguro(marcador.ficha.texto)}</p>`;
     html += '<div class="ficha-fuentes">Sources:<ul>';

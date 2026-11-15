@@ -52,7 +52,7 @@ function introducirCodigo(id) {
     marcador.nota.desbloqueada = true;
     dibujar();
   } else {
-    alert('Wrong code. Look for it in the note of the previous base.');
+    alert('Wrong code. Look for it in the previous log.');
   }
 }
 
@@ -81,9 +81,9 @@ function objetivoActual() {
       return 'Go to the zone: ' + mapa.info.nombre;
     }
     if (!marcador.nota.desbloqueada) {
-      return 'Enter the access code for ' + marcador.nombre;
+      return 'Enter the access code for: ' + marcador.nombre;
     }
-    return 'Send an astronaut to ' + marcador.nombre;
+    return 'Send an astronaut to: ' + marcador.nombre;
   }
   return 'MISSION COMPLETE';
 }
@@ -99,7 +99,7 @@ function dibujarBitacora() {
       <span class="objetivo-titulo">Objective</span>
       ${textoSeguro(objetivoActual())}
     </div>
-    <div class="progreso-notas">Notes found: ${leidas} / ${notas.length}</div>`;
+    <div class="progreso-notas">Logs found: ${leidas} / ${notas.length}</div>`;
 
   for (const marcador of notas) {
     const nota = marcador.nota;
@@ -131,7 +131,7 @@ function dibujarBitacora() {
   }
 
   // Para no mezclar historia con datos reales
-  html += '<p class="aviso-ficcion">The notes are the story of the game (fiction). The real NASA data is in the ⓘ info cards.</p>';
+  html += '<p class="aviso-ficcion">The logs of the lost crew are the story of the game (fiction). The real NASA data is in the ⓘ info cards.</p>';
 
   document.getElementById('bitacora').innerHTML = html;
 }
@@ -152,7 +152,7 @@ function dibujarVentanaNota() {
   if (nota.final) {
     html += '<div class="nota-final">MISSION COMPLETE</div>';
   }
-  html += `<div class="nota-cabecera">📄 Note found · ${textoSeguro(marcador.nombre)}</div>`;
+  html += `<div class="nota-cabecera">📄 Log found · ${textoSeguro(marcador.nombre)}</div>`;
   html += `<p class="nota-texto">${textoSeguro(nota.texto)}</p>`;
 
   // El código de la base siguiente (si esa base necesita código)
