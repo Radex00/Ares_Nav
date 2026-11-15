@@ -268,10 +268,8 @@ const estado = {
     {
       id: 'n5', mapaId: 'zona-b', tipo: 'nota', nombre: 'Habitat', x: 45, y: 83, atendida: false, ficha: null,
       nota: {
-        // Mensaje final: agradecimiento de Rick a quienes los rescatan (borrador hecho con IA; ver HISTORIA.md)
-        texto: "Log #5. To the astronauts reading this: if you are here, it means you followed every one of my logs, all the way to this habitat. You found us.\n\n" +
-          "Thank you. Thank you for crossing this desert for four strangers, for not giving up when the trail went cold, and for bringing us home. Laika, Mikey, Juno and I owe you our lives.\n\n" +
-          "When we started this mission, we only wanted to see Mars from above. Now we will remember it as the place where someone came looking for us. See you on the way home. — Rick. End of log #5.",
+        // Mensaje final de Rick a quienes los rescatan (texto del equipo, traducido al inglés; ver HISTORIA.md)
+        texto: "Log #5. I'm glad you were able to follow all my notes. Sorry about the encryption: it's just protocol and safety. Mikey, Laika, Juno and I owe you our lives. But enough talk. We have to go. We'll celebrate later. End of log #5.",
         codigo: 'SOL14', desbloqueada: false, leida: false,
         siguiente: null, desbloqueaMapa: null, final: true
       }
