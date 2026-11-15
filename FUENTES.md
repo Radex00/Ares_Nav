@@ -142,8 +142,8 @@ Hasta la tarea 4.6 se usó un horizonte provisional dibujado con IA (`img/horizo
 
 ## 7. Herramientas
 
-- **Claude Opus 5.5 (Anthropic), usado desde Claude Code:** ayuda para escribir el código y para buscar y comprobar fuentes. También dibujó el rover y el dron (sección 6). Cada archivo de código empieza con un comentario que lo dice. También corrigió la ortografía de las bitácoras del equipo y las tradujo al inglés (los textos son del equipo; ver `HISTORIA.md`).
+- **Claude Opus 5.5 (Anthropic), usado desde Claude Code:** ayuda para escribir el código y para buscar y comprobar fuentes. Cada archivo de código empieza con un comentario que lo dice. También dibujó el rover y el dron (sección 6), corrigió la ortografía de las bitácoras del equipo y las tradujo al inglés (los textos son del equipo; ver `HISTORIA.md`).
 - **Python con la librería Pillow:** edición de imágenes. Recorte del mapa de HiRISE de 2018, su miniatura y el horizonte de 360° a partir del panorama de InSight (ver secciones 3 y 5).
 - **Google Chrome (modo headless):** pruebas automáticas. Carga la página sin ventana y comprueba que todo funcione, también en tres tamaños de pantalla.
 - **GitHub y GitHub Pages:** el código se guarda en GitHub y la página se publica con GitHub Pages.
-- **Sin librerías externas:** HTML, CSS y JavaScript escritos a mano. Las letras son fuentes que ya vienen en el ordenador (Consolas, Segoe UI).
+- **La página no usa librerías externas:** HTML, CSS y JavaScript escritos a mano. Las letras son fuentes que ya vienen en el ordenador (Consolas, Segoe UI).
