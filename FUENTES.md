@@ -3,6 +3,7 @@
 Registro de **todos los datos y recursos externos** que usa el proyecto (regla del equipo, bloque 4.2).
 Todas las páginas se consultaron el **14 y el 15 de noviembre de 2026**.
 Este registro se preparó con ayuda de IA (Claude, de Anthropic); el equipo de Datos debe revisarlo antes de la entrega.
+Versión en inglés (para los jueces): `SOURCES.md`, con la misma numeración. Si cambiáis algo aquí, cambiadlo también allí.
 
 ---
 
@@ -142,4 +143,5 @@ Hasta la tarea 4.6 se usó un horizonte provisional dibujado con IA (`img/horizo
 ## 7. Herramientas
 
 - **Claude (Anthropic):** ayuda para escribir el código y buscar fuentes. Cada archivo de código empieza con un comentario que lo dice. También corrigió la ortografía de las bitácoras del equipo y las tradujo al inglés (los textos son del equipo; ver `HISTORIA.md`).
+- **GitHub y GitHub Pages:** el código se guarda en GitHub y la página se publica con GitHub Pages.
 - **Sin librerías externas:** HTML, CSS y JavaScript escritos a mano. Las letras son fuentes que ya vienen en el ordenador (Consolas, Segoe UI).
