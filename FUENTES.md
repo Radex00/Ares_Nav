@@ -1,7 +1,7 @@
 # FUENTES · ARES NAV
 
 Registro de **todos los datos y recursos externos** que usa el proyecto (regla del equipo, bloque 4.2).
-Todas las páginas se consultaron el **14 de noviembre de 2026**.
+Todas las páginas se consultaron el **14 y el 15 de noviembre de 2026**.
 Este registro se preparó con ayuda de IA (Claude, de Anthropic); el equipo de Datos debe revisarlo antes de la entrega.
 
 ---
@@ -103,7 +103,6 @@ Comprobé cada dato contra la fuente oficial. Pon el número al final de la fras
     → Sala de control vital: dosis de radiación de rayos cósmicos en la superficie, unos 210 µGy al día (Curiosity, RAD).
 17. NASA/JPL. (2022). *NASA's InSight Records Monster Quake on Mars*. https://www.jpl.nasa.gov/news/nasas-insight-records-monster-quake-on-mars/
     → Sala de control vital: el mayor sismo registrado por InSight, de magnitud ~5, el 4 de mayo de 2022.
-
 18. NASA. (n.d.). *Rovers* (Johnson Space Center). https://www.nasa.gov/reference/jsc-rovers/
     → Historia (bitácora 2): el Space Exploration Vehicle (SEV) es un prototipo de róver presurizado para la Luna y Marte, probado en los campos de lava de Black Point (Arizona) en Desert RATS (2008 y 2022).
 
@@ -142,5 +141,5 @@ Hasta la tarea 4.6 se usó un horizonte provisional dibujado con IA (`img/horizo
 
 ## 7. Herramientas
 
-- **Claude (Anthropic):** ayuda para escribir el código y buscar fuentes. Cada archivo de código empieza con un comentario que lo dice.
+- **Claude (Anthropic):** ayuda para escribir el código y buscar fuentes. Cada archivo de código empieza con un comentario que lo dice. También corrigió la ortografía de las bitácoras del equipo y las tradujo al inglés (los textos son del equipo; ver `HISTORIA.md`).
 - **Sin librerías externas:** HTML, CSS y JavaScript escritos a mano. Las letras son fuentes que ya vienen en el ordenador (Consolas, Segoe UI).
