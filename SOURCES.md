@@ -139,6 +139,14 @@ These numbers are not written in any source: we calculated them from data in the
 
 Until task 4.6, a temporary AI-drawn horizon was used (`img/horizonte-provisional.svg`, with its watermark). It was replaced by the real InSight panorama [13] and is no longer in the project (it remains in the Git history).
 
+**AI-generated audio** (the page shows "🔊 AI-generated voice" next to the player, and each MP3 says so in its metadata):
+
+| File | What it is | Made with |
+|---|---|---|
+| `audio/log-1.mp3` … `audio/log-5.mp3` | Rick's 5 logs read aloud in English (team text + guide P.S.) | Kokoro text-to-speech, voice `am_michael`, in Voicebox, with a radio effect; joined and converted to MP3 with FFmpeg |
+
+The guide P.S. lines at the end of logs 1–4 were written with AI help (Claude) at the team's request; see `HISTORIA.md`.
+
 ---
 
 ## 7. Tools
@@ -146,5 +154,7 @@ Until task 4.6, a temporary AI-drawn horizon was used (`img/horizonte-provisiona
 - **Claude Opus 5.5 (Anthropic), used through Claude Code:** help writing the code and finding and checking sources. Every code file starts with a comment that says so. It also drew the rover and the drone (section 6), corrected the spelling of the team's logs and translated them into English (the texts are the team's; see `HISTORIA.md`).
 - **Python with the Pillow library:** image editing. Cropping the 2018 HiRISE map, making its thumbnail, and building the 360° horizon from the InSight panorama (see sections 3 and 5).
 - **Google Chrome (headless mode):** automatic tests. It loads the page with no window and checks that everything works, including at three screen sizes.
+- **Voicebox** (https://github.com/jamiepine/voicebox), a free app that runs on the computer, **with the Kokoro voice model** (https://huggingface.co/hexgrad/Kokoro-82M): the AI voice of the logs. Its Whisper transcription was used to check the pronunciation.
+- **FFmpeg** (https://ffmpeg.org): joins each log with its P.S. and converts it to MP3 with the "AI-generated voice" metadata.
 - **GitHub and GitHub Pages:** the code is stored on GitHub, and the page is published with GitHub Pages.
 - **The page uses no external libraries:** HTML, CSS and JavaScript written by hand. The fonts are ones that already come with the computer (Consolas, Segoe UI).

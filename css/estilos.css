@@ -1195,6 +1195,33 @@ body {
   font-size: 14px;
   color: var(--color-interes);
 }
+/* La voz de la bitácora: reproductor y aviso de que la voz está hecha con IA */
+.nota-audio {
+  display: flex;
+  flex-wrap: wrap;                     /* en pantallas estrechas, el aviso baja */
+  align-items: center;
+  gap: 10px;
+}
+.nota-audio audio {
+  flex: 1;
+  min-width: 220px;
+  height: 36px;
+  color-scheme: dark;                  /* el navegador dibuja el reproductor en oscuro */
+}
+.aviso-ia {
+  font-size: 12px;
+  font-style: italic;
+  color: var(--color-texto-suave);
+}
+/* Postdata de guía: separada del texto del equipo con una raya cian */
+.nota-ps {
+  margin: 0;
+  padding: 8px 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  border-left: 3px solid var(--color-interes);
+  background: rgba(63, 214, 232, 0.08);
+}
 .nota-final {
   font-family: var(--letra-pantalla);
   font-size: 26px;

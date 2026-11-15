@@ -143,8 +143,16 @@ function dibujarVentanaNota() {
 
   if (!marcador) {
     ventana.classList.add('oculta');
+    // Vaciar la ventana quita el reproductor, y así la voz se para al cerrar
+    ventana.innerHTML = '';
+    ventana.dataset.nota = '';
     return;
   }
+
+  // dibujar() se llama muchas veces (cada paso de un astronauta). Si esta nota
+  // ya está en pantalla no la volvemos a crear: si no, la voz empezaría otra vez.
+  if (ventana.dataset.nota === marcador.id) return;
+  ventana.dataset.nota = marcador.id;
 
   const nota = marcador.nota;
   let html = '<div class="tarjeta-nota">';
@@ -153,7 +161,23 @@ function dibujarVentanaNota() {
     html += '<div class="nota-final">MISSION COMPLETE</div>';
   }
   html += `<div class="nota-cabecera">📄 Log found · ${textoSeguro(marcador.nombre)}</div>`;
+
+  // La voz de Rick (autoplay: empieza sola). Va arriba para que se vea sin bajar.
+  // La guía de Space Apps pide decir que el audio está hecho con IA.
+  if (nota.audio) {
+    html += `
+      <div class="nota-audio">
+        <audio controls autoplay src="${nota.audio}"></audio>
+        <span class="aviso-ia">🔊 AI-generated voice</span>
+      </div>`;
+  }
+
   html += `<p class="nota-texto">${textoSeguro(nota.texto)}</p>`;
+
+  // La postdata de guía va aparte, para que se vea que no es parte del texto del equipo
+  if (nota.ps) {
+    html += `<p class="nota-ps">${textoSeguro(nota.ps)}</p>`;
+  }
 
   // El código de la base siguiente (si esa base necesita código)
   const siguiente = buscarMarcador(nota.siguiente);

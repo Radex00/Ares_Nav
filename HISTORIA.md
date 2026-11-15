@@ -2,6 +2,7 @@
 
 Historia escrita por el equipo. Ortografía corregida y traducción al inglés con ayuda de IA (Claude, de Anthropic).
 En la página se usa la versión en inglés (notas `n1` a `n5` en `js/estado.js`).
+Las postdatas de guía del final (P.S.) y la voz de las bitácoras están hechas con IA: ver las dos últimas secciones.
 
 Cambios hechos al corregir (además de la ortografía y la puntuación):
 - **Bitácora 2:** se completó la parte del vehículo con un vehículo real de NASA, el **Space Exploration Vehicle (SEV)** ([fuente](https://www.nasa.gov/reference/jsc-rovers/)).
@@ -9,6 +10,8 @@ Cambios hechos al corregir (además de la ortografía y la puntuación):
 - **Bitácora 4:** "Tres días" se entendió como "tres dígitos" (una clave de tres dígitos). Parecía un error del dictado.
 - **Bitácoras 4 y 5:** a petición del equipo, el texto de la bitácora 5 (la llegada al habitáculo) se unió al final de la bitácora 4.
 - **Nueva bitácora 5:** mensaje de agradecimiento de Rick a quienes los rescatan, escrito por el equipo.
+- **Postdatas de guía (bitácoras 1 a 4):** a petición del equipo, al final de cada una Rick añade una postdata (P.S.) que enseña la parte de la página que toca usar y dice el código siguiente. Las escribió la IA (Claude) y el equipo las aprobó. En la página salen aparte, debajo del texto del equipo. La bitácora 5 no lleva postdata.
+- **Voz:** las cinco bitácoras se oyen con una voz generada con IA (ver la última sección).
 
 ---
 
@@ -37,3 +40,27 @@ Cambios hechos al corregir (además de la ortografía y la puntuación):
 **Log #4.** We almost crashed. One of the rover's tires went flat, so we had to replace it with the spare, which took a while. On top of that, Mikey's suit got a small tear: something to keep in mind, because if we don't make it to the depot, the consequences could be serious. We finally reached the depot. The electricity here was flickering and unstable. Luckily, there was oxygen and something to rivet Mikey's suit so it would hold until we reach the habitat. We split up to search: I took the office, Juno the tool area and Laika the vault. In the office I found a computer saying that the vault had a three-digit code: the code to open it and find the key to the habitat. I passed it to Laika over the intercom. We had it! All that was left was to head for the habitat. That code just gave me an idea: I'll send an encrypted signal to each of the recorders I've been leaving behind, to protect the messages. That way, whoever finds the first recording will be able to unlock the others, one after another. We finally reached the habitat. It has power and it's quite comfortable. It has an artificial gravity system that simulates Earth's gravity almost exactly, thanks to a rotating structure inside the building itself. I explored the place with Juno: we found a hydroponic farming area, the bunks where we would sleep, a dining room and an infirmary. It's a comfortable place; I think I could get used to it. A few hours later, we were talking in the dining room when the lights went out. I ran to the fuse area and checked the connection panel: it said the solar panels had broken down and we had just switched to backup power. We only have power for a few hours, so we'll use it to send a message saying we're here, so they make us a priority. Laika sent the message. They say the astronauts are already quite close, thanks to my notes. That makes me a little happier. So all that's left is to wait, and keep the faith. End of log #4.
 
 **Log #5.** I'm glad you were able to follow all my notes. Sorry about the encryption: it's just protocol and safety. Mikey, Laika, Juno and I owe you our lives. But enough talk. We have to go. We'll celebrate later. End of log #5.
+
+---
+
+## Postdatas de guía (P.S.) · escritas con ayuda de IA
+
+Las escribió Claude (Anthropic) a petición del equipo, que las aprobó. En la página salen en inglés, en un recuadro aparte con una raya cian, debajo del texto del equipo.
+
+| Bitácora | Postdata en inglés (la de la página) | En español |
+|---|---|---|
+| #1 · Crash site | P.S. To whoever finds this: the first supply depot is locked. Its code is HOLLOW, like Homestead hollow, the old crater next to the InSight lander. In the Mission panel of your Control center, press the key next to Supply depot 1 and type the code. Then pick the depot in an astronaut's menu and press Deploy. While they walk, open the Helmet view to see Mars through their visor. | P.D. Para quien encuentre esto: el primer almacén está cerrado. Su código es HOLLOW, como Homestead hollow, el viejo cráter junto al módulo InSight. En el panel Mission del centro de control, pulsa la llave junto a Supply depot 1 y escribe el código. Luego elige el almacén en el menú de un astronauta y pulsa Deploy. Mientras camina, abre la Helmet view para ver Marte a través de su visor. |
+| #2 · Supply depot 1 | P.S. Mikey's map only shows this area, but this depot's computer had the map of the next zone. Open the Devices tab, press Download on the New zone card, and then press Go to zone. The second depot is open, so you won't need a code. In the Devices tab you can also connect our rover and our drone and look through their cameras. | P.D. El mapa de Mikey solo muestra esta zona, pero el ordenador de este almacén tenía el mapa de la zona siguiente. Abre la pestaña Devices, pulsa Download en la tarjeta New zone y luego Go to zone. El segundo almacén está abierto, así que no hará falta código. En la pestaña Devices también puedes conectar nuestro róver y nuestro dron y mirar por sus cámaras. |
+| #3 · Supply depot 2 | P.S. Before you drive on, check the Vital room: click the Base on your map, or open the Vital room tab. It shows the temperature, the wind, the dust and the radiation, with numbers based on real data from NASA missions like InSight. If a dust storm or a marsquake hits, a red warning appears on every screen. The code for the third depot is MARSQUAKE. | P.D. Antes de seguir, revisa la Vital room: haz clic en la Base del mapa o abre la pestaña Vital room. Muestra la temperatura, el viento, el polvo y la radiación, con cifras basadas en datos reales de misiones de la NASA como InSight. Si llega una tormenta de polvo o un sismo marciano, sale un aviso rojo en todas las pantallas. El código del tercer almacén es MARSQUAKE. |
+| #4 · Supply depot 3 | P.S. The habitat's code is SOL14. A sol is one day on Mars. On the way, keep an eye on the crater: its slope is dangerous. If you find a new danger, press plus Alert and mark it on the map. If you choose High radiation, the radiation meter in the Helmet view will rise as your astronaut gets close to it. And in the Helmet view, press M to open the minimap. | P.D. El código del habitáculo es SOL14. Un sol es un día en Marte. Por el camino, vigila el cráter: su pendiente es peligrosa. Si encuentras un peligro nuevo, pulsa + Alert y márcalo en el mapa. Si eliges High radiation, el medidor de radiación de la Helmet view subirá cuando tu astronauta se acerque. Y en la Helmet view, pulsa M para abrir el minimapa. |
+| #5 · Habitat | (sin postdata: la bitácora es entera del equipo) | |
+
+---
+
+## La voz de las bitácoras · generada con IA
+
+- **Archivos:** `audio/log-1.mp3` … `audio/log-5.mp3` (bitácora + postdata, en inglés).
+- **Cómo se hizo:** con **Voicebox** (programa gratuito que funciona en el ordenador, sin internet) y el modelo de voz **Kokoro**, voz `am_michael`, con un efecto de radio (filtros de 300 a 3400 Hz y compresor) para que suene a grabadora del traje. FFmpeg une la bitácora y la postdata y las pasa a MP3.
+- **Aviso de IA:** en la página, junto al reproductor, pone "🔊 AI-generated voice". Cada MP3 lo dice también en sus datos (metadatos *artist* y *comment*). Es lo que pide la guía de Space Apps para el audio hecho con IA.
+- **Pronunciación:** solo para la voz se escribieron algunas palabras de otra forma ("Lyka" en vez de "Laika", "Mars quake", "sol fourteen", "Log number 1"). Se comprobó con la transcripción automática (Whisper) de Voicebox. El texto de la página no cambia.
+- La voz empieza sola cuando un astronauta llega a una base, se puede pausar y se para al cerrar la bitácora.

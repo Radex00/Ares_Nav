@@ -138,6 +138,14 @@ Estos números no vienen escritos en ninguna fuente: los calculamos nosotros con
 
 Hasta la tarea 4.6 se usó un horizonte provisional dibujado con IA (`img/horizonte-provisional.svg`, con su marca). Se cambió por el panorama real de InSight [13] y ya no está en el proyecto (queda en el historial de Git).
 
+**Audio hecho con IA** (en la página sale "🔊 AI-generated voice" junto al reproductor, y cada MP3 lo dice en sus metadatos):
+
+| Archivo | Qué es | Hecho con |
+|---|---|---|
+| `audio/log-1.mp3` … `audio/log-5.mp3` | Las 5 bitácoras de Rick leídas en inglés (texto del equipo + postdata de guía) | Voz de texto a voz Kokoro, voz `am_michael`, en Voicebox, con efecto de radio; unidas y pasadas a MP3 con FFmpeg |
+
+Las postdatas de guía (P.S.) del final de las bitácoras 1 a 4 se escribieron con ayuda de IA (Claude) a petición del equipo; ver `HISTORIA.md`.
+
 ---
 
 ## 7. Herramientas
@@ -145,5 +153,7 @@ Hasta la tarea 4.6 se usó un horizonte provisional dibujado con IA (`img/horizo
 - **Claude Opus 5.5 (Anthropic), usado desde Claude Code:** ayuda para escribir el código y para buscar y comprobar fuentes. Cada archivo de código empieza con un comentario que lo dice. También dibujó el rover y el dron (sección 6), corrigió la ortografía de las bitácoras del equipo y las tradujo al inglés (los textos son del equipo; ver `HISTORIA.md`).
 - **Python con la librería Pillow:** edición de imágenes. Recorte del mapa de HiRISE de 2018, su miniatura y el horizonte de 360° a partir del panorama de InSight (ver secciones 3 y 5).
 - **Google Chrome (modo headless):** pruebas automáticas. Carga la página sin ventana y comprueba que todo funcione, también en tres tamaños de pantalla.
+- **Voicebox** (https://github.com/jamiepine/voicebox), programa gratuito que funciona en el ordenador, **con el modelo de voz Kokoro** (https://huggingface.co/hexgrad/Kokoro-82M): la voz de IA de las bitácoras. Su transcripción con Whisper sirvió para comprobar la pronunciación.
+- **FFmpeg** (https://ffmpeg.org): une cada bitácora con su postdata y la pasa a MP3 con los metadatos "AI-generated voice".
 - **GitHub y GitHub Pages:** el código se guarda en GitHub y la página se publica con GitHub Pages.
 - **La página no usa librerías externas:** HTML, CSS y JavaScript escritos a mano. Las letras son fuentes que ya vienen en el ordenador (Consolas, Segoe UI).

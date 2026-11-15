@@ -217,6 +217,9 @@ const estado = {
     //   siguiente: la base cuyo código se enseña al leer esta nota
     //   desbloqueaMapa: el dispositivo-mapa que se puede descargar al leerla
     //   final: true en la última nota (sale "MISIÓN COMPLETADA")
+    //   ps: postdata de guía de Rick: enseña la parte de la página que toca usar ahora
+    //       (escrita con ayuda de IA a petición del equipo; no es parte del texto del equipo)
+    //   audio: la bitácora leída en voz alta (voz generada con IA; ver SOURCES.md)
     // Las bases de la zona nueva están junto a las 3 piezas reales de NASA.
     // =========================================================
     {
@@ -225,6 +228,8 @@ const estado = {
         // Texto del equipo (bitácora de Rick, traducida al inglés; ver HISTORIA.md)
         texto: "Log #1. First entry. My crew and I were on a simple reconnaissance mission, flying over the area. There were four of us: Mikey, Juno, Laika and me, Rick. Each of us had a job. I'm mainly an engineer: I keep everything on the ship in order. So I was at my monitoring panel, checking that every part and device was working properly, when something went wrong. One of the engines suddenly failed, and the controllers failed at the same time. We didn't even have time to react. Luckily, we were quite high above the ground, so at least we had time to put on our suits.\n\n" +
           "When we hit the ground, we all passed out. Luckily, none of us was hurt. Laika, our captain, tried to keep us calm. She ordered Mikey, our navigation expert, to check the map and find out exactly where we were. His map was distorted by the crash, but he could see that there was a supply depot near us. I don't have much hope, but I hope everything turns out fine. End of log #1.",
+        ps: "P.S. To whoever finds this: the first supply depot is locked. Its code is HOLLOW, like Homestead hollow, the old crater next to the InSight lander. In the Mission panel of your Control center, press the key next to Supply depot 1 and type the code. Then pick the depot in an astronaut's menu and press Deploy. While they walk, open the Helmet view to see Mars through their visor.",
+        audio: 'audio/log-1.mp3',
         codigo: null, desbloqueada: true, leida: false,
         siguiente: 'n2', desbloqueaMapa: null, final: false
       }
@@ -236,6 +241,8 @@ const estado = {
         texto: "Log #2. When we arrived, we saw that the depot was completely abandoned. The doors were jammed from years without use, but luckily I found the control panel and got them open by hot-wiring it. Inside, we swapped the gas tanks in our suits and made some repairs.\n\n" +
           "At the back of the depot we found a vehicle: a pressurized rover, a version of NASA's Space Exploration Vehicle (SEV), the Moon and Mars rover prototype that NASA tested on the lava fields of Arizona. Thank God.\n\n" +
           "Getting ready went smoothly, until Juno finished the inventory and told us we only had enough power left for three hours. We'll have to find another depot soon to restock. We're about to leave. Our chances of survival look better and better. End of log #2.",
+        ps: "P.S. Mikey's map only shows this area, but this depot's computer had the map of the next zone. Open the Devices tab, press Download on the New zone card, and then press Go to zone. The second depot is open, so you won't need a code. In the Devices tab you can also connect our rover and our drone and look through their cameras.",
+        audio: 'audio/log-2.mp3',
         codigo: 'HOLLOW', desbloqueada: false, leida: false,
         siguiente: 'n3', desbloqueaMapa: 'd3', final: false
       }
@@ -247,6 +254,8 @@ const estado = {
         texto: "Log #3. Even though we're not a field team, just researchers, seeing Mars from here is... breathtaking. Something I couldn't describe to anyone unless they saw it with their own eyes. Or maybe it's just scientist's bias, and I'm simply excited about the great achievement of reaching this planet.\n\n" +
           "Enough rambling: we reached the second depot. It still had electricity, because its solar panels were still working. Inside, we took three spare power packs and changed a wheel.\n\n" +
           "Laika also contacted orbital command to ask them to send help. They told us there is a base in a remote spot on the surface of Mars, but we'll have to wait a few days for them to reach us, and the depots aren't equipped to house so many people. The good news is that a few kilometers away there is another depot and a habitat. That depot holds the key to the habitat; without it, we couldn't even open the habitat, no matter how hard we tried to force it. I see a glimmer of hope. End of log #3.",
+        ps: "P.S. Before you drive on, check the Vital room: click the Base on your map, or open the Vital room tab. It shows the temperature, the wind, the dust and the radiation, with numbers based on real data from NASA missions like InSight. If a dust storm or a marsquake hits, a red warning appears on every screen. The code for the third depot is MARSQUAKE.",
+        audio: 'audio/log-3.mp3',
         codigo: null, desbloqueada: true, leida: false,
         siguiente: 'n4', desbloqueaMapa: null, final: false
       }
@@ -261,6 +270,8 @@ const estado = {
           "We finally reached the habitat. It has power and it's quite comfortable. It has an artificial gravity system that simulates Earth's gravity almost exactly, thanks to a rotating structure inside the building itself. I explored the place with Juno: we found a hydroponic farming area, the bunks where we would sleep, a dining room and an infirmary. It's a comfortable place; I think I could get used to it.\n\n" +
           "A few hours later, we were talking in the dining room when the lights went out. I ran to the fuse area and checked the connection panel: it said the solar panels had broken down and we had just switched to backup power. We only have power for a few hours, so we'll use it to send a message saying we're here, so they make us a priority.\n\n" +
           "Laika sent the message. They say the astronauts are already quite close, thanks to my notes. That makes me a little happier. So all that's left is to wait, and keep the faith. End of log #4.",
+        ps: "P.S. The habitat's code is SOL14. A sol is one day on Mars. On the way, keep an eye on the crater: its slope is dangerous. If you find a new danger, press plus Alert and mark it on the map. If you choose High radiation, the radiation meter in the Helmet view will rise as your astronaut gets close to it. And in the Helmet view, press M to open the minimap.",
+        audio: 'audio/log-4.mp3',
         codigo: 'MARSQUAKE', desbloqueada: false, leida: false,
         siguiente: 'n5', desbloqueaMapa: null, final: false
       }
@@ -270,6 +281,8 @@ const estado = {
       nota: {
         // Mensaje final de Rick a quienes los rescatan (texto del equipo, traducido al inglés; ver HISTORIA.md)
         texto: "Log #5. I'm glad you were able to follow all my notes. Sorry about the encryption: it's just protocol and safety. Mikey, Laika, Juno and I owe you our lives. But enough talk. We have to go. We'll celebrate later. End of log #5.",
+        ps: null,   // la bitácora 5 no lleva postdata: es entera del equipo
+        audio: 'audio/log-5.mp3',
         codigo: 'SOL14', desbloqueada: false, leida: false,
         siguiente: null, desbloqueaMapa: null, final: true
       }
