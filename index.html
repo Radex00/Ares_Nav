@@ -9,9 +9,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ARES NAV · Mars Navigation</title>
-  <!-- ?v=7 es la VERSIÓN de los archivos: subidla (8, 9...) cada vez que cambiéis el CSS o un JS.
+  <!-- ?v=8 es la VERSIÓN de los archivos: subidla (8, 9...) cada vez que cambiéis el CSS o un JS.
        Así el navegador no usa una copia vieja guardada (GitHub Pages las guarda 10 minutos). -->
-  <link rel="stylesheet" href="css/estilos.css?v=7">
+  <link rel="stylesheet" href="css/estilos.css?v=8">
 </head>
 <body>
 
@@ -120,6 +120,7 @@
     <!-- Encima de las capas: la información del casco -->
     <div id="brujula"></div>
     <div id="info-observador"></div>            <!-- bloque 9.4 -->
+    <div id="medidor-radiacion"></div>          <!-- radiación en el sitio del observador (vital.js) -->
     <div id="selector-camaras"></div>           <!-- bloque 11.4 -->
     <div id="minimapa" class="fondo-mapa">      <!-- bloques 9.5 y 9.6: mismo fondo que el mapa grande -->
       <div id="capa-minimapa"></div>
@@ -174,11 +175,11 @@
 
   <!-- ===== 1.2 SCRIPTS (el orden importa: estado.js va primero
        porque los demás usan sus datos y funciones) ===== -->
-  <script src="js/estado.js?v=7"></script>
-  <script src="js/mapa.js?v=7"></script>
-  <script src="js/casco.js?v=7"></script>
-  <script src="js/dispositivos.js?v=7"></script>
-  <script src="js/historia.js?v=7"></script>
-  <script src="js/vital.js?v=7"></script>
+  <script src="js/estado.js?v=8"></script>
+  <script src="js/mapa.js?v=8"></script>
+  <script src="js/casco.js?v=8"></script>
+  <script src="js/dispositivos.js?v=8"></script>
+  <script src="js/historia.js?v=8"></script>
+  <script src="js/vital.js?v=8"></script>
 </body>
 </html>

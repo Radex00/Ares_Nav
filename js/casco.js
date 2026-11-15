@@ -52,6 +52,7 @@ function dibujarHUD(observador) {
   dibujarInfoObservador(observador);     // bloque 9
   dibujarMinimapa(observador);           // bloque 9
   dibujarSelectorCamaras(observador);    // bloque 11 (dispositivos.js)
+  dibujarMedidorRadiacion();             // vital.js: radiación en el sitio donde está
 }
 
 // Desliza el paisaje según el rumbo.
@@ -254,11 +255,11 @@ function dibujarPuntosEnPantalla(observador) {
 
       // Si ya hay otro punto casi en el mismo sitio (menos de 14 % a los lados
       // y 7 % arriba o abajo), probamos a moverlo un escalón: arriba, abajo, dos arriba...
-      // Solo valen alturas entre la brújula (16 %) y el horizonte (55 %).
+      // Solo valen alturas entre debajo del rumbo de la brújula (22 %) y el horizonte (55 %).
       const yOriginal = y;
       for (const escalon of [0, -7, 7, -14, 14, -21, 21]) {
         const prueba = yOriginal + escalon;
-        if (prueba < 16 || prueba > 55) continue;
+        if (prueba < 22 || prueba > 55) continue;
         const pisa = colocados.some(c => Math.abs(c.x - punto.x) < 14 && Math.abs(c.y - prueba) < 7);
         if (!pisa) {
           y = prueba;

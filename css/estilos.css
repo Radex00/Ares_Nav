@@ -1334,6 +1334,49 @@ body {
   opacity: 0.8;
 }
 
+/* Medidor de radiación del casco: abajo a la izquierda, encima de la ficha del casco.
+   Ahí, por debajo del horizonte, nunca flota ningún punto. */
+#medidor-radiacion {
+  position: absolute;
+  left: 40px;
+  bottom: 182px;
+  width: 240px;
+  padding: 8px 12px;
+  font-family: var(--letra-pantalla);
+  background: rgba(10, 14, 19, 0.75);
+  border: 1px solid var(--color-ok);
+  border-radius: var(--radio);
+}
+#medidor-radiacion.precaucion { border-color: var(--color-alerta); }
+#medidor-radiacion.peligro {
+  border-color: var(--color-peligro);
+  animation: parpadeo 1s infinite;
+}
+.medidor-titulo {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--color-texto-suave);
+}
+.medidor-barra {
+  height: 8px;
+  margin: 6px 0;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.medidor-relleno {
+  height: 100%;
+  background: var(--color-ok);
+}
+#medidor-radiacion.precaucion .medidor-relleno { background: var(--color-alerta); }
+#medidor-radiacion.peligro .medidor-relleno { background: var(--color-peligro); }
+.medidor-valor { font-size: 13px; }
+.medidor-nota {
+  font-size: 10px;
+  color: var(--color-texto-suave);
+  text-align: right;
+}
+
 /* Tormenta de polvo: el casco se llena de polvo y se ve menos */
 body.tormenta #polvo {
   background-color: rgba(185, 120, 80, 0.45);
@@ -1395,6 +1438,34 @@ body.tormenta #horizonte {
   background: rgba(10, 14, 19, 0.75);   /* fondo oscuro para leerlo sobre la foto */
   padding: 1px 5px;
   border-radius: 3px;
+}
+
+/* La base del equipo: un módulo con forma de cúpula y una antena. Se puede pulsar. */
+.base-mapa { cursor: pointer; }
+.base-mapa .icono {
+  left: -12px;
+  top: -8px;
+  width: 24px;
+  height: 14px;
+  background: #cfd8df;
+  border: 2px solid var(--color-ok);
+  border-radius: 12px 12px 3px 3px;   /* arriba redondo, abajo recto: una cúpula */
+  box-shadow: 0 0 10px rgba(94, 227, 138, 0.6);
+}
+.base-mapa .icono::after {            /* la antena */
+  content: '';
+  position: absolute;
+  left: 9px;
+  top: -9px;
+  width: 2px;
+  height: 7px;
+  background: var(--color-ok);
+}
+/* El nombre "Base" va debajo, para no chocar con los astronautas */
+.base-mapa .etiqueta {
+  left: -16px;
+  top: 10px;
+  color: var(--color-ok);
 }
 
 /* Cerca del borde derecho la etiqueta va a la IZQUIERDA del dibujo, para que no se corte */

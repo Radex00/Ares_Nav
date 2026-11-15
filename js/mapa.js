@@ -60,6 +60,12 @@ function alHacerClicEnElMapa(evento) {
   // Sin ningún modo elegido, un clic ENCIMA de un marcador abre su ficha (bloque 4).
   // closest() busca, desde donde cayó el clic hacia fuera, el primer elemento con esa clase.
   if (estado.modoMarcador === null) {
+    // Clic en la base: atajo a la Vital room para revisar el ambiente y el oxígeno
+    if (evento.target.closest('.base-mapa')) {
+      cambiarVista('vital');
+      return;
+    }
+
     const marcadorTocado = evento.target.closest('.marcador');
     if (marcadorTocado && marcadorTocado.classList.contains('nota')) {
       clicEnNota(marcadorTocado.dataset.id);   // historia.js
@@ -108,6 +114,12 @@ function agregarMarcador(tipo, x, y) {
     id: id, mapaId: estado.mapaActivo, tipo: tipo, nombre: nombre,
     x: x, y: y, atendida: false, ficha: null
   };
+
+  // Las alertas guardan su tipo de peligro (el del menú). Aunque luego se renombre,
+  // el medidor de radiación del casco sabe que es una zona de "High radiation".
+  if (tipo === 'alerta') {
+    marcador.peligro = nombre;
+  }
   estado.marcadores.push(marcador);
   return marcador;
 }
@@ -226,6 +238,17 @@ function borrarMarcador(id) {
 // todo lo que va dentro de ${ ... } se cambia por su valor.
 function pintarElementosDelMapa(capa, idResaltado) {
   let html = '';
+
+  // ----- La base del equipo: de donde salen Vega y Ríos -----
+  // Se dibuja la primera para que quede debajo de todo. Un poco a la izquierda
+  // de donde aparecen los astronautas, para que ellos no la tapen.
+  // Al hacer clic en ella se abre la Vital room (ver alHacerClicEnElMapa).
+  const base = mapaActual().base;
+  html += `
+    <div class="en-mapa base-mapa" style="left: ${base.x - 5}%; top: ${base.y + 2.5}%;" title="Open the Vital room">
+      <span class="icono"></span>
+      <span class="etiqueta">Base</span>
+    </div>`;
 
   // ----- Marcadores del mapa actual: rombo (interés) o triángulo (alerta) -----
   for (const marcador of marcadoresDelMapa()) {

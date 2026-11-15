@@ -128,6 +128,11 @@ function actualizarSensores() {
   }
 
   actualizarLecturas();
+
+  // Si se está mirando por un casco o una cámara, el medidor de radiación también cambia
+  if (estado.vista === 'pov') {
+    dibujarMedidorRadiacion();
+  }
 }
 
 // =========================================================
@@ -206,6 +211,51 @@ function dibujarAvisoAmenaza() {
   }
   barra.innerHTML = `⚠ ${evento.nombre} · ${evento.texto} <span class="aviso-simulado">(simulation)</span>`;
   barra.classList.remove('oculta');
+}
+
+// =========================================================
+// MEDIDOR DE RADIACIÓN DEL CASCO (radiación en un sitio concreto)
+// =========================================================
+
+// A esta distancia (metros) de una zona "High radiation" ya no se nota nada
+const RADIO_ZONA_RADIACION = 80;
+
+// La radiación en un punto del mapa (simulada):
+//   - parte de la lectura del sensor de la base (la de la Vital room)
+//   - cerca de una alerta "High radiation" sube: hasta 5 veces en el centro,
+//     y va bajando en línea recta hasta no notarse a 80 m
+function radiacionEn(punto) {
+  let factor = 1;
+  for (const marcador of marcadoresDelMapa()) {
+    if (marcador.peligro !== 'High radiation') continue;
+    const distancia = distanciaEnMetros(punto, marcador);
+    if (distancia < RADIO_ZONA_RADIACION) {
+      // En el centro (distancia 0) suma 4 → ×5. En el borde (80 m) suma 0 → ×1.
+      factor = factor + 4 * (1 - distancia / RADIO_ZONA_RADIACION);
+    }
+  }
+  return estado.ambiente.valores.radiacion * factor;
+}
+
+// Dibuja el medidor en el casco: valor, barra y nivel (con los umbrales del sensor de radiación).
+// Lo llaman dibujarHUD() (casco.js) y, cada segundo, actualizarSensores().
+function dibujarMedidorRadiacion() {
+  const caja = document.getElementById('medidor-radiacion');
+  const observador = buscarObservador();
+  const valor = radiacionEn(observador);
+  const sensor = SENSORES.find(s => s.id === 'radiacion');
+  const nivel = nivelDe(sensor, valor);
+
+  // La barra se llena hasta 2000 µGy/día (más ya sale llena)
+  const lleno = Math.min(valor / 2000, 1) * 100;
+
+  caja.classList.toggle('precaucion', nivel === 'precaucion');
+  caja.classList.toggle('peligro', nivel === 'peligro');
+  caja.innerHTML = `
+    <div class="medidor-titulo">☢ RADIATION · HERE</div>
+    <div class="medidor-barra"><div class="medidor-relleno" style="width: ${lleno}%;"></div></div>
+    <div class="medidor-valor">${Math.round(valor)} µGy/day · ${TEXTO_NIVEL[nivel]}</div>
+    <div class="medidor-nota">simulated</div>`;
 }
 
 // =========================================================
