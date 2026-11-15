@@ -104,6 +104,9 @@ Comprobé cada dato contra la fuente oficial. Pon el número al final de la fras
 17. NASA/JPL. (2022). *NASA's InSight Records Monster Quake on Mars*. https://www.jpl.nasa.gov/news/nasas-insight-records-monster-quake-on-mars/
     → Sala de control vital: el mayor sismo registrado por InSight, de magnitud ~5, el 4 de mayo de 2022.
 
+18. NASA. (n.d.). *Rovers* (Johnson Space Center). https://www.nasa.gov/reference/jsc-rovers/
+    → Historia (bitácora 2): el Space Exploration Vehicle (SEV) es un prototipo de róver presurizado para la Luna y Marte, probado en los campos de lava de Black Point (Arizona) en Desert RATS (2008 y 2022).
+
 La Sala de control vital usa también la *Mars Fact Sheet* [11]: presión media de 636 Pa (400-870 Pa según la estación) y viento de 2-10 m/s normal y 17-30 m/s en tormentas de polvo (sitios Viking).
 
 ---

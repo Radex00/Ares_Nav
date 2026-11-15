@@ -222,7 +222,9 @@ const estado = {
     {
       id: 'n1', mapaId: 'zona-a', tipo: 'nota', nombre: 'Abandoned base 1', x: 30, y: 72, atendida: false, ficha: null,
       nota: {
-        texto: '✏ TEXT PENDING · Note 1: what the previous expedition left written at this base.',
+        // Texto del equipo (bitácora de Rick, traducida al inglés; ver HISTORIA.md)
+        texto: "Log #1. First entry. My crew and I were on a simple reconnaissance mission, flying over the area. There were four of us: Mikey, Juno, Laika and me, Rick. Each of us had a job. I'm mainly an engineer: I keep everything on the ship in order. So I was at my monitoring panel, checking that every part and device was working properly, when something went wrong. One of the engines suddenly failed, and the controllers failed at the same time. We didn't even have time to react. Luckily, we were quite high above the ground, so at least we had time to put on our suits.\n\n" +
+          "When we hit the ground, we all passed out. Luckily, none of us was hurt. Laika, our captain, tried to keep us calm. She ordered Mikey, our navigation expert, to check the map and find out exactly where we were. His map was distorted by the crash, but he could see that there was a supply depot near us. I don't have much hope, but I hope everything turns out fine. End of log #1.",
         codigo: null, desbloqueada: true, leida: false,
         siguiente: 'n2', desbloqueaMapa: null, final: false
       }
@@ -230,7 +232,10 @@ const estado = {
     {
       id: 'n2', mapaId: 'zona-a', tipo: 'nota', nombre: 'Abandoned base 2', x: 52, y: 60, atendida: false, ficha: null,
       nota: {
-        texto: '✏ TEXT PENDING · Note 2: here the previous expedition asks you to download the map of the new zone.',
+        // Texto del equipo (bitácora de Rick, traducida al inglés; ver HISTORIA.md)
+        texto: "Log #2. When we arrived, we saw that the depot was completely abandoned. The doors were jammed from years without use, but luckily I found the control panel and got them open by hot-wiring it. Inside, we swapped the gas tanks in our suits and made some repairs.\n\n" +
+          "At the back of the depot we found a vehicle: a pressurized rover, a version of NASA's Space Exploration Vehicle (SEV), the Moon and Mars rover prototype that NASA tested on the lava fields of Arizona. Thank God.\n\n" +
+          "Getting ready went smoothly, until Juno finished the inventory and told us we only had enough power left for three hours. We'll have to find another depot soon to restock. We're about to leave. Our chances of survival look better and better. End of log #2.",
         codigo: 'HOLLOW', desbloqueada: false, leida: false,
         siguiente: 'n3', desbloqueaMapa: 'd3', final: false
       }
@@ -238,7 +243,10 @@ const estado = {
     {
       id: 'n3', mapaId: 'zona-b', tipo: 'nota', nombre: 'Abandoned base 3', x: 23, y: 48, atendida: false, ficha: null,
       nota: {
-        texto: '✏ TEXT PENDING · Note 3 (next to InSight).',
+        // Texto del equipo (bitácora de Rick, traducida al inglés; ver HISTORIA.md)
+        texto: "Log #3. Even though we're not a field team, just researchers, seeing Mars from here is... breathtaking. Something I couldn't describe to anyone unless they saw it with their own eyes. Or maybe it's just scientist's bias, and I'm simply excited about the great achievement of reaching this planet.\n\n" +
+          "Enough rambling: we reached the second depot. It still had electricity, because its solar panels were still working. Inside, we took three spare power packs and changed a wheel.\n\n" +
+          "Laika also contacted orbital command to ask them to send help. They told us there is a base in a remote spot on the surface of Mars, but we'll have to wait a few days for them to reach us, and the depots aren't equipped to house so many people. The good news is that a few kilometers away there is another depot and a habitat. That depot holds the key to the habitat; without it, we couldn't even open the habitat, no matter how hard we tried to force it. I see a glimmer of hope. End of log #3.",
         codigo: null, desbloqueada: true, leida: false,
         siguiente: 'n4', desbloqueaMapa: null, final: false
       }
@@ -246,7 +254,10 @@ const estado = {
     {
       id: 'n4', mapaId: 'zona-b', tipo: 'nota', nombre: 'Abandoned base 4', x: 84, y: 25, atendida: false, ficha: null,
       nota: {
-        texto: '✏ TEXT PENDING · Note 4 (next to the heat shield).',
+        // Texto del equipo (bitácora de Rick, traducida al inglés; ver HISTORIA.md)
+        texto: "Log #4. We almost crashed. One of the rover's tires went flat, so we had to replace it with the spare, which took a while. On top of that, Mikey's suit got a small tear: something to keep in mind, because if we don't make it to the depot, the consequences could be serious.\n\n" +
+          "We finally reached the depot. The electricity here was flickering and unstable. Luckily, there was oxygen and something to rivet Mikey's suit so it would hold until we reach the habitat. We split up to search: I took the office, Juno the tool area and Laika the vault. In the office I found a computer saying that the vault had a three-digit code: the code to open it and find the key to the habitat. I passed it to Laika over the intercom. We had it! All that was left was to head for the habitat.\n\n" +
+          "That code just gave me an idea: I'll send an encrypted signal to each of the recorders I've been leaving behind, to protect the messages. That way, whoever finds the first recording will be able to unlock the others, one after another. End of log #4.",
         codigo: 'MARSQUAKE', desbloqueada: false, leida: false,
         siguiente: 'n5', desbloqueaMapa: null, final: false
       }
@@ -254,7 +265,10 @@ const estado = {
     {
       id: 'n5', mapaId: 'zona-b', tipo: 'nota', nombre: 'Abandoned base 5', x: 45, y: 83, atendida: false, ficha: null,
       nota: {
-        texto: '✏ TEXT PENDING · Final note (next to the parachute): how you save them.',
+        // Texto del equipo (bitácora de Rick, traducida al inglés; ver HISTORIA.md)
+        texto: "Log #5. We finally reached the habitat. It has power and it's quite comfortable. It has an artificial gravity system that simulates Earth's gravity almost exactly, thanks to a rotating structure inside the building itself. I explored the place with Juno: we found a hydroponic farming area, the bunks where we would sleep, a dining room and an infirmary. It's a comfortable place; I think I could get used to it.\n\n" +
+          "A few hours later, we were talking in the dining room when the lights went out. I ran to the fuse area and checked the connection panel: it said the solar panels had broken down and we had just switched to backup power. We only have power for a few hours, so we'll use it to send a message saying we're here, so they make us a priority.\n\n" +
+          "Laika sent the message. They say the astronauts are already quite close, thanks to my notes. That makes me a little happier. So all that's left is to wait, and keep the faith. End of log #5.",
         codigo: 'SOL14', desbloqueada: false, leida: false,
         siguiente: null, desbloqueaMapa: null, final: true
       }

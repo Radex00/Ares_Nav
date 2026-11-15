@@ -1152,8 +1152,10 @@ body {
   background: rgba(0, 0, 0, 0.65);
 }
 .tarjeta-nota {
-  max-width: 560px;
+  max-width: 640px;
   width: 100%;
+  max-height: calc(100vh - 40px);      /* las bitácoras son largas: nunca más alta que la pantalla... */
+  overflow-y: auto;                    /* ...y si no cabe, tiene su propia barra para bajar */
   padding: 24px 26px;
   background: #1a1710;                 /* papel oscuro */
   border: 2px solid var(--color-nota);
@@ -1172,8 +1174,8 @@ body {
 }
 .nota-texto {
   margin: 0;
-  font-size: 16px;
-  line-height: 1.55;
+  font-size: 15px;
+  line-height: 1.5;
   white-space: pre-line;               /* respeta los saltos de línea del texto */
 }
 .nota-codigo {
